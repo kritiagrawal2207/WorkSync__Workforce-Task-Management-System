@@ -1,1 +1,5 @@
 daily task
+ 1.  chapter 1 
+               clean code = readable + maintainable + simple + expressive
+                bad code cause: rushing , deadlines , lack of discipline + "Fix later" mindset
+                clean code benifits: easier debugging , faster feature management , better teamwork , lower maintenance cost
