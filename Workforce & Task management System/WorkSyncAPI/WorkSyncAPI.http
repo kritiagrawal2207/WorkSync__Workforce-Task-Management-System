@@ -1,6 +1,0 @@
-@WorkSyncAPI_HostAddress = http://localhost:5180
-
-GET {{WorkSyncAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
