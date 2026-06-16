@@ -1,0 +1,36 @@
+<div class="login-wrapper">
+  <div class="form-container">
+    <p class="title">WorkSync</p>
+    <p class="subtitle">Sign in to your account</p>
+
+    <div class="form">
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="you@company.com"
+          [(ngModel)]="email"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          [(ngModel)]="password"
+        />
+      </div>
+
+      @if (errorMessage) {
+        <p class="error-msg">{{ errorMessage }}</p>
+      }
+
+      <button class="sign-btn" (click)="login()" [disabled]="isLoading">
+        {{ isLoading ? 'Signing in...' : 'Sign in' }}
+      </button>
+    </div>
+  </div>
+</div>
