@@ -1,75 +1,61 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WorkSyncAPI.Data;
-using WorkSyncAPI.DTOs.Auth;
+using WorkSyncAPI.DTOs;
 using WorkSyncAPI.Models;
 using WorkSyncAPI.Services;
 
 namespace WorkSyncAPI.Controllers;
 
-[ApiController]
 [Route("api/[controller]")]
+[ApiController]
 public class AuthController : ControllerBase
 {
+    private readonly JwtService _jwtService;
+    private readonly PasswordHashService _passwordHashService;
     private readonly ApplicationDbContext _context;
-    private readonly TokenService _tokenService;
 
-    public AuthController(ApplicationDbContext context, TokenService tokenService)
+    public AuthController(JwtService jwtService, PasswordHashService passwordHashService, ApplicationDbContext context)
     {
+        _jwtService = jwtService;
+        _passwordHashService = passwordHashService;
         _context = context;
-        _tokenService = tokenService;
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequestDto dto)
+    public async Task<IActionResult> Login(LoginRequestDto request)
     {
-        if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
-            return BadRequest("Email and password are required");
-
-        var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == dto.Email && u.IsActive);
-
-        if (user == null)
-            return Unauthorized("Invalid email or password");
-
-        var isValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
-        if (!isValid)
-            return Unauthorized("Invalid email or password");
-
-        var token = _tokenService.GenerateToken(user);
-
-        return Ok(new LoginResponseDto
-        {
-            Token = token,
-            Name = user.Name,
-            Email = user.Email,
-            Role = user.Role
-        });
+        var response = await _jwtService.Authenticate(request);
+        if (response == null) return Unauthorized("Invalid Email or Password");
+        return Ok(response);
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequestDto dto)
+    public async Task<IActionResult> Register(RegisterUserDto dto)
     {
-        if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
-            return BadRequest("All fields are required");
-
-        var emailExists = await _context.Users
-            .AnyAsync(u => u.Email == dto.Email);
-
-        if (emailExists)
-            return BadRequest("Email already registered");
+        if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
+            return BadRequest("Email already exists");
 
         var user = new User
         {
             Name = dto.Name,
             Email = dto.Email,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-            Role = dto.Role
+            PasswordHash = _passwordHashService.HashPassword(dto.Password)
         };
-
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        return Ok("User registered successfully");
+        var role = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == dto.Role)
+                   ?? await _context.Roles.FirstAsync(r => r.RoleName == "Employee");
+
+        _context.UserRoles.Add(new UserRole { UserId = user.Id, RoleId = role.Id });
+        await _context.SaveChangesAsync();
+
+        return Ok(new { user.Id, user.Name, user.Email, Role = role.RoleName });
     }
+
+    [Authorize]
+    [HttpGet("validate")]
+    public IActionResult Validate() => Ok(new { Message = "Token Valid" });
 }
