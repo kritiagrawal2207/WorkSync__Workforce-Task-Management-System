@@ -59,6 +59,7 @@ builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 var app = builder.Build();
 
+
 app.UseCors("AllowAngular");
 
 if (app.Environment.IsDevelopment())

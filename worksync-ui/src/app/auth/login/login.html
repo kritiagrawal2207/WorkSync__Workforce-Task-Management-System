@@ -1,36 +1,51 @@
 <div class="login-wrapper">
   <div class="form-container">
-    <p class="title"></p>
+    <p class="title">WorkSync</p>
     <p class="subtitle">Sign in to your account</p>
 
     <div class="form">
       <div class="input-group">
-        <label for="gmail">Email</label>
-        <input
-          id="gmail"
-          type="email"
-          placeholder="you@company.com"
-          [(ngModel)]="gmail"
-        />
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@company.com" [(ngModel)]="email" autocomplete="username" />
       </div>
 
       <div class="input-group">
         <label for="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="••••••••"
-          [(ngModel)]="password"
-        />
+        <input id="password" type="password" placeholder="••••••••" [(ngModel)]="password" autocomplete="current-password" />
       </div>
+
+      <span class="forgot-link" (click)="showForgotModal = true">Forgot password?</span>
 
       @if (errorMessage) {
         <p class="error-msg">{{ errorMessage }}</p>
       }
 
       <button class="sign-btn" (click)="login()" [disabled]="isLoading">
-        {{ isLoading ? 'Signing in...' : 'Sign in' }}
+        @if (isLoading) {
+          <span class="spinner"></span>
+        } @else {
+          Sign in
+        }
       </button>
     </div>
   </div>
 </div>
+
+@if (showForgotModal) {
+  <div class="modal-overlay" (click)="showForgotModal = false">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>Forgot Password?</h3>
+      <p>Enter your registered email address.</p>
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@company.com" [(ngModel)]="forgotEmail" />
+      </div>
+      <button class="sign-btn" (click)="submitForgot()">Submit</button>
+      <button class="cancel-btn" (click)="showForgotModal = false">Cancel</button>
+    </div>
+  </div>
+}
+
+@if (showToast) {
+  <div class="toast">🛠️ Please connect with your IT team to reset your password.</div>
+}

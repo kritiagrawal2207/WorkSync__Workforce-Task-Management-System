@@ -17,17 +17,21 @@ export class LoginComponent {
   errorMessage = '';
   isLoading = false;
 
+  // new
+  showForgotModal = false;
+  forgotEmail = '';
+  showToast = false;
+
   constructor(private authService: AuthService, private router: Router) {}
 
+  // unchanged
   login() {
     if (!this.email || !this.password) {
       this.errorMessage = 'Please fill all fields';
       return;
     }
-
     this.isLoading = true;
     this.errorMessage = '';
-
     this.authService.login(this.email, this.password).subscribe({
       next: (res) => {
         this.authService.saveSession(res);
@@ -39,5 +43,12 @@ export class LoginComponent {
         this.isLoading = false;
       }
     });
+  }
+
+  // new
+  submitForgot() {
+    this.showForgotModal = false;
+    this.showToast = true;
+    setTimeout(() => this.showToast = false, 4000);
   }
 }

@@ -47,7 +47,14 @@ public class AuthController : ControllerBase
         await _context.SaveChangesAsync();
 
         var role = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == dto.Role)
-                   ?? await _context.Roles.FirstAsync(r => r.RoleName == "Employee");
+        ?? await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Employee");
+
+if (role == null)
+{
+    role = new Role { RoleName = dto.Role == "Admin" ? "Admin" : "Employee" };
+    _context.Roles.Add(role);
+    await _context.SaveChangesAsync();
+}
 
         _context.UserRoles.Add(new UserRole { UserId = user.Id, RoleId = role.Id });
         await _context.SaveChangesAsync();
