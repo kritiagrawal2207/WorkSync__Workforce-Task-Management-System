@@ -1,10 +1,10 @@
 <div class="shell">
   <aside class="sidebar">
     <div class="brand">WorkSync</div>
-
     <nav class="nav-links">
       <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
       <a routerLink="/employees" routerLinkActive="active">Employees</a>
+      <a routerLink="/attendance" routerLinkActive="active">Attendance</a>
 
       @if (role === 'Manager' || role === 'Admin') {
         <a routerLink="/tasks" routerLinkActive="active">Tasks</a>
@@ -21,7 +21,6 @@
       <span class="welcome">Welcome, {{ user?.name }}</span>
       <button class="logout-btn" (click)="logout()">Logout</button>
     </header>
-
     <main class="content">
       <router-outlet />
     </main>

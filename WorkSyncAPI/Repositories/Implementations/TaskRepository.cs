@@ -19,10 +19,30 @@ public class TaskRepository : ITaskRepository
 
     public Task<TaskItem?> GetByIdAsync(int id) =>
         _context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
+         public Task<TaskItem?> GetByIdWithDetailsAsync(int id) =>
+        _context.Tasks
+            .Include(t => t.CreatedBy)
+            .Include(t => t.Assignments!).ThenInclude(a => a.Employee)
+            .Include(t => t.Comments!).ThenInclude(c => c.User)
+            .FirstOrDefaultAsync(t => t.Id == id);
+
+    public Task<List<TaskItem>> GetByEmployeeIdAsync(int employeeId) =>
+        _context.Tasks
+            .Include(t => t.CreatedBy)
+            .Include(t => t.Assignments!).ThenInclude(a => a.Employee)
+            .Include(t => t.Comments!).ThenInclude(c => c.User)
+            .Where(t => t.Assignments!.Any(a => a.EmployeeId == employeeId))
+            .ToListAsync();
+
 
     public async Task AddAsync(TaskItem task) =>
         await _context.Tasks.AddAsync(task);
-
+    public  Task DeleteAsync(TaskItem task) 
+    {
+        _context.Tasks.Remove(task);
+        return Task.CompletedTask;
+    
+   }
     public async Task AssignAsync(TaskAssignment assignment) =>
         await _context.TaskAssignments.AddAsync(assignment);
 

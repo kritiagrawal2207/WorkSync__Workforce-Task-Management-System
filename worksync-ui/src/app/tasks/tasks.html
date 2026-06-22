@@ -1,0 +1,214 @@
+<div class="container">
+  <h1>{{ text.pageTitle }}</h1>
+
+  @if (banner()) {
+    <div class="banner"
+      [class.banner-success]="bannerType() === 'success'"
+      [class.banner-error]="bannerType() === 'error'">
+      {{ banner() }}
+    </div>
+  }
+
+  <!-- Create / Edit Card -->
+  <div class="card">
+    @if (editingTask()) {
+      <h2>{{ text.editCardTitle }}</h2>
+      <div class="form-group">
+        <label>{{ text.titleLabel }}</label>
+        <input type="text" [(ngModel)]="editTitle" [placeholder]="text.titlePlaceholder">
+      </div>
+      <div class="form-group">
+        <label>{{ text.descriptionLabel }}</label>
+        <textarea [(ngModel)]="editDescription" [placeholder]="text.descriptionPlaceholder" rows="3"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ text.priorityLabel }}</label>
+          <select [(ngModel)]="editPriority">
+            @for (p of text.priorityOptions; track p) {
+              <option [value]="p">{{ p }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>{{ text.dueDateLabel }}</label>
+          <input type="date" [(ngModel)]="editDueDate">
+        </div>
+      </div>
+      <div class="btn-row">
+        <app-button [label]="text.updateBtn" variant="primary" (clicked)="updateTask()"></app-button>
+        <app-button [label]="text.cancelEditBtn" variant="danger" (clicked)="cancelEdit()"></app-button>
+      </div>
+    } @else {
+      <h2>{{ text.createCardTitle }}</h2>
+      <div class="form-group">
+        <label>{{ text.titleLabel }}</label>
+        <input type="text" [(ngModel)]="newTitle" [placeholder]="text.titlePlaceholder">
+      </div>
+      <div class="form-group">
+        <label>{{ text.descriptionLabel }}</label>
+        <textarea [(ngModel)]="newDescription" [placeholder]="text.descriptionPlaceholder" rows="3"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ text.priorityLabel }}</label>
+          <select [(ngModel)]="newPriority">
+            @for (p of text.priorityOptions; track p) {
+              <option [value]="p">{{ p }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>{{ text.dueDateLabel }}</label>
+          <input type="date" [(ngModel)]="newDueDate">
+        </div>
+      </div>
+      <app-button [label]="text.createBtn" variant="primary" (clicked)="createTask()"></app-button>
+    }
+  </div>
+
+  <!-- Task List Card -->
+  <div class="card">
+    <h2>{{ text.listCardTitle }}</h2>
+    <div class="form-row">
+      <select [(ngModel)]="filterStatus">
+        <option value="">{{ text.allStatusOption }}</option>
+        @for (s of text.statusOptions; track s) {
+          <option [value]="s">{{ s }}</option>
+        }
+      </select>
+      <select [(ngModel)]="filterPriority">
+        <option value="">{{ text.allPriorityOption }}</option>
+        @for (p of text.priorityOptions; track p) {
+          <option [value]="p">{{ p }}</option>
+        }
+      </select>
+    </div>
+
+    @if (isLoading()) {
+      <app-loader></app-loader>
+    } @else {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>{{ text.columnTitle }}</th>
+              <th>{{ text.columnPriority }}</th>
+              <th>{{ text.columnDueDate }}</th>
+              <th>{{ text.columnStatus }}</th>
+              <th>{{ text.columnAssignedTo }}</th>
+              <th>{{ commonText.actions }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (task of filteredTasks(); track task.id) {
+              <tr>
+                <td>{{ task.title }}</td>
+                <td>
+                  <span class="priority-badge"
+                    [class.priority-high]="task.priority === 'High'"
+                    [class.priority-medium]="task.priority === 'Medium'"
+                    [class.priority-low]="task.priority === 'Low'">
+                    {{ task.priority }}
+                  </span>
+                </td>
+                <td>{{ task.dueDate | date: 'mediumDate' }}</td>
+                <td>
+                  <span class="status-badge"
+                    [class.status-pending]="task.status === 'Pending'"
+                    [class.status-inprogress]="task.status === 'In Progress'"
+                    [class.status-completed]="task.status === 'Completed'">
+                    {{ task.status }}
+                  </span>
+                </td>
+                <td>
+                  @for (a of task.assignments; track a.id) {
+                    <span class="assignee-tag">{{ a.employee?.name }}</span>
+                  }
+                </td>
+                <td class="action-cell">
+                  <app-button [label]="text.editBtn" variant="link" (clicked)="startEdit(task)"></app-button>
+                  <app-button [label]="text.deleteBtn" variant="danger" (clicked)="deleteTask(task)"></app-button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="empty-row">{{ commonText.noRecords }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+  <!-- Assign Task Card -->
+  <div class="card">
+    <h2>{{ text.assignCardTitle }}</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label>{{ text.taskLabel }}</label>
+        <select [(ngModel)]="assignTaskId">
+          <option [ngValue]="null" disabled selected>{{ commonText.selectPlaceholder }}</option>
+          @for (task of tasks(); track task.id) {
+            <option [ngValue]="task.id">{{ task.title }}</option>
+          }
+        </select>
+      </div>
+      <div class="form-group">
+        <label>{{ text.employeeLabel }}</label>
+        <select [(ngModel)]="assignEmployeeId">
+          <option [ngValue]="null" disabled selected>{{ commonText.selectEmployee }}</option>
+          @for (emp of employees(); track emp.id) {
+            <option [ngValue]="emp.id">{{ emp.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+    <app-button [label]="text.assignBtn" variant="primary" (clicked)="assignTask()"></app-button>
+  </div>
+
+  <!-- Update Status Card -->
+  <div class="card">
+    <h2>{{ text.updateStatusLabel }}</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label>{{ text.taskLabel }}</label>
+        <select [(ngModel)]="statusTaskId">
+          <option [ngValue]="null" disabled selected>{{ commonText.selectPlaceholder }}</option>
+          @for (task of tasks(); track task.id) {
+            <option [ngValue]="task.id">{{ task.title }}</option>
+          }
+        </select>
+      </div>
+      <div class="form-group">
+        <label>{{ text.columnStatus }}</label>
+        <select [(ngModel)]="newStatus">
+          <option value="" disabled selected>{{ commonText.selectPlaceholder }}</option>
+          @for (s of text.statusOptions; track s) {
+            <option [value]="s">{{ s }}</option>
+          }
+        </select>
+      </div>
+    </div>
+    <app-button [label]="text.updateStatusLabel" variant="primary" (clicked)="updateStatus()"></app-button>
+  </div>
+
+  <!-- Comments Card -->
+  <div class="card">
+    <h2>{{ text.commentsTitle }}</h2>
+    <div class="form-group">
+      <label>{{ text.taskLabel }}</label>
+      <select [(ngModel)]="commentTaskId">
+        <option [ngValue]="null" disabled selected>{{ commonText.selectPlaceholder }}</option>
+        @for (task of tasks(); track task.id) {
+          <option [ngValue]="task.id">{{ task.title }}</option>
+        }
+      </select>
+    </div>
+    <div class="form-group">
+      <textarea [(ngModel)]="commentContent" [placeholder]="text.addCommentPlaceholder" rows="3"></textarea>
+    </div>
+    <app-button [label]="text.addCommentBtn" variant="primary" (clicked)="addComment()"></app-button>
+  </div>
+</div>

@@ -38,10 +38,11 @@ export class LoginComponent {
         this.router.navigate(['/dashboard']);
         this.isLoading = false;
       },
-      error: (err) => {
-        this.errorMessage = err.error || 'Login failed. Try again.';
-        this.isLoading = false;
-      }
+     error: (err) => {
+  console.log('ERROR BLOCK HIT', err);
+  this.errorMessage = err.error || 'Login failed. Try again.';
+  this.isLoading = false;
+}
     });
   }
 

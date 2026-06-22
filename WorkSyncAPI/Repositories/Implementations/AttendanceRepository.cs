@@ -18,7 +18,14 @@ public class AttendanceRepository : IAttendanceRepository
 
     public Task<Attendance?> GetByIdAsync(int id) =>
         _context.Attendances.FindAsync(id).AsTask();
-
+    public Task<Attendance?> GetTodayByEmployeeIdAsync(int employeeId)
+    {
+        var today = DateTime.UtcNow.Date;
+        return _context.Attendances
+            .Include(a => a.Employee)
+            .Where(a => a.EmployeeId == employeeId && a.CheckIn.Date == today)
+            .FirstOrDefaultAsync();
+    }
     public async Task AddAsync(Attendance attendance) =>
         await _context.Attendances.AddAsync(attendance);
 

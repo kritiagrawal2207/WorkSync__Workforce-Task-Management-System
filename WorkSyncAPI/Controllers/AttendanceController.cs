@@ -21,6 +21,13 @@ public class AttendanceController : ControllerBase
     public async Task<IActionResult> GetByEmployee(int employeeId) =>
         Ok(await _repo.GetByEmployeeIdAsync(employeeId));
 
+    [HttpGet("employee/{employeeId}/today")]
+    public async Task<IActionResult> GetToday(int employeeId)
+    {
+        var attendance = await _repo.GetTodayByEmployeeIdAsync(employeeId);
+        if (attendance == null) return NotFound();
+        return Ok(attendance);
+    }
     [HttpPost]
     public async Task<IActionResult> Create(AttendanceCreateDto dto)
     {

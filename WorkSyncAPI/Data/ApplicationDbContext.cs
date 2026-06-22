@@ -41,6 +41,11 @@ public class ApplicationDbContext : DbContext
             .WithMany(r => r.UserRoles)
             .HasForeignKey(ur => ur.RoleId);
 
+        modelBuilder.Entity<TaskItem>()
+            .HasOne(t => t.CreatedBy)
+            .WithMany(u => u.CreatedTasks)
+            .HasForeignKey(t => t.CreatedByUserId);
+
         base.OnModelCreating(modelBuilder);
     }
 }

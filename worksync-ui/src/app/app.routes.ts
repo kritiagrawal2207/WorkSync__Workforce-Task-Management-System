@@ -24,15 +24,20 @@ export const routes: Routes = [
           import('./employees/employee-list/employee-list').then(m => m.EmployeeListComponent)
       },
       {
-  path: 'tasks',
-  loadComponent: () =>
-    import('./tasks/tasks').then(m => m.TasksComponent)
-},
-{
-  path: 'admin',
-  loadComponent: () =>
-    import('./admin/admin').then(m => m.AdminComponent)
-},
+        path: 'attendance',
+        loadComponent: () =>
+          import('./attendance/attendance').then(m => m.AttendanceComponent)
+      },
+      {
+        path: 'tasks',
+        loadComponent: () =>
+          import('./tasks/tasks').then(m => m.TasksComponent)
+      },
+      {
+        path: 'admin',
+        loadComponent: () =>
+          import('./admin/admin').then(m => m.AdminComponent)
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

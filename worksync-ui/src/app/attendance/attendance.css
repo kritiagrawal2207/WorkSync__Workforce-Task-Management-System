@@ -1,0 +1,68 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+h1 {
+  text-align: center;
+  color: #1976d2;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: #ffffff;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+select {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.hint {
+  color: #6b7280;
+  margin: 0.5rem 0;
+}
+
+table { width: 100%; border-collapse: collapse; }
+th { background-color: #1976d2; color: white; }
+th, td { padding: 0.75rem; border: 1px solid #ddd; text-align: left; }
+.empty-row { text-align: center; color: #6b7280; }
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: white;
+}
+
+.status-present  { background-color: #28a745; }
+.status-late     { background-color: #f59e0b; }
+.status-absent   { background-color: #f44336; }
+.status-halfday  { background-color: #6366f1; }
+
+.banner {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.banner-success { background-color: #d1fae5; color: #065f46; }
+.banner-error   { background-color: #fee2e2; color: #991b1b; }

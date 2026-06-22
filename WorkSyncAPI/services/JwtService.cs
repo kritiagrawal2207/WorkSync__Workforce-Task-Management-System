@@ -57,7 +57,8 @@ public class JwtService
         {
             Token = new JwtSecurityTokenHandler().WriteToken(token),
             Role = role,
-            Name = user.Name
+            Name = user.Name,
+            userId = user.Id
         };
     }
 }

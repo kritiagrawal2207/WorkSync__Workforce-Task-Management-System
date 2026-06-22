@@ -70,7 +70,7 @@ export class EmployeeListComponent implements OnInit {
         id: this.selectedEmployeeId,
         name: this.name,
         email: this.email,
-        phoneNumber: this.phoneNumber,
+        phone: this.phoneNumber,
         department: this.department,
         isActive: true
       };
@@ -96,9 +96,10 @@ export class EmployeeListComponent implements OnInit {
     const employee = {
       name: this.name,
       email: this.email,
-      phoneNumber: this.phoneNumber,
+      phone: this.phoneNumber,
       department: this.department,
-      isActive: true
+       //departmentId: Number(this.department)
+      //isActive: true
     };
     this.http
       .post('http://localhost:5180/api/employee', employee)
@@ -133,8 +134,8 @@ export class EmployeeListComponent implements OnInit {
     this.selectedEmployeeId = employee.id;
     this.name = employee.name;
     this.email = employee.email;
-    this.phoneNumber = employee.phoneNumber;
-    this.department = employee.department;
+    this.phoneNumber = employee.phone;
+    this.department = employee.department?.name;
     this.isEditMode = true;
   }
 

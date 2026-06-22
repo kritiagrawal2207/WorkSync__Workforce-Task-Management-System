@@ -16,6 +16,17 @@ public class TasksController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAll() => Ok(await _repo.GetAllAsync());
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var task = await _repo.GetByIdWithDetailsAsync(id);
+        if (task == null) return NotFound();
+        return Ok(task);
+    }
+
+    [HttpGet("employee/{employeeId}")]
+    public async Task<IActionResult> GetByEmployee(int employeeId) =>
+        Ok(await _repo.GetByEmployeeIdAsync(employeeId));
 
     [HttpPost]
     public async Task<IActionResult> Create(TaskCreateDto dto)
@@ -34,6 +45,41 @@ public class TasksController : ControllerBase
         await _repo.SaveAsync();
         return Ok(task);
     }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, TaskCreateDto dto)
+    {
+        var task = await _repo.GetByIdAsync(id);
+        if (task == null) return NotFound();
+
+        task.Title = dto.Title;
+        task.Description = dto.Description;
+        task.Priority = dto.Priority;
+        task.DueDate = dto.DueDate;
+        await _repo.SaveAsync();
+        return Ok(task);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var task = await _repo.GetByIdAsync(id);
+        if (task == null) return NotFound();
+
+        await _repo.DeleteAsync(task);
+        await _repo.SaveAsync();
+        return NoContent();
+    }
+
+    [HttpPut("{id}/status")]
+    public async Task<IActionResult> UpdateStatus(int id, TaskStatusUpdateDto dto)
+    {
+        var task = await _repo.GetByIdAsync(id);
+        if (task == null) return NotFound();
+        task.Status = dto.Status;
+        await _repo.SaveAsync();
+        return Ok(task);
+    }
+
 
     [HttpPost("assign")]
     public async Task<IActionResult> Assign(TaskAssignDto dto)
