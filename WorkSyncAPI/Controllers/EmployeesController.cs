@@ -1,10 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using WorkSyncAPI.DTOs;
-using WorkSyncAPI.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WorkSyncAPI.Models;
-using WorkSyncAPI.Repositories.Interfaces;
+using WorkSyncAPI.Services.Interfaces;
 
 namespace WorkSyncAPI.Controllers;
 
@@ -13,81 +10,45 @@ namespace WorkSyncAPI.Controllers;
 [Authorize]
 public class EmployeeController : ControllerBase
 {
-   private readonly IEmployeeRepository _repo;
-private readonly ApplicationDbContext _context;
+   private readonly IEmployeeService _employeeService;
 
-public EmployeeController(IEmployeeRepository repo, ApplicationDbContext context)
-{
-    _repo = repo;
-    _context = context;
-}
+    public EmployeeController(IEmployeeService employeeService)
+    {
+        _employeeService = employeeService;
+    }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll() => Ok(await _repo.GetAllAsync());
+     public async Task<IActionResult> GetAll() => Ok(await _employeeService.GetAllEmployeesAsync());
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var emp = await _repo.GetByIdAsync(id);
+        var emp = await _employeeService.GetEmployeeByIdAsync(id);
         return emp == null ? NotFound() : Ok(emp);
     }
 
    [HttpPost]
 public async Task<IActionResult> Add([FromBody] EmployeeCreateDto dto)
 {
-    if (await _repo.EmailExistsAsync(dto.Email))
-        return BadRequest("Employee already exists with this email");
-
-    var department = await _context.Departments
-        .FirstOrDefaultAsync(d => d.Name.ToLower() == dto.Department.ToLower());
-
-    if (department == null)
-        return BadRequest("Invalid department");
-
-    var employee = new Employee
-    {
-        Name = dto.Name,
-        Email = dto.Email,
-        Phone = dto.Phone,
-        DepartmentId = department.Id
-    };
-
-    await _repo.AddAsync(employee);
-    await _repo.SaveAsync();
-    return Ok(employee);
+    var (success, message, employee) = await _employeeService.CreateEmployeeAsync(dto);
+        if (!success) return BadRequest(message);
+        return Ok(employee);
 }
 
    [HttpPut("{id}")]
 public async Task<IActionResult> Update(int id, [FromBody] EmployeeCreateDto dto)
 {
-    var existing = await _repo.GetByIdAsync(id);
-    if (existing == null) return NotFound();
-
-    var department = await _context.Departments
-        .FirstOrDefaultAsync(d => d.Name.ToLower() == dto.Department.ToLower());
-
-    if (department == null)
-        return BadRequest("Invalid department");
-
-    existing.Name = dto.Name;
-    existing.Email = dto.Email;
-    existing.Phone = dto.Phone;
-    existing.DepartmentId = department.Id;
-
-    await _repo.UpdateAsync(existing);
-    await _repo.SaveAsync();
-    return Ok(existing);
+   var (success, message, employee) = await _employeeService.UpdateEmployeeAsync(id, dto);
+        if (!success) return message == "Employee not found" ? NotFound() : BadRequest(message);
+        return Ok(employee);
 }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var emp = await _repo.GetByIdAsync(id);
-        if (emp == null) return NotFound();
-
-        await _repo.DeleteAsync(emp);
-        await _repo.SaveAsync();
-        return Ok("Employee Deleted");
+        var (success, message) = await _employeeService.DeleteEmployeeAsync(id);
+        if (!success) return NotFound(message);
+        return Ok(message);
     }
     
 }

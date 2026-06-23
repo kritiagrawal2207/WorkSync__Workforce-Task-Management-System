@@ -7,6 +7,8 @@ using WorkSyncAPI.Data;
 using WorkSyncAPI.Repositories.Implementations;
 using WorkSyncAPI.Repositories.Interfaces;
 using WorkSyncAPI.Services;
+using WorkSyncAPI.Services.Implementations;
+using WorkSyncAPI.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +58,10 @@ builder.Services.AddScoped<PasswordHashService>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 

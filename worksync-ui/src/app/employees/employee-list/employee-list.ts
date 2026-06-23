@@ -1,8 +1,8 @@
 import { FormsModule } from '@angular/forms';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal,inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-
+import { EmployeeService, EmployeeCreateRequest } from '../../shared/services/employee.service';
+import { Employee } from '../../shared/models/employee.model';
 @Component({
   selector: 'app-employee-list',
   standalone: true,
@@ -12,7 +12,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class EmployeeListComponent implements OnInit {
 
-  employees = signal<any[]>([]);
+   private employeeService = inject(EmployeeService);
+  employees = signal<Employee[]>([]);
   name = '';
   email = '';
   phoneNumber = '';
@@ -20,24 +21,29 @@ export class EmployeeListComponent implements OnInit {
   searchText = '';
   selectedEmployeeId = 0;
   isEditMode = false;
-
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
+  isLoading = signal<boolean>(false);
+  bannerMessage = signal<string>('');
+  bannerType = signal<'success' | 'error' | ''>('');
+  showBanner(message: string, type: 'success' | 'error' | ''): void {
+  this.bannerMessage.set(message);
+  this.bannerType.set(type);
+}
+  ngOnInit(): void {
     this.loadEmployees();
   }
 
-  loadEmployees() {
-    this.http
-      .get<any[]>('http://localhost:5180/api/employee')
-      .subscribe({
-        next: (res) => {
-          this.employees.set(res);
-        },
-        error: (err) => {
-          console.log('API Error:', err);
-        }
-      });
+  loadEmployees(): void {
+    this.isLoading.set(true);
+    this.employeeService.getAll().subscribe({
+      next: (res) => {
+        this.employees.set(res);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.showBanner('Failed to load employees', 'error');
+        this.isLoading.set(false);
+      }
+    });
   }
 
   addEmployee() {
@@ -65,70 +71,39 @@ export class EmployeeListComponent implements OnInit {
       return;
     }
 
-    if (this.isEditMode) {
-      const employee = {
-        id: this.selectedEmployeeId,
-        name: this.name,
-        email: this.email,
-        phone: this.phoneNumber,
-        department: this.department,
-        isActive: true
-      };
-      this.http
-        .put(`http://localhost:5180/api/employee/${this.selectedEmployeeId}`, employee)
-        .subscribe({
-          next: () => {
-            this.loadEmployees();
-            alert('Employee Updated Successfully');
-            this.name = '';
-            this.email = '';
-            this.phoneNumber = '';
-            this.department = '';
-            this.isEditMode = false;
-          },
-          error: (err) => {
-            // Backend se jo bhi error message aaya wo dikhao
-            alert(err.error || 'Failed to update employee');
-          }
-        });
-      return;
-    }
-    const employee = {
+    const request: EmployeeCreateRequest = {
       name: this.name,
       email: this.email,
       phone: this.phoneNumber,
-      department: this.department,
-       //departmentId: Number(this.department)
-      //isActive: true
+      department: this.department
     };
-    this.http
-      .post('http://localhost:5180/api/employee', employee)
-      .subscribe({
+
+    if (this.isEditMode) {
+      this.employeeService.update(this.selectedEmployeeId, request).subscribe({
         next: () => {
+          alert('Employee Updated Successfully');
+          this.resetForm();
           this.loadEmployees();
-          alert('Employee Added Successfully');
-          this.name = '';
-          this.email = '';
-          this.phoneNumber = '';
-          this.department = '';
         },
-        error: (err) => {
-          
-          alert(err.error || 'Failed to add employee');
-        }
+        error: (err) => alert(err.error || 'Failed to update employee')
       });
-  }
-  deleteEmployee(id: number) {
-    const isConfirmed = confirm('Are you sure you want to delete this employee?');
-    if (!isConfirmed) {
       return;
     }
-    this.http
-      .delete(`http://localhost:5180/api/employee/${id}`, { responseType: 'text' })
-      .subscribe(() => {
-        alert('Employee Deleted Successfully');
+    this.employeeService.create(request).subscribe({
+      next: () => {
+        alert('Employee Added Successfully');
+        this.resetForm();
         this.loadEmployees();
-      });
+      },
+      error: (err: any) => alert(err.error || 'Failed to add employee')
+    });
+  }
+  deleteEmployee(id: number): void {
+    if (!confirm('Are you sure you want to delete this employee?')) return;
+    this.employeeService.delete(id).subscribe({
+      next: () => { alert('Employee Deleted Successfully'); this.loadEmployees(); },
+      error: () => alert('Failed to delete employee')
+    });
   }
   editEmployee(employee: any) {
     this.selectedEmployeeId = employee.id;
@@ -143,5 +118,13 @@ export class EmployeeListComponent implements OnInit {
     return this.employees().filter((emp: any) =>
       emp.name.toLowerCase().includes(this.searchText.toLowerCase())
     );
+  }
+  private resetForm(): void {
+    this.name = '';
+    this.email = '';
+    this.phoneNumber = '';
+    this.department = '';
+    this.isEditMode = false;
+    this.selectedEmployeeId = 0;
   }
 }
