@@ -6,4 +6,5 @@ public class LoginResponseDto
     public string Role { get; set; } = "";
     public string Name { get; set; } = "";
     public int userId { get; set;}
+    public int employeeId { get; set; }
 }

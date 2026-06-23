@@ -52,13 +52,15 @@ public class JwtService
             expires: DateTime.UtcNow.AddHours(2),
             signingCredentials: credentials
         );
+var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Email == user.Email);
 
         return new LoginResponseDto
         {
             Token = new JwtSecurityTokenHandler().WriteToken(token),
             Role = role,
             Name = user.Name,
-            userId = user.Id
+            userId = user.Id,
+            employeeId = employee?.Id ?? 0
         };
     }
 }

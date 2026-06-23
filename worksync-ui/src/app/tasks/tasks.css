@@ -115,3 +115,46 @@ th, td { padding: 0.75rem; border: 1px solid #ddd; text-align: left; font-size: 
 
 .banner-success { background-color: #d1fae5; color: #065f46; }
 .banner-error   { background-color: #fee2e2; color: #991b1b; }
+.comments-section {
+  margin-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+}
+
+.comments-task-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.comment-item {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.comment-author {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #1d4ed8;
+}
+
+.comment-date {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.comment-content {
+  font-size: 0.875rem;
+  color: #374151;
+  margin: 0;
+}

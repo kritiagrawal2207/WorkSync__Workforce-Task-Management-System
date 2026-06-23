@@ -15,13 +15,14 @@ export class AuthService {
   }
 
   saveSession(data: LoginResponse): void {
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify({
-      name: data.name,
-      role: data.role,
-      userId: data.userId
-    } as AuthUser));
-  }
+  localStorage.setItem('token', data.token);
+  localStorage.setItem('user', JSON.stringify({
+    name: data.name,
+    role: data.role,
+    userId: data.userId,
+    employeeId: data.employeeId  
+  } as AuthUser));
+}
 
   getToken(): string | null {
     return localStorage.getItem('token');
@@ -39,6 +40,9 @@ export class AuthService {
   getUserId(): number {
     return this.getUser()?.userId ?? 0;
   }
+  getEmployeeId(): number {
+  return this.getUser()?.employeeId ?? 0;
+}
 
   isLoggedIn(): boolean {
     const token = this.getToken();

@@ -48,6 +48,17 @@ public class TaskRepository : ITaskRepository
 
     public async Task AddCommentAsync(TaskComment comment) =>
         await _context.TaskComments.AddAsync(comment);
+        public Task DeleteAssignmentsAsync(ICollection<TaskAssignment> assignments)
+{
+    _context.TaskAssignments.RemoveRange(assignments);
+    return Task.CompletedTask;
+}
+
+public Task DeleteCommentsAsync(ICollection<TaskComment> comments)
+{
+    _context.TaskComments.RemoveRange(comments);
+    return Task.CompletedTask;
+}
 
     public Task SaveAsync() => _context.SaveChangesAsync();
 }

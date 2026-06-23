@@ -83,3 +83,30 @@
   padding: 24px;
   flex: 1;
 }
+.role-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+ 
+.role-admin   { background: #fde68a; color: #92400e; }
+.role-manager { background: #bfdbfe; color: #1e40af; }
+.role-employee { background: #d1fae5; color: #065f46; }
+ 
+/* Top bar ke andar badge ko align karo */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+ 
+.top-bar .welcome {
+  flex: 1;
+}
+ 

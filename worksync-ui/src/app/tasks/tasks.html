@@ -1,6 +1,5 @@
 <div class="container">
   <h1>{{ text.pageTitle }}</h1>
-
   @if (banner()) {
     <div class="banner"
       [class.banner-success]="bannerType() === 'success'"
@@ -8,66 +7,64 @@
       {{ banner() }}
     </div>
   }
-
-  <!-- Create / Edit Card -->
-  <div class="card">
-    @if (editingTask()) {
-      <h2>{{ text.editCardTitle }}</h2>
-      <div class="form-group">
-        <label>{{ text.titleLabel }}</label>
-        <input type="text" [(ngModel)]="editTitle" [placeholder]="text.titlePlaceholder">
-      </div>
-      <div class="form-group">
-        <label>{{ text.descriptionLabel }}</label>
-        <textarea [(ngModel)]="editDescription" [placeholder]="text.descriptionPlaceholder" rows="3"></textarea>
-      </div>
-      <div class="form-row">
+  @if (canManageTasks) {
+    <div class="card">
+      @if (editingTask()) {
+        <h2>{{ text.editCardTitle }}</h2>
         <div class="form-group">
-          <label>{{ text.priorityLabel }}</label>
-          <select [(ngModel)]="editPriority">
-            @for (p of text.priorityOptions; track p) {
-              <option [value]="p">{{ p }}</option>
-            }
-          </select>
+          <label>{{ text.titleLabel }}</label>
+          <input type="text" [(ngModel)]="editTitle" [placeholder]="text.titlePlaceholder">
         </div>
         <div class="form-group">
-          <label>{{ text.dueDateLabel }}</label>
-          <input type="date" [(ngModel)]="editDueDate">
+          <label>{{ text.descriptionLabel }}</label>
+          <textarea [(ngModel)]="editDescription" [placeholder]="text.descriptionPlaceholder" rows="3"></textarea>
         </div>
-      </div>
-      <div class="btn-row">
-        <app-button [label]="text.updateBtn" variant="primary" (clicked)="updateTask()"></app-button>
-        <app-button [label]="text.cancelEditBtn" variant="danger" (clicked)="cancelEdit()"></app-button>
-      </div>
-    } @else {
-      <h2>{{ text.createCardTitle }}</h2>
-      <div class="form-group">
-        <label>{{ text.titleLabel }}</label>
-        <input type="text" [(ngModel)]="newTitle" [placeholder]="text.titlePlaceholder">
-      </div>
-      <div class="form-group">
-        <label>{{ text.descriptionLabel }}</label>
-        <textarea [(ngModel)]="newDescription" [placeholder]="text.descriptionPlaceholder" rows="3"></textarea>
-      </div>
-      <div class="form-row">
+        <div class="form-row">
+          <div class="form-group">
+            <label>{{ text.priorityLabel }}</label>
+            <select [(ngModel)]="editPriority">
+              @for (p of text.priorityOptions; track p) {
+                <option [value]="p">{{ p }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label>{{ text.dueDateLabel }}</label>
+            <input type="date" [(ngModel)]="editDueDate">
+          </div>
+        </div>
+        <div class="btn-row">
+          <app-button [label]="text.updateBtn" variant="primary" (clicked)="updateTask()"></app-button>
+          <app-button [label]="text.cancelEditBtn" variant="danger" (clicked)="cancelEdit()"></app-button>
+        </div>
+      } @else {
+        <h2>{{ text.createCardTitle }}</h2>
         <div class="form-group">
-          <label>{{ text.priorityLabel }}</label>
-          <select [(ngModel)]="newPriority">
-            @for (p of text.priorityOptions; track p) {
-              <option [value]="p">{{ p }}</option>
-            }
-          </select>
+          <label>{{ text.titleLabel }}</label>
+          <input type="text" [(ngModel)]="newTitle" [placeholder]="text.titlePlaceholder">
         </div>
         <div class="form-group">
-          <label>{{ text.dueDateLabel }}</label>
-          <input type="date" [(ngModel)]="newDueDate">
+          <label>{{ text.descriptionLabel }}</label>
+          <textarea [(ngModel)]="newDescription" [placeholder]="text.descriptionPlaceholder" rows="3"></textarea>
         </div>
-      </div>
-      <app-button [label]="text.createBtn" variant="primary" (clicked)="createTask()"></app-button>
-    }
-  </div>
-
-  <!-- Task List Card -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>{{ text.priorityLabel }}</label>
+            <select [(ngModel)]="newPriority">
+              @for (p of text.priorityOptions; track p) {
+                <option [value]="p">{{ p }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label>{{ text.dueDateLabel }}</label>
+            <input type="date" [(ngModel)]="newDueDate">
+          </div>
+        </div>
+        <app-button [label]="text.createBtn" variant="primary" (clicked)="createTask()"></app-button>
+      }
+    </div>
+  }
   <div class="card">
     <h2>{{ text.listCardTitle }}</h2>
     <div class="form-row">
@@ -84,7 +81,6 @@
         }
       </select>
     </div>
-
     @if (isLoading()) {
       <app-loader></app-loader>
     } @else {
@@ -97,7 +93,9 @@
               <th>{{ text.columnDueDate }}</th>
               <th>{{ text.columnStatus }}</th>
               <th>{{ text.columnAssignedTo }}</th>
-              <th>{{ commonText.actions }}</th>
+              @if (canManageTasks) {
+                <th>{{ commonText.actions }}</th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -126,14 +124,16 @@
                     <span class="assignee-tag">{{ a.employee?.name }}</span>
                   }
                 </td>
-                <td class="action-cell">
-                  <app-button [label]="text.editBtn" variant="link" (clicked)="startEdit(task)"></app-button>
-                  <app-button [label]="text.deleteBtn" variant="danger" (clicked)="deleteTask(task)"></app-button>
-                </td>
+                @if (canManageTasks) {
+                  <td class="action-cell">
+                    <app-button [label]="text.editBtn" variant="link" (clicked)="startEdit(task)"></app-button>
+                    <app-button [label]="text.deleteBtn" variant="danger" (clicked)="deleteTask(task)"></app-button>
+                  </td>
+                }
               </tr>
             } @empty {
               <tr>
-                <td colspan="6" class="empty-row">{{ commonText.noRecords }}</td>
+                <td [attr.colspan]="tableColspan" class="empty-row">{{ commonText.noRecords }}</td>
               </tr>
             }
           </tbody>
@@ -141,34 +141,32 @@
       </div>
     }
   </div>
-
-  <!-- Assign Task Card -->
-  <div class="card">
-    <h2>{{ text.assignCardTitle }}</h2>
-    <div class="form-row">
-      <div class="form-group">
-        <label>{{ text.taskLabel }}</label>
-        <select [(ngModel)]="assignTaskId">
-          <option [ngValue]="null" disabled selected>{{ commonText.selectPlaceholder }}</option>
-          @for (task of tasks(); track task.id) {
-            <option [ngValue]="task.id">{{ task.title }}</option>
-          }
-        </select>
+  @if (canManageTasks) {
+    <div class="card">
+      <h2>{{ text.assignCardTitle }}</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ text.taskLabel }}</label>
+          <select [(ngModel)]="assignTaskId">
+            <option [ngValue]="null" disabled selected>{{ commonText.selectPlaceholder }}</option>
+            @for (task of tasks(); track task.id) {
+              <option [ngValue]="task.id">{{ task.title }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>{{ text.employeeLabel }}</label>
+          <select [(ngModel)]="assignEmployeeId">
+            <option [ngValue]="null" disabled selected>{{ commonText.selectEmployee }}</option>
+            @for (emp of employees(); track emp.id) {
+              <option [ngValue]="emp.id">{{ emp.name }}</option>
+            }
+          </select>
+        </div>
       </div>
-      <div class="form-group">
-        <label>{{ text.employeeLabel }}</label>
-        <select [(ngModel)]="assignEmployeeId">
-          <option [ngValue]="null" disabled selected>{{ commonText.selectEmployee }}</option>
-          @for (emp of employees(); track emp.id) {
-            <option [ngValue]="emp.id">{{ emp.name }}</option>
-          }
-        </select>
-      </div>
+      <app-button [label]="text.assignBtn" variant="primary" (clicked)="assignTask()"></app-button>
     </div>
-    <app-button [label]="text.assignBtn" variant="primary" (clicked)="assignTask()"></app-button>
-  </div>
-
-  <!-- Update Status Card -->
+  }
   <div class="card">
     <h2>{{ text.updateStatusLabel }}</h2>
     <div class="form-row">
@@ -176,7 +174,7 @@
         <label>{{ text.taskLabel }}</label>
         <select [(ngModel)]="statusTaskId">
           <option [ngValue]="null" disabled selected>{{ commonText.selectPlaceholder }}</option>
-          @for (task of tasks(); track task.id) {
+          @for (task of dropdownTasks(); track task.id) {
             <option [ngValue]="task.id">{{ task.title }}</option>
           }
         </select>
@@ -193,15 +191,13 @@
     </div>
     <app-button [label]="text.updateStatusLabel" variant="primary" (clicked)="updateStatus()"></app-button>
   </div>
-
-  <!-- Comments Card -->
   <div class="card">
     <h2>{{ text.commentsTitle }}</h2>
     <div class="form-group">
       <label>{{ text.taskLabel }}</label>
       <select [(ngModel)]="commentTaskId">
         <option [ngValue]="null" disabled selected>{{ commonText.selectPlaceholder }}</option>
-        @for (task of tasks(); track task.id) {
+        @for (task of dropdownTasks(); track task.id) {
           <option [ngValue]="task.id">{{ task.title }}</option>
         }
       </select>
@@ -210,5 +206,21 @@
       <textarea [(ngModel)]="commentContent" [placeholder]="text.addCommentPlaceholder" rows="3"></textarea>
     </div>
     <app-button [label]="text.addCommentBtn" variant="primary" (clicked)="addComment()"></app-button>
+    @for (task of filteredTasks(); track task.id) {
+      @if (task.comments && task.comments.length > 0) {
+        <div class="comments-section">
+          <h3 class="comments-task-title">💬 {{ task.title }}</h3>
+          @for (comment of task.comments; track comment.id) {
+            <div class="comment-item">
+              <div class="comment-header">
+                <span class="comment-author">{{ comment.user?.name ?? 'Unknown' }}</span>
+                <span class="comment-date">{{ comment.createdAt | date: 'medium' }}</span>
+              </div>
+              <p class="comment-content">{{ comment.content }}</p>
+            </div>
+          }
+        </div>
+      }
+    }
   </div>
 </div>

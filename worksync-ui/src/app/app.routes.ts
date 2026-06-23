@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './auth/auth.guard';
+import { roleGuard } from './auth/roleguard'; 
 
 export const routes: Routes = [
   {
@@ -20,6 +21,8 @@ export const routes: Routes = [
       },
       {
         path: 'employees',
+        canActivate: [roleGuard],
+        data: { roles: ['Admin', 'Manager'] }, 
         loadComponent: () =>
           import('./employees/employee-list/employee-list').then(m => m.EmployeeListComponent)
       },
@@ -35,6 +38,8 @@ export const routes: Routes = [
       },
       {
         path: 'admin',
+        canActivate: [roleGuard],
+        data: { roles: ['Admin'] }, // ← Admin only
         loadComponent: () =>
           import('./admin/admin').then(m => m.AdminComponent)
       },

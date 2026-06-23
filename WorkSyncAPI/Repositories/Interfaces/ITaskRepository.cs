@@ -14,4 +14,6 @@ public interface ITaskRepository
     Task AssignAsync(TaskAssignment assignment);
     Task AddCommentAsync(TaskComment comment);
     Task SaveAsync();
+    Task DeleteAssignmentsAsync(ICollection<TaskAssignment> assignments);
+Task DeleteCommentsAsync(ICollection<TaskComment> comments);
 }

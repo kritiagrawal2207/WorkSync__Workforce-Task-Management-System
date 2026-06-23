@@ -3,12 +3,12 @@
     <div class="brand">WorkSync</div>
     <nav class="nav-links">
       <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/employees" routerLinkActive="active">Employees</a>
+      @if (role === 'Admin' || role === 'Manager') {
+  <a routerLink="/employees" routerLinkActive="active">Employees</a>
+}
       <a routerLink="/attendance" routerLinkActive="active">Attendance</a>
 
-      @if (role === 'Manager' || role === 'Admin') {
-        <a routerLink="/tasks" routerLinkActive="active">Tasks</a>
-      }
+     <a routerLink="/tasks" routerLinkActive="active">Tasks</a>
 
       @if (role === 'Admin') {
         <a routerLink="/admin" routerLinkActive="active">Admin</a>
@@ -18,9 +18,10 @@
 
   <div class="main-area">
     <header class="top-bar">
-      <span class="welcome">Welcome, {{ user?.name }}</span>
-      <button class="logout-btn" (click)="logout()">Logout</button>
-    </header>
+  <span class="welcome">Welcome, {{ user?.name }}</span>
+  <span class="role-badge role-{{ role?.toLowerCase() }}">{{ role }}</span>
+  <button class="logout-btn" (click)="logout()">Logout</button>
+</header>
     <main class="content">
       <router-outlet />
     </main>

@@ -59,16 +59,23 @@ public class TaskService : ITaskService
     }
  
     public async Task<(bool Success, string Message)> DeleteAsync(int id)
-    {
-        var task = await _repo.GetByIdAsync(id);
-        if (task == null)
-            return (false, "Task not found");
- 
-        await _repo.DeleteAsync(task);
-        await _repo.SaveAsync();
- 
-        return (true, "Task deleted");
-    }
+{
+    var task = await _repo.GetByIdWithDetailsAsync(id);
+    if (task == null)
+        return (false, "Task not found");
+
+    
+    if (task.Assignments?.Any() == true)
+        await _repo.DeleteAssignmentsAsync(task.Assignments);
+
+    if (task.Comments?.Any() == true)
+        await _repo.DeleteCommentsAsync(task.Comments);
+
+    await _repo.DeleteAsync(task);
+    await _repo.SaveAsync();
+
+    return (true, "Task deleted");
+}
  
     public async Task<(bool Success, string Message, TaskItem? Task)> UpdateStatusAsync(int id, TaskStatusUpdateDto dto)
     {

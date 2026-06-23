@@ -21,13 +21,11 @@ public class AuthService : IAuthService
  
     public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto request)
     {
-        // ✅ Business logic JwtService ko delegate karo
         return await _jwtService.Authenticate(request);
     }
  
     public async Task<(bool Success, string Message, object? Data)> RegisterAsync(RegisterUserDto dto)
     {
-        // ✅ Business logic — duplicate email check
         if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
             return (false, "Email already exists", null);
  
@@ -40,11 +38,15 @@ public class AuthService : IAuthService
  
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
- 
-        // ✅ Business logic — role assignment
-        var role = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == dto.Role)
-                ?? await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Employee");
- 
+        // Find role by name, or create it if it doesn't exist
+var role = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == dto.Role);
+
+if (role == null)
+{
+    role = new Role { RoleName = dto.Role };
+    _context.Roles.Add(role);
+    await _context.SaveChangesAsync();
+}
         if (role == null)
         {
             role = new Role { RoleName = dto.Role == "Admin" ? "Admin" : "Employee" };

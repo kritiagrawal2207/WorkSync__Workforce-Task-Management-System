@@ -40,7 +40,7 @@ export class LoginComponent {
       },
      error: (err) => {
   console.log('ERROR BLOCK HIT', err);
-  this.errorMessage = err.error || 'Login failed. Try again.';
+  this.errorMessage = typeof err.error === 'string' ? err.error : err.error?.message || 'Invalid email or password.';
   this.isLoading = false;
 }
     });

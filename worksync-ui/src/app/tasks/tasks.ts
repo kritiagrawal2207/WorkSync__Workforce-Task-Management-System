@@ -27,52 +27,67 @@ export class TasksComponent implements OnInit {
   readonly text = TASKS_TEXT;
   readonly commonText = COMMON_TEXT;
 
+  role = this.authService.getRole();
+  currentUserId = this.authService.getUserId();
+  currentEmployeeId = this.authService.getEmployeeId();
+
+  get isAdmin(): boolean        { return this.role === 'Admin'; }
+  get isManager(): boolean      { return this.role === 'Manager'; }
+  get isEmployee(): boolean     { return this.role === 'Employee'; }
+  get canManageTasks(): boolean { return this.isAdmin || this.isManager; }
+
   tasks = signal<TaskItem[]>([]);
   employees = signal<Employee[]>([]);
   isLoading = signal<boolean>(false);
   editingTask = signal<TaskItem | null>(null);
 
-  // Create form fields
   newTitle = '';
   newDescription = '';
   newPriority = 'Medium';
   newDueDate = '';
 
-  // Edit form fields
   editTitle = '';
   editDescription = '';
   editPriority = '';
   editDueDate = '';
-
-  // Assign fields
   assignTaskId: number | null = null;
   assignEmployeeId: number | null = null;
-
-  // Status update fields
   statusTaskId: number | null = null;
   newStatus = '';
-
-  // Comment fields
   commentTaskId: number | null = null;
   commentContent = '';
-
-  // Filter fields
   filterStatus = '';
   filterPriority = '';
-
   banner = signal<string>('');
   bannerType = signal<BannerType>('');
-
   filteredTasks = computed(() => {
     let list = this.tasks();
-    if (this.filterStatus) list = list.filter(t => t.status === this.filterStatus);
+    if (this.isEmployee) {
+      list = list.filter(t =>
+        t.assignments?.some(a => a.employeeId === this.currentEmployeeId)
+      );
+    }
+    if (this.filterStatus)   list = list.filter(t => t.status === this.filterStatus);
     if (this.filterPriority) list = list.filter(t => t.priority === this.filterPriority);
     return list;
   });
+  dropdownTasks = computed(() => {
+    if (this.isEmployee) {
+      return this.tasks().filter(t =>
+        t.assignments?.some(a => a.employeeId === this.currentEmployeeId)
+      );
+    }
+    return this.tasks();
+  });
+  get tableColspan(): number {
+    return this.canManageTasks ? 6 : 5;
+  }
 
   ngOnInit(): void {
     this.loadTasks();
-    this.loadEmployees();
+    if (this.canManageTasks) {
+      this.loadEmployees();
+    }
   }
 
   loadTasks(): void {
@@ -153,7 +168,12 @@ export class TasksComponent implements OnInit {
     if (!confirm(this.text.deleteConfirmMsg)) return;
     this.taskService.delete(task.id).subscribe({
       next: () => { this.showBanner(this.text.deleteSuccess, 'success'); this.loadTasks(); },
-      error: () => this.showBanner(this.text.deleteError, 'error')
+      error: (err) => {
+        const msg = err?.error?.message
+          || `Delete failed (${err.status ?? 'unknown error'})`;
+        this.showBanner(typeof msg === 'string' ? msg : this.text.deleteError, 'error');
+        console.error('Delete task error:', err);
+      }
     });
   }
 
@@ -179,11 +199,18 @@ export class TasksComponent implements OnInit {
   }
 
   addComment(): void {
-    if (!this.commentTaskId || !this.commentContent) return;
+    if (!this.commentTaskId || !this.commentContent.trim()) {
+      this.showBanner('Please select a task and write a comment.', 'error');
+      return;
+    }
+    if (!this.currentUserId || this.currentUserId === 0) {
+      this.showBanner('Session expired. Please login again.', 'error');
+      return;
+    }
     this.taskService.addComment({
       taskId: this.commentTaskId,
-      userId: this.authService.getUserId(),
-      content: this.commentContent
+      userId: this.currentUserId,
+      content: this.commentContent.trim()
     }).subscribe({
       next: () => {
         this.showBanner(this.text.commentSuccess, 'success');
