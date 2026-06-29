@@ -1,146 +1,177 @@
-import { FormsModule } from '@angular/forms';
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { MatChipsModule } from '@angular/material/chips';
+import { EmployeeDialogComponent } from './employee-dialog.component';
+import { ConfirmDialogComponent } from './confirm-dialog.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+    MatChipsModule
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements OnInit {
-
   employees = signal<any[]>([]);
-  name = '';
-  email = '';
-  phoneNumber = '';
-  department = '';
   searchText = '';
-  selectedEmployeeId = 0;
-  isEditMode = false;
+  isLoading = signal(false);
+  displayedColumns = ['name', 'department', 'phoneNumber', 'actions'];
 
-  constructor(private http: HttpClient) {}
+  private apiUrl = 'http://localhost:5180/api/employee';
+
+  constructor(
+    private http: HttpClient,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.loadEmployees();
   }
 
   loadEmployees() {
-    this.http
-      .get<any[]>('http://localhost:5180/api/employee')
-      .subscribe({
-        next: (res) => {
-          this.employees.set(res);
-        },
-        error: (err) => {
-          console.log('API Error:', err);
-        }
-      });
+    this.isLoading.set(true);
+    this.http.get<any[]>(this.apiUrl).subscribe({
+      next: (res) => {
+        this.employees.set(res);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.showToast('Failed to load employees. Check if the backend is running.', 'error');
+        this.isLoading.set(false);
+      }
+    });
   }
 
-  addEmployee() {
-    if (!this.name || !this.email || !this.phoneNumber || !this.department) {
-      alert('Please fill all fields');
-      return;
-    }
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(this.email)) {
-      alert('Enter valid email');
-      return;
-    }
-    const phonePattern = /^[0-9]{10}$/;
-    if (!phonePattern.test(this.phoneNumber)) {
-      alert('Enter valid 10 digit phone number');
-      return;
-    }
-    const departmentPattern = /^[A-Za-z\s]+$/;
-    if (!departmentPattern.test(this.department)) {
-      alert('Department can contain only letters');
-      return;
-    }
-    if (this.name.length < 3) {
-      alert('Name must be at least 3 characters');
-      return;
-    }
+  openAddDialog() {
+    const dialogRef = this.dialog.open(EmployeeDialogComponent, {
+      width: '500px',
+      disableClose: false,
+      data: { isEdit: false }
+    });
 
-    if (this.isEditMode) {
-      const employee = {
-        id: this.selectedEmployeeId,
-        name: this.name,
-        email: this.email,
-        phoneNumber: this.phoneNumber,
-        department: this.department,
-        isActive: true
-      };
-      this.http
-        .put(`http://localhost:5180/api/employee/${this.selectedEmployeeId}`, employee)
-        .subscribe({
-          next: () => {
-            this.loadEmployees();
-            alert('Employee Updated Successfully');
-            this.name = '';
-            this.email = '';
-            this.phoneNumber = '';
-            this.department = '';
-            this.isEditMode = false;
-          },
-          error: (err) => {
-            // Backend se jo bhi error message aaya wo dikhao
-            alert(err.error || 'Failed to update employee');
-          }
-        });
-      return;
-    }
-    const employee = {
-      name: this.name,
-      email: this.email,
-      phoneNumber: this.phoneNumber,
-      department: this.department,
-      isActive: true
-    };
-    this.http
-      .post('http://localhost:5180/api/employee', employee)
-      .subscribe({
-        next: () => {
-          this.loadEmployees();
-          alert('Employee Added Successfully');
-          this.name = '';
-          this.email = '';
-          this.phoneNumber = '';
-          this.department = '';
-        },
-        error: (err) => {
-          
-          alert(err.error || 'Failed to add employee');
-        }
-      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.addEmployee(result);
+    });
   }
-  deleteEmployee(id: number) {
-    const isConfirmed = confirm('Are you sure you want to delete this employee?');
-    if (!isConfirmed) {
-      return;
-    }
-    this.http
-      .delete(`http://localhost:5180/api/employee/${id}`, { responseType: 'text' })
-      .subscribe(() => {
-        alert('Employee Deleted Successfully');
+
+  openEditDialog(employee: any) {
+    const dialogRef = this.dialog.open(EmployeeDialogComponent, {
+      width: '500px',
+      disableClose: false,
+      data: { isEdit: true, employee }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.updateEmployee(employee.id, result);
+    });
+  }
+
+  openDeleteDialog(employee: any) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '420px',
+      data: { employeeName: employee.name }
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) this.deleteEmployee(employee.id);
+    });
+  }
+
+  addEmployee(formData: any) {
+    const payload = { ...formData, isActive: true };
+    this.isLoading.set(true);
+    this.http.post(this.apiUrl, payload).subscribe({
+      next: () => {
         this.loadEmployees();
-      });
+        this.showToast('Employee added successfully', 'success');
+      },
+      error: (err) => {
+        this.isLoading.set(false);
+        this.showToast(err.error || 'Failed to add employee', 'error');
+      }
+    });
   }
-  editEmployee(employee: any) {
-    this.selectedEmployeeId = employee.id;
-    this.name = employee.name;
-    this.email = employee.email;
-    this.phoneNumber = employee.phoneNumber;
-    this.department = employee.department;
-    this.isEditMode = true;
+
+  updateEmployee(id: number, formData: any) {
+    const payload = { id, ...formData, isActive: true };
+    this.isLoading.set(true);
+    this.http.put(`${this.apiUrl}/${id}`, payload).subscribe({
+      next: () => {
+        this.loadEmployees();
+        this.showToast('Employee updated successfully', 'success');
+      },
+      error: (err) => {
+        this.isLoading.set(false);
+        this.showToast(err.error || 'Failed to update employee', 'error');
+      }
+    });
+  }
+
+  deleteEmployee(id: number) {
+    this.isLoading.set(true);
+    this.http.delete(`${this.apiUrl}/${id}`, { responseType: 'text' }).subscribe({
+      next: () => {
+        this.loadEmployees();
+        this.showToast('Employee deleted successfully', 'success');
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.showToast('Failed to delete employee', 'error');
+      }
+    });
   }
 
   get filteredEmployees() {
-    return this.employees().filter((emp: any) =>
-      emp.name.toLowerCase().includes(this.searchText.toLowerCase())
+    const q = this.searchText.toLowerCase().trim();
+    if (!q) return this.employees();
+    return this.employees().filter(emp =>
+      emp.name.toLowerCase().includes(q) ||
+      emp.department?.toLowerCase().includes(q)
     );
+  }
+
+  getDeptColor(dept: string): string {
+    const colors: Record<string, string> = {
+      'IT': 'dept-it',
+      'HR': 'dept-hr',
+      'Finance': 'dept-finance',
+      'Marketing': 'dept-marketing',
+      'Admin': 'dept-admin'
+    };
+    return colors[dept] || 'dept-default';
+  }
+
+  private showToast(message: string, type: 'success' | 'error') {
+    this.snackBar.open(message, 'Dismiss', {
+      duration: 4000,
+      panelClass: type === 'success' ? 'toast-success' : 'toast-error',
+      horizontalPosition: 'end',
+      verticalPosition: 'top'
+    });
   }
 }

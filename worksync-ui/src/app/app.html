@@ -1,72 +1,138 @@
 
-  <h1>Workforce & Task Management System</h1>
-
-  <div class="card">
-    <h2>Add Employee</h2>
-
-    <div class="form-row">
-      <input type="text" placeholder="Name" [(ngModel)]="name">
-      <input type="email" placeholder="Email" [(ngModel)]="email">
-      <input type="text" placeholder="Phone Number" [(ngModel)]="phoneNumber">
-      <select [(ngModel)]="department">
-  <option value="">Select Department</option>
-  <option value="IT">IT</option>
-  <option value="HR">HR</option>
-  <option value="Finance">Finance</option>
-  <option value="Marketing">Marketing</option>
-  <option value="Admin">Admin</option>
-</select>
+<mat-toolbar class="app-toolbar">
+  <div class="toolbar-inner">
+    <div class="toolbar-left">
+      <mat-icon class="brand-icon">people_alt</mat-icon>
+      <span class="brand-name">WorkSync</span>
     </div>
-
-    <button type="button" class="add-btn" (click)="addEmployee()">
-      {{ isEditMode ? 'Update Employee' : 'Add Employee' }}
+    <button mat-flat-button class="add-emp-btn" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      Add Employee
     </button>
-    
+  </div>
+</mat-toolbar>
 
-</div>
-  
+<!-- Page Content -->
+<div class="page-content">
 
-  <div class="card">
-    <h3>Search Employee</h3>
-    <input
-      class="search-box"
-      type="text"
-      placeholder="Search by Name"
-      [(ngModel)]="searchText">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Employees</h1>
+      <p class="page-subtitle">Manage your workforce from one place</p>
+    </div>
   </div>
 
-  <div class="card">
-    <h2>Employee List</h2>
+  <!-- Search Bar -->
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search employees</mat-label>
+    <mat-icon matPrefix class="search-icon">search</mat-icon>
+    <input
+      matInput
+      [(ngModel)]="searchText"
+      placeholder="Search by name or department..."
+    />
+    @if (searchText) {
+      <button matSuffix mat-icon-button (click)="searchText = ''">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone Number</th>
-          <th>Department</th>
-          <th>Action</th>
-        </tr>
-      </thead>
+  <!-- Loading Spinner -->
+  @if (isLoading()) {
+    <div class="spinner-wrapper">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p class="loading-text">Loading employees...</p>
+    </div>
+  }
 
-      <tbody>
-        <tr *ngFor="let employee of filteredEmployees">
-          <td>{{ employee.id }}</td>
-          <td>{{ employee.name }}</td>
-          <td>{{ employee.email }}</td>
-          <td>{{ employee.phoneNumber }}</td>
-          <td>{{ employee.department }}</td>
-          <td>
-            <button type="button" class="edit-btn" (click)="editEmployee(employee)">
-              Edit
+  <!-- Employee Table -->
+  @if (!isLoading()) {
+    <div class="table-card">
+      <table mat-table [dataSource]="filteredEmployees" class="employee-table">
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let emp">
+            <div class="emp-name-cell">
+              <div class="emp-avatar">{{ emp.name.charAt(0).toUpperCase() }}</div>
+              <div>
+                <div class="emp-name">{{ emp.name }}</div>
+                <div class="emp-email">{{ emp.email }}</div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Department Column -->
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef>Department</th>
+          <td mat-cell *matCellDef="let emp">
+            <span class="dept-badge" [ngClass]="getDeptColor(emp.department)">
+              {{ emp.department }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Phone Column -->
+        <ng-container matColumnDef="phoneNumber">
+          <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+          <td mat-cell *matCellDef="let emp">
+            <span class="phone-text">{{ emp.phoneNumber }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actions-header">Actions</th>
+          <td mat-cell *matCellDef="let emp" class="actions-cell">
+            <button
+              mat-icon-button
+              class="edit-icon-btn"
+              matTooltip="Edit employee"
+              (click)="openEditDialog(emp)"
+            >
+              <mat-icon>edit</mat-icon>
             </button>
-
-            <button type="button" class="delete-btn" (click)="deleteEmployee(employee.id)">
-              Delete
+            <button
+              mat-icon-button
+              class="delete-icon-btn"
+              matTooltip="Delete employee"
+              (click)="openDeleteDialog(emp)"
+            >
+              <mat-icon>delete_outline</mat-icon>
             </button>
           </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="emp-row"></tr>
+
+      </table>
+
+      <!-- Empty State -->
+      @if (filteredEmployees.length === 0) {
+        <div class="empty-state">
+          <mat-icon class="empty-icon">search_off</mat-icon>
+          @if (searchText) {
+            <p class="empty-title">No results for "{{ searchText }}"</p>
+            <p class="empty-sub">Try a different name or department.</p>
+          } @else {
+            <p class="empty-title">No employees yet</p>
+            <p class="empty-sub">Click <strong>Add Employee</strong> to get started.</p>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Footer count -->
+    @if (filteredEmployees.length > 0) {
+      <p class="result-count">
+        Showing {{ filteredEmployees.length }} of {{ employees().length }} employee{{ employees().length !== 1 ? 's' : '' }}
+      </p>
+    }
+  }
+
+</div>
