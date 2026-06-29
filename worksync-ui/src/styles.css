@@ -1,1 +1,41 @@
-/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #f1f5f9;
+}
+
+/* ─── Snackbar Toast Styles ─── */
+.toast-success .mdc-snackbar__surface {
+  background-color: #166534 !important;
+}
+
+.toast-success .mdc-snackbar__label,
+.toast-success .mat-mdc-snack-bar-label {
+  color: #ffffff !important;
+}
+
+.toast-success .mat-mdc-button.mat-mdc-snack-bar-action {
+  color: #bbf7d0 !important;
+}
+
+.toast-error .mdc-snackbar__surface {
+  background-color: #991b1b !important;
+}
+
+.toast-error .mdc-snackbar__label,
+.toast-error .mat-mdc-snack-bar-label {
+  color: #ffffff !important;
+}
+
+.toast-error .mat-mdc-button.mat-mdc-snack-bar-action {
+  color: #fecaca !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 16px !important;
+}
+

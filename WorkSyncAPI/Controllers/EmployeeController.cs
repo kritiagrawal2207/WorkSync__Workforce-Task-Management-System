@@ -19,14 +19,18 @@ public class EmployeeController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetEmployees()
     {
-        var data = await _context.Employees.ToListAsync();
+         var data = await _context.Employees
+        .Include(e => e.Department)  
+        .ToListAsync();
         return Ok(data);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetEmployee(int id)
     {
-        var emp = await _context.Employees.FindAsync(id);
+        var emp = await _context.Employees
+        .Include(e => e.Department)  
+        .FirstOrDefaultAsync(e => e.Id == id);
         if (emp == null)
         {
             return NotFound();
@@ -37,17 +41,14 @@ public class EmployeeController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddEmployee(Employee employee)
     {
-        // Email duplicate check
         var emailExists = await _context.Employees
             .FirstOrDefaultAsync(e => e.Email == employee.Email);
         if (emailExists != null)
         {
             return BadRequest("Employee already exists with this email");
         }
-
-        // Phone number duplicate check
         var phoneExists = await _context.Employees
-            .FirstOrDefaultAsync(e => e.PhoneNumber == employee.PhoneNumber);
+            .FirstOrDefaultAsync(e => e.Phone == employee.Phone);
         if (phoneExists != null)
         {
             return BadRequest("Employee already exists with this phone number");
@@ -65,18 +66,14 @@ public class EmployeeController : ControllerBase
         {
             return BadRequest();
         }
-
-        // Email duplicate check - apna id hatao
         var emailExists = await _context.Employees
             .FirstOrDefaultAsync(e => e.Email == employee.Email && e.Id != id);
         if (emailExists != null)
         {
             return BadRequest("Employee already exists with this email");
         }
-
-        // Phone duplicate check - apna id hatao
         var phoneExists = await _context.Employees
-            .FirstOrDefaultAsync(e => e.PhoneNumber == employee.PhoneNumber && e.Id != id);
+            .FirstOrDefaultAsync(e => e.Phone == employee.Phone && e.Id != id);
         if (phoneExists != null)
         {
             return BadRequest("Employee already exists with this phone number");

@@ -1,17 +1,8 @@
-import { Component, OnInit, signal, computed, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-import { Constants } from '../shared/constants/string';
-
-interface Notification {
-  id: number;
-  message: string;
-  type: 'task' | 'attendance' | 'system';
-  isRead: boolean;
-  createdAt: Date;
-}
 
 @Component({
   selector: 'app-layout',
@@ -20,47 +11,23 @@ interface Notification {
   templateUrl: './layout.html',
   styleUrl: './layout.css'
 })
-export class LayoutComponent implements OnInit {
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  strings = Constants.layout;
-  user = this.authService.getUser();
-  role = this.authService.getRole();
-  panelOpen = signal(false);
+export class LayoutComponent {
+  strings = {
+    brand: 'WorkSync',
+    dashboard: 'Dashboard',
+    employees: 'Employees',
+    attendance: 'Attendance',
+    tasks: 'Tasks',
+    admin: 'Admin',
+    logout: 'Logout'
+  };
 
-  notifications = signal<Notification[]>([
-    { id: 1, message: 'New task assigned to you', type: 'task', isRead: false, createdAt: new Date(Date.now() - 3600000) },
-    { id: 2, message: 'Attendance marked successfully', type: 'attendance', isRead: false, createdAt: new Date(Date.now() - 7200000) },
-    { id: 3, message: 'System maintenance scheduled', type: 'system', isRead: true, createdAt: new Date(Date.now() - 86400000) }
-  ]);
+  user: any;
+  role: string = '';
 
-  unreadCount = computed(() => this.notifications().filter(n => !n.isRead).length);
-
-  
-
-  ngOnInit(): void {}
-
-  togglePanel(): void {
-    this.panelOpen.update(v => !v);
-  }
-
-  markRead(id: number): void {
-    this.notifications.update(list =>
-      list.map(n => n.id === id ? { ...n, isRead: true } : n)
-    );
-  }
-
-  markAllRead(): void {
-    this.notifications.update(list => list.map(n => ({ ...n, isRead: true })));
-  }
-
-  timeAgo(date: Date): string {
-    const diff = Date.now() - new Date(date).getTime();
-    const mins = Math.floor(diff / 60000);
-    if (mins < 60) return `${mins}m ago`;
-    const hrs = Math.floor(mins / 60);
-    if (hrs < 24) return `${hrs}h ago`;
-    return `${Math.floor(hrs / 24)}d ago`;
+  constructor(private authService: AuthService, private router: Router) {
+    this.user = this.authService.getUser();
+    this.role = this.authService.getRole();
   }
 
   logout(): void {

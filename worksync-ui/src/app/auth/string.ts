@@ -1,5 +1,4 @@
 export const Constants = {
-  login: {
     title: 'Welcome back',
     subtitle: 'Sign in to your WorkSync account',
     accountLabel: 'Account',
@@ -15,6 +14,6 @@ export const Constants = {
     forgotSubtitle: 'Enter your registered email address and your IT team will help you reset it.',
     submit: 'Submit',
     cancel: 'Cancel',
-    toast: '🛠️ Please connect with your IT team to reset your password.'
-  }
+    toast: '🛠️ Please connect with your IT team to reset your password.',
+    brandname: 'WS',
 };

@@ -31,7 +31,7 @@ public class TokenService
         };
 
         var expiry = DateTime.UtcNow.AddHours(
-            double.Parse(_config["Jwt:ExpiryInHours"]!));
+            double.Parse(_config["Jwt:ExpiryInHours"] ?? "1"));
 
         var token = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
