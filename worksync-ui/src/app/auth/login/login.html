@@ -1,36 +1,103 @@
-<div class="login-wrapper">
-  <div class="form-container">
-    <p class="title">WorkSync</p>
-    <p class="subtitle">Sign in to your account</p>
+<div class="login-page">
 
-    <div class="form">
-      <div class="input-group">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          placeholder="you@company.com"
-          [(ngModel)]="email"
-        />
+  <div class="left-panel">
+    <div class="brand-block">
+      <div class="brand-logo">WS</div>
+      <h1 class="brand-name">WorkSync</h1>
+      <p class="brand-tagline">Workforce & Task Management</p>
+    </div>
+    <ul class="feature-list">
+      <li><span class="feature-icon">👥</span> Manage your team in one place</li>
+      <li><span class="feature-icon">✅</span> Track tasks & attendance easily</li>
+      <li><span class="feature-icon">📊</span> Real-time productivity dashboards</li>
+    </ul>
+    <p class="brand-footer">© 2025 WorkSync. All rights reserved.</p>
+  </div>
+
+  <div class="right-panel">
+    <div class="form-container">
+
+      <div class="form-header">
+        <h2 class="form-title">{{ strings.title }}</h2>
+        <p class="form-subtitle">{{ strings.subtitle }}</p>
       </div>
 
-      <div class="input-group">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="••••••••"
-          [(ngModel)]="password"
-        />
+      <div class="field-section">
+        <div class="section-label">{{ strings.accountLabel }}</div>
+        <div class="input-group">
+          <label for="email">{{ strings.emailLabel }}</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉</span>
+            <input
+              id="email"
+              type="email"
+              [placeholder]="strings.emailPlaceholder"
+              [(ngModel)]="email"
+              autocomplete="username"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="field-section">
+        <div class="section-label">{{ strings.securityLabel }}</div>
+        <div class="input-group">
+          <label for="password">{{ strings.passwordLabel }}</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              id="password"
+              type="password"
+              [placeholder]="strings.passwordPlaceholder"
+              [(ngModel)]="password"
+              autocomplete="current-password"
+            />
+          </div>
+        </div>
+        <span class="forgot-link" (click)="showForgotModal = true">
+          {{ strings.forgotPassword }}
+        </span>
       </div>
 
       @if (errorMessage) {
-        <p class="error-msg">{{ errorMessage }}</p>
+        <div class="error-box">
+          <span class="error-icon">⚠</span> {{ errorMessage }}
+        </div>
       }
 
       <button class="sign-btn" (click)="login()" [disabled]="isLoading">
-        {{ isLoading ? 'Signing in...' : 'Sign in' }}
+        @if (isLoading) {
+          <span class="spinner"></span>
+          <span>{{ strings.signingIn }}</span>
+        } @else {
+          {{ strings.signIn }}
+        }
       </button>
+
     </div>
   </div>
 </div>
+
+@if (showForgotModal) {
+  <div class="modal-overlay" (click)="showForgotModal = false">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>{{ strings.forgotTitle }}</h3>
+      <p>{{ strings.forgotSubtitle }}</p>
+      <div class="input-group">
+        <label>{{ strings.emailLabel }}</label>
+        <div class="input-wrapper">
+          <span class="input-icon">✉</span>
+          <input type="email" [placeholder]="strings.emailPlaceholder" [(ngModel)]="forgotEmail" />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="sign-btn" (click)="submitForgot()">{{ strings.submit }}</button>
+        <button class="cancel-btn" (click)="showForgotModal = false">{{ strings.cancel }}</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (showToast) {
+  <div class="toast">{{ strings.toast }}</div>
+}

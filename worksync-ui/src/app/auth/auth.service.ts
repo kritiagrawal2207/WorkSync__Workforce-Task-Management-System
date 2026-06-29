@@ -1,43 +1,67 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { API_BASE_URL } from '../shared/constants/api-endpoints';
+import { LoginResponse, AuthUser } from '../shared/models/auth.model';
 
-const API = 'http://localhost:5180/api/auth';
+const AUTH_API = `${API_BASE_URL}/auth`;
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string) {
-    return this.http.post<any>(`${API}/login`, { email, password });
+  login(email: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${AUTH_API}/login`, { email, password });
   }
 
-  saveSession(data: any) {
+  saveSession(data: LoginResponse): void {
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify({
       name: data.name,
-      email: data.email,
-      role: data.role
-    }));
+      role: data.role,
+      userId: data.userId,
+      employeeId: data.employeeId
+    } as AuthUser));
   }
 
-  getToken() {
+  getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  getUser() {
+  getUser(): AuthUser | null {
     const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+    return user ? (JSON.parse(user) as AuthUser) : null;
   }
 
-  getRole() {
+  getRole(): string {
     return this.getUser()?.role ?? '';
   }
 
-  isLoggedIn() {
-    return !!this.getToken();
+  getUserId(): number {
+    return this.getUser()?.userId ?? 0;
   }
 
-  logout() {
+  getEmployeeId(): number {
+    return this.getUser()?.employeeId ?? 0;
+  }
+
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (Date.now() >= payload.exp * 1000) {
+        this.logout();
+        return false;
+      }
+      return true;
+    } catch {
+      this.logout();
+      return false;
+    }
+  }
+
+  logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   }
