@@ -6,6 +6,7 @@ import {
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { APP_CONSTANTS } from './constants/string';
 
 export interface ConfirmDialogData {
   employeeName: string;
@@ -20,15 +21,15 @@ export interface ConfirmDialogData {
       <div class="confirm-icon-wrapper">
         <mat-icon class="warn-icon">delete_forever</mat-icon>
       </div>
-      <h2 class="confirm-title">Delete Employee</h2>
+      <h2 class="confirm-title">{{ constants.DELETE_EMPLOYEE_TITLE }}</h2>
       <p class="confirm-message">
-        Are you sure you want to delete <strong>{{ data.employeeName }}</strong>?
-        This action cannot be undone.
+        {{ constants.DELETE_EMPLOYEE_MESSAGE_PREFIX }} <strong>{{ data.employeeName }}</strong>?
+        {{ constants.DELETE_EMPLOYEE_MESSAGE_SUFFIX }}
       </p>
       <mat-dialog-actions align="end" class="confirm-actions">
-        <button mat-stroked-button mat-dialog-close>Cancel</button>
+        <button mat-stroked-button mat-dialog-close>{{ constants.CANCEL_BUTTON }}</button>
         <button mat-flat-button class="delete-confirm-btn" [mat-dialog-close]="true">
-          Delete
+          {{ constants.DELETE_BUTTON }}
         </button>
       </mat-dialog-actions>
     </div>
@@ -78,6 +79,7 @@ export interface ConfirmDialogData {
   `]
 })
 export class ConfirmDialogComponent {
+  readonly constants = APP_CONSTANTS;
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData

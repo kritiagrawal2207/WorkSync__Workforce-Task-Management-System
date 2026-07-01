@@ -1,0 +1,19 @@
+<table class="employee-table">
+  <thead>
+    <tr>
+      <th>{{ constants.TABLE_NAME_HEADER }}</th>
+      <th>{{ constants.TABLE_EMAIL_HEADER }}</th>
+      <th>{{ constants.TABLE_DEPARTMENT_HEADER }}</th>
+      <th>{{ constants.TABLE_PHONE_HEADER }}</th>
+      <th class="actions-col">{{ constants.TABLE_ACTIONS_HEADER }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (emp of employees; track emp.id) {
+      <tr app-employeerow
+        [employee]="emp"
+        (delete)="delete.emit(emp)"
+      ></tr>
+    }
+  </tbody>
+</table>
