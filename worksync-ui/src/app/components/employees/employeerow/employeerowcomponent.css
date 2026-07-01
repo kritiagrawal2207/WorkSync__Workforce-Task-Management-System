@@ -1,0 +1,51 @@
+:host {
+  display: table-row;
+}
+:host:hover {
+  background-color: #f8fafc;
+}
+td {
+  padding: 16px 24px;
+  font-size: 14px;
+  color: #1e293b;
+  border-bottom: 1px solid #f1f5f9;
+}
+.dept-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background-color: #eef2ff;
+  color: #3b5bdb;
+  font-size: 12px;
+  font-weight: 600;
+}
+.actions-col {
+  text-align: right;
+  white-space: nowrap;
+}
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  margin-left: 6px;
+  color: #64748b;
+  text-decoration: none;
+}
+.icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+.edit-btn:hover {
+  background-color: #eef2ff;
+  color: #3b5bdb;
+}
+.delete-btn:hover {
+  background-color: #fee2e2;
+  color: #ef4444;
+}

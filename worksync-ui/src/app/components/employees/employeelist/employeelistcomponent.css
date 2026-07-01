@@ -1,0 +1,97 @@
+.page {
+  min-height: 100vh;
+}
+
+.topbar {
+  background-color: #1a2438;
+  padding: 18px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+}
+
+.brand-icon {
+  width: 22px;
+  height: 22px;
+  color: #6c8dff;
+}
+
+.brand-name {
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.plus-icon {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.content {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.page-subtitle {
+  margin: 4px 0 24px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  max-width: 420px;
+  margin-bottom: 20px;
+}
+
+.search-box svg {
+  width: 18px;
+  height: 18px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  font-family: inherit;
+  color: #1a1a2e;
+}
+
+.table-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.state-block {
+  padding: 70px 20px;
+  text-align: center;
+}
+
+.error-text {
+  color: #dc2626;
+  margin-bottom: 12px;
+}

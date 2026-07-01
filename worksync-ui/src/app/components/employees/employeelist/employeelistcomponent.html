@@ -1,0 +1,59 @@
+<div class="page">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+      <span class="brand-name">WorkSync</span>
+    </div>
+    <a routerLink="/employees/add" class="btn btn-primary">
+      <span class="plus-icon">+</span> Add Employee
+    </a>
+  </header>
+  <main class="content">
+    <h1 class="page-title">Employees</h1>
+    <p class="page-subtitle">Manage your workforce from one place</p>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      <input
+        type="text"
+        placeholder="Search employees"
+        [value]="searchTerm"
+        (input)="onSearchChange($any($event.target).value)"
+      />
+    </div>
+    <div class="table-card">
+      @if (isLoading) {
+        <app-loadingspinner message="Loading employees..."></app-loadingspinner>
+      } @else if (errorMessage) {
+        <div class="state-block">
+          <p class="error-text">{{ errorMessage }}</p>
+          <button class="btn btn-secondary" (click)="loadEmployees()">Retry</button>
+        </div>
+      } @else if (filteredEmployees.length === 0) {
+        <app-emptystate
+          [title]="searchTerm ? 'No employees found' : 'No employees yet'"
+          [subtitle]="searchTerm ? 'Try a different search term.' : 'Click Add Employee to get started.'"
+        ></app-emptystate>
+      } @else {
+        <app-employeetable
+          [employees]="filteredEmployees"
+          (delete)="askDelete($event)"
+        ></app-employeetable>
+      }
+    </div>
+  </main>
+</div>
+@if (showDeleteConfirm && employeeToDelete) {
+  <app-confirmdialog
+    [employeeName]="employeeToDelete.name"
+    (confirmed)="confirmDelete()"
+    (cancelled)="cancelDelete()"
+  ></app-confirmdialog>
+}

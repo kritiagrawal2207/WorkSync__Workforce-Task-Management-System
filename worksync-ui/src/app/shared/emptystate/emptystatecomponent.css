@@ -1,0 +1,21 @@
+.state-block {
+  padding: 70px 20px;
+  text-align: center;
+}
+.empty-icon {
+  width: 46px;
+  height: 46px;
+  color: #cbd5e1;
+  margin-bottom: 14px;
+}
+.empty-title {
+  margin: 0 0 4px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #334155;
+}
+.empty-sub {
+  margin: 0;
+  font-size: 13px;
+  color: #94a3b8;
+}
