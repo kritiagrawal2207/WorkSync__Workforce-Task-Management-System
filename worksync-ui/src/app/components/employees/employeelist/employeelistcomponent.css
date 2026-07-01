@@ -1,7 +1,7 @@
 .content {
-  max-width: 1080px;
+  max-width: var(--content-max-width);
 }
 
 .state-block {
-  padding: 70px 20px;
+  padding: var(--spacing-6xl) var(--spacing-xl);
 }

@@ -1,19 +1,19 @@
 .empty-icon {
-  width: 46px;
-  height: 46px;
-  color: #cbd5e1;
-  margin-bottom: 14px;
+  width: var(--empty-state-icon-size);
+  height: var(--empty-state-icon-size);
+  color: var(--color-border-soft);
+  margin-bottom: var(--empty-state-icon-gap);
 }
 
 .empty-title {
-  margin: 0 0 4px;
-  font-weight: 600;
-  font-size: 15px;
-  color: #334155;
+  margin: 0 0 var(--spacing-xs);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
 }
 
 .empty-sub {
   margin: 0;
-  font-size: 13px;
-  color: #94a3b8;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-soft);
 }

@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { Employee } from '../../../models/employeemodel';
 import { APP_CONSTANTS } from '../../../constants/string';
 @Component({
-  selector: 'app-employeerow',
+  selector: '[app-employeerow]',
   standalone: true,
   imports: [RouterLink],
   templateUrl: './employeerowcomponent.html',

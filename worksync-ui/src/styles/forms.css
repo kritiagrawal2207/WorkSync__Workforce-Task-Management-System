@@ -1,27 +1,27 @@
 .employee-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: var(--spacing-xl);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--spacing-xs);
 }
 
 .field label {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-text-secondary);
 }
 
 .field input,
 .field select {
-  padding: 10px 12px;
-  border: 1px solid var(--color-border);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: var(--border-width-thin) solid var(--color-border);
   border-radius: var(--radius-sm);
-  font-size: 14px;
+  font-size: var(--font-size-md);
   font-family: inherit;
   color: var(--color-text-primary);
   background: var(--color-surface);
@@ -31,7 +31,7 @@
 .field select:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-focus-ring);
+  box-shadow: var(--focus-ring-shadow);
 }
 
 .field input.ng-invalid.ng-touched,
@@ -40,25 +40,25 @@
 }
 
 .error-msg {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: var(--color-danger);
 }
 
 .search-box {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--spacing-md);
   background: var(--color-surface);
-  border: 1px solid var(--color-border-soft);
+  border: var(--border-width-thin) solid var(--color-border-soft);
   border-radius: var(--radius-md);
-  padding: 10px 14px;
-  max-width: 420px;
-  margin-bottom: 20px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  max-width: var(--search-width);
+  margin-bottom: var(--spacing-xl);
 }
 
 .search-box svg {
-  width: 18px;
-  height: 18px;
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
   color: var(--color-text-soft);
   flex-shrink: 0;
 }
@@ -67,7 +67,7 @@
   border: none;
   outline: none;
   flex: 1;
-  font-size: 14px;
+  font-size: var(--font-size-md);
   font-family: inherit;
   color: var(--color-text-primary);
 }

@@ -7,9 +7,9 @@
 }
 
 td {
-  padding: 16px 24px;
-  font-size: 14px;
-  color: #1e293b;
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
   border-bottom: 1px solid var(--color-border-subtle);
 }
 
@@ -17,20 +17,20 @@ td {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: var(--spacing-3xl);
+  height: var(--spacing-3xl);
   border-radius: var(--radius-sm);
   border: none;
   background: transparent;
   cursor: pointer;
-  margin-left: 6px;
+  margin-left: var(--spacing-sm);
   color: var(--color-text-muted);
   text-decoration: none;
 }
 
 .icon-btn svg {
-  width: 16px;
-  height: 16px;
+  width: var(--spacing-lg);
+  height: var(--spacing-lg);
 }
 
 .edit-btn:hover {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Employee } from '../../../models/employeemodel';
 import { EmployeeService } from '../../../services/employeeservice';
@@ -32,26 +32,29 @@ export class EmployeeListComponent implements OnInit {
   employeeToDelete: Employee | null = null;
   constructor(
     private employeeService: EmployeeService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private cdr: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
     this.loadEmployees();
   }
   loadEmployees(): void {
-    this.isLoading = true;
-    this.errorMessage = '';
-    this.employeeService.getAll().subscribe({
-      next: (data) => {
-        this.employees = data;
-        this.applyFilter();
-        this.isLoading = false;
-      },
-      error: () => {
-        this.errorMessage = this.constants.UNABLE_TO_LOAD_EMPLOYEES;
-        this.isLoading = false;
-      }
-    });
-  }
+  this.isLoading = true;
+  this.errorMessage = '';
+  this.employeeService.getAll().subscribe({
+    next: (data) => {
+      this.employees = data;
+      this.applyFilter();
+      this.isLoading = false;
+      this.cdr.detectChanges(); 
+    },
+    error: () => {
+      this.errorMessage = this.constants.UNABLE_TO_LOAD_EMPLOYEES;
+      this.isLoading = false;
+      this.cdr.detectChanges(); 
+    }
+  });
+}
   onSearchChange(term: string): void {
     this.searchTerm = term;
     this.applyFilter();

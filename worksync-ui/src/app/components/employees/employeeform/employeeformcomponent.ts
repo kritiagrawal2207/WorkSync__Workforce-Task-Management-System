@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -29,7 +29,8 @@ export class EmployeeFormComponent implements OnInit {
     private departmentService: DepartmentService,
     private toastService: ToastService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
     this.buildForm();
@@ -51,7 +52,10 @@ export class EmployeeFormComponent implements OnInit {
   }
   private loadDepartments(): void {
     this.departmentService.getAll().subscribe({
-      next: (data) => (this.departments = data),
+      next: (data) => {
+      this.departments = data;
+      this.cdr.detectChanges();  
+    },
       error: () => this.toastService.show(this.constants.LOAD_DEPARTMENTS_ERROR, 'error')
     });
   }
@@ -66,10 +70,12 @@ export class EmployeeFormComponent implements OnInit {
           departmentId: employee.departmentId
         });
         this.isLoadingEmployee = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.toastService.show(this.constants.LOAD_EMPLOYEE_ERROR, 'error');
         this.isLoadingEmployee = false;
+        this.cdr.detectChanges(); 
         this.router.navigate(['/employees']);
       }
     });

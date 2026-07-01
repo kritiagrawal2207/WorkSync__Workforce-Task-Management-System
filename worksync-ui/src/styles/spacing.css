@@ -1,19 +1,19 @@
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 8px;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
 }
 
 .state-block {
-  padding: 70px 20px;
+  padding: var(--spacing-6xl) var(--spacing-xl);
   text-align: center;
   color: var(--color-text-subtle);
 }
 
 .error-text {
   color: var(--color-danger-dark);
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-lg);
 }
 
 .actions-col {

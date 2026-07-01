@@ -10,10 +10,10 @@
   </thead>
   <tbody>
     @for (emp of employees; track emp.id) {
-      <app-employeerow
+      <tr app-employeerow
         [employee]="emp"
         (delete)="delete.emit(emp)"
-      ></app-employeerow>
+      ></tr>
     }
   </tbody>
 </table>

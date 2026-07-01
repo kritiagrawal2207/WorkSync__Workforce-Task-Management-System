@@ -1,9 +1,9 @@
 .toast-stack {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
+  top: var(--spacing-xl);
+  right: var(--spacing-xl);
+  z-index: var(--z-index-dropdown);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--spacing-md);
 }
