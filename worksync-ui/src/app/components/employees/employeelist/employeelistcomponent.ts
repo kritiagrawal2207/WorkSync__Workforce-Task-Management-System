@@ -7,6 +7,7 @@ import { ConfirmDialogComponent } from '../../../shared/confirmdialog/confirmdia
 import { EmployeeTableComponent } from '../employeetable/employeetablecomponent';
 import { EmptyStateComponent } from '../../../shared/emptystate/emptystatecomponent';
 import { LoadingSpinnerComponent } from '../../../shared/loadingspinner/loadingspinnercomponent';
+import { APP_CONSTANTS } from '../../../constants/string';
 @Component({
   selector: 'app-employee-list',
   standalone: true,
@@ -21,6 +22,7 @@ import { LoadingSpinnerComponent } from '../../../shared/loadingspinner/loadings
   styleUrl: './employeelistcomponent.css'
 })
 export class EmployeeListComponent implements OnInit {
+  readonly constants = APP_CONSTANTS;
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
   searchTerm = '';
@@ -45,7 +47,7 @@ export class EmployeeListComponent implements OnInit {
         this.isLoading = false;
       },
       error: () => {
-        this.errorMessage = 'Unable to load employees. Please check your connection and try again.';
+        this.errorMessage = this.constants.UNABLE_TO_LOAD_EMPLOYEES;
         this.isLoading = false;
       }
     });
@@ -83,12 +85,12 @@ export class EmployeeListComponent implements OnInit {
       next: () => {
         this.employees = this.employees.filter((e) => e.id !== id);
         this.applyFilter();
-        this.toastService.show(`${name} was deleted successfully.`, 'success');
+        this.toastService.show(this.constants.DELETE_SUCCESS.replace('{name}', name), 'success');
         this.showDeleteConfirm = false;
         this.employeeToDelete = null;
       },
       error: () => {
-        this.toastService.show('Failed to delete employee. Please try again.', 'error');
+        this.toastService.show(this.constants.DELETE_FAILED, 'error');
         this.showDeleteConfirm = false;
       }
     });

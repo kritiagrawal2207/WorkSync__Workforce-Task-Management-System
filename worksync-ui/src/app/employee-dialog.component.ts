@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { APP_CONSTANTS } from './constants/string';
 
 export interface EmployeeDialogData {
   isEdit: boolean;
@@ -36,9 +37,9 @@ export interface EmployeeDialogData {
   template: `
     <div class="dialog-container">
       <div class="dialog-header">
-        <h2 class="dialog-title">{{ data.isEdit ? 'Edit Employee' : 'Add New Employee' }}</h2>
+        <h2 class="dialog-title">{{ data.isEdit ? constants.EDIT_EMPLOYEE_TITLE : constants.ADD_EMPLOYEE_TITLE }}</h2>
         <p class="dialog-subtitle">
-          {{ data.isEdit ? 'Update the employee information below.' : 'Fill in the details to add a new employee.' }}
+          {{ data.isEdit ? constants.EMPLOYEE_FORM_SUBTITLE_EDIT : constants.EMPLOYEE_FORM_SUBTITLE_ADD }}
         </p>
       </div>
 
@@ -46,40 +47,40 @@ export interface EmployeeDialogData {
         <form [formGroup]="form" class="dialog-form">
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Full Name</mat-label>
-            <input matInput formControlName="name" placeholder="e.g. Rahul Sharma" />
+            <mat-label>{{ constants.FULL_NAME_LABEL }}</mat-label>
+            <input matInput formControlName="name" [placeholder]="constants.NAME_PLACEHOLDER" />
             @if (form.get('name')?.touched && form.get('name')?.hasError('required')) {
-              <mat-error>Name is required</mat-error>
+              <mat-error>{{ constants.NAME_REQUIRED }}</mat-error>
             }
             @if (form.get('name')?.touched && form.get('name')?.hasError('minlength')) {
-              <mat-error>Name must be at least 3 characters</mat-error>
+              <mat-error>{{ constants.NAME_MIN_LENGTH }}</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Email Address</mat-label>
-            <input matInput formControlName="email" type="email" placeholder="e.g. rahul@company.com" />
+            <mat-label>{{ constants.EMAIL_ADDRESS_LABEL }}</mat-label>
+            <input matInput formControlName="email" type="email" [placeholder]="constants.EMAIL_PLACEHOLDER" />
             @if (form.get('email')?.touched && form.get('email')?.hasError('required')) {
-              <mat-error>Email is required</mat-error>
+              <mat-error>{{ constants.EMAIL_REQUIRED }}</mat-error>
             }
             @if (form.get('email')?.touched && form.get('email')?.hasError('email')) {
-              <mat-error>Enter a valid email address</mat-error>
+              <mat-error>{{ constants.EMAIL_INVALID }}</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Phone Number</mat-label>
-            <input matInput formControlName="phoneNumber" placeholder="10-digit number" maxlength="10" />
+            <mat-label>{{ constants.PHONE_NUMBER_LABEL }}</mat-label>
+            <input matInput formControlName="phoneNumber" [placeholder]="constants.PHONE_PLACEHOLDER" maxlength="10" />
             @if (form.get('phoneNumber')?.touched && form.get('phoneNumber')?.hasError('required')) {
-              <mat-error>Phone number is required</mat-error>
+              <mat-error>{{ constants.PHONE_INVALID }}</mat-error>
             }
             @if (form.get('phoneNumber')?.touched && form.get('phoneNumber')?.hasError('pattern')) {
-              <mat-error>Enter a valid 10-digit phone number</mat-error>
+              <mat-error>{{ constants.PHONE_INVALID }}</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Department</mat-label>
+            <mat-label>{{ constants.DEPARTMENT_LABEL }}</mat-label>
             <mat-select formControlName="department">
               <mat-option value="IT">IT</mat-option>
               <mat-option value="HR">HR</mat-option>
@@ -88,7 +89,7 @@ export interface EmployeeDialogData {
               <mat-option value="Admin">Admin</mat-option>
             </mat-select>
             @if (form.get('department')?.touched && form.get('department')?.hasError('required')) {
-              <mat-error>Please select a department</mat-error>
+              <mat-error>{{ constants.DEPARTMENT_REQUIRED }}</mat-error>
             }
           </mat-form-field>
 
@@ -96,13 +97,13 @@ export interface EmployeeDialogData {
       </mat-dialog-content>
 
       <mat-dialog-actions align="end" class="dialog-actions">
-        <button mat-stroked-button mat-dialog-close>Cancel</button>
+        <button mat-stroked-button mat-dialog-close>{{ constants.CANCEL_BUTTON }}</button>
         <button
           mat-flat-button
           class="save-btn"
           (click)="onSubmit()"
         >
-          {{ data.isEdit ? 'Update Employee' : 'Add Employee' }}
+          {{ data.isEdit ? constants.UPDATE_EMPLOYEE : constants.ADD_EMPLOYEE }}
         </button>
       </mat-dialog-actions>
     </div>
@@ -144,6 +145,7 @@ export interface EmployeeDialogData {
   `]
 })
 export class EmployeeDialogComponent implements OnInit {
+  readonly constants = APP_CONSTANTS;
   form: FormGroup;
 
   constructor(

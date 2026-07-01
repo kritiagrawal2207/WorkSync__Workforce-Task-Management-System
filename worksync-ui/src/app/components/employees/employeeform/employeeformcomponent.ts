@@ -7,6 +7,7 @@ import { EmployeeCreateDto } from '../../../models/employeemodel';
 import { EmployeeService } from '../../../services/employeeservice';
 import { DepartmentService } from '../../../services/departmentservice';
 import { ToastService } from '../../../shared/toast/toastservice';
+import { APP_CONSTANTS } from '../../../constants/string';
 @Component({
   selector: 'app-employee-form',
   standalone: true,
@@ -15,6 +16,7 @@ import { ToastService } from '../../../shared/toast/toastservice';
   styleUrl: './employeeformcomponent.css'
 })
 export class EmployeeFormComponent implements OnInit {
+  readonly constants = APP_CONSTANTS;
   form!: FormGroup;
   departments: Department[] = [];
   employeeId: number | null = null;
@@ -50,7 +52,7 @@ export class EmployeeFormComponent implements OnInit {
   private loadDepartments(): void {
     this.departmentService.getAll().subscribe({
       next: (data) => (this.departments = data),
-      error: () => this.toastService.show('Failed to load departments.', 'error')
+      error: () => this.toastService.show(this.constants.LOAD_DEPARTMENTS_ERROR, 'error')
     });
   }
   private loadEmployeeForEdit(id: number): void {
@@ -66,7 +68,7 @@ export class EmployeeFormComponent implements OnInit {
         this.isLoadingEmployee = false;
       },
       error: () => {
-        this.toastService.show('Could not load that employee.', 'error');
+        this.toastService.show(this.constants.LOAD_EMPLOYEE_ERROR, 'error');
         this.isLoadingEmployee = false;
         this.router.navigate(['/employees']);
       }
@@ -94,7 +96,7 @@ export class EmployeeFormComponent implements OnInit {
     request$.subscribe({
       next: () => {
         this.toastService.show(
-          this.isEditMode ? 'Employee updated successfully.' : 'Employee added successfully.',
+          this.isEditMode ? this.constants.EMPLOYEE_UPDATED_SUCCESS : this.constants.EMPLOYEE_ADDED_SUCCESS,
           'success'
         );
         this.router.navigate(['/employees']);
@@ -102,9 +104,9 @@ export class EmployeeFormComponent implements OnInit {
       error: (err) => {
         this.isSubmitting = false;
         if (err.status === 409) {
-          this.toastService.show(err.error?.message ?? 'That email is already in use.', 'error');
+          this.toastService.show(err.error?.message ?? this.constants.EMAIL_IN_USE_ERROR, 'error');
         } else {
-          this.toastService.show('Something went wrong. Please try again.', 'error');
+          this.toastService.show(this.constants.GENERIC_ERROR, 'error');
         }
       }
     });

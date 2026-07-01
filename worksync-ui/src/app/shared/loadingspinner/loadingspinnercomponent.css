@@ -1,17 +1,8 @@
-.state-block {
-  padding: 70px 20px;
-  text-align: center;
-  color: #6b7280;
-}
 .spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #3b5bdb;
+  border: 3px solid var(--color-border-soft);
+  border-top-color: var(--color-primary);
   border-radius: 50%;
   margin: 0 auto 14px;
-  animation: spin 0.7s linear infinite;
-}
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }

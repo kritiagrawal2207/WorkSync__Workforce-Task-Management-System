@@ -1,62 +1,9 @@
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 900;
-}
-.modal {
-  background: #fff;
-  width: 360px;
-  max-width: 90vw;
-  border-radius: 16px;
-  padding: 32px 28px 24px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  animation: pop-in 0.15s ease-out;
-}
 .icon-circle {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background-color: #fee2e2;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 16px;
-}
-.icon-circle svg {
-  width: 26px;
-  height: 26px;
-  color: #ef4444;
-}
-.modal h2 {
-  margin: 0 0 8px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #1a1a2e;
-}
-.modal p {
-  margin: 0;
-  font-size: 14px;
-  color: #6b7280;
-  line-height: 1.5;
-}
-.actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 24px;
-}
-@keyframes pop-in {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
 }

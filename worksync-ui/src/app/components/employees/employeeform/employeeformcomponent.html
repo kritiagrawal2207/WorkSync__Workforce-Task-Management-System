@@ -7,66 +7,66 @@
         <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
-      <span class="brand-name">WorkSync</span>
+      <span class="brand-name">{{ constants.APP_NAME }}</span>
     </div>
   </header>
   <main class="content">
-    <a routerLink="/employees" class="back-link">&larr; Back to Employees</a>
+    <a routerLink="/employees" class="back-link">{{ constants.BACK_TO_EMPLOYEES }}</a>
     <div class="form-card">
-      <h1 class="form-title">{{ isEditMode ? 'Edit Employee' : 'Add New Employee' }}</h1>
+      <h1 class="form-title">{{ isEditMode ? constants.EDIT_EMPLOYEE_TITLE : constants.ADD_EMPLOYEE_TITLE }}</h1>
       <p class="form-subtitle">
-        {{ isEditMode ? 'Update the employee information below.' : 'Fill in the details to add a new employee.' }}
+        {{ isEditMode ? constants.EMPLOYEE_FORM_SUBTITLE_EDIT : constants.EMPLOYEE_FORM_SUBTITLE_ADD }}
       </p>
       @if (isLoadingEmployee) {
         <div class="state-block">
           <div class="spinner"></div>
-          <p>Loading employee...</p>
+          <p>{{ constants.LOADING_EMPLOYEE }}</p>
         </div>
       } @else {
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="employee-form">
           <div class="field">
-            <label for="name">Full Name</label>
-            <input id="name" type="text" formControlName="name" placeholder="e.g. Rahul Sharma" />
+            <label for="name">{{ constants.FULL_NAME_LABEL }}</label>
+            <input id="name" type="text" formControlName="name" [placeholder]="constants.NAME_PLACEHOLDER" />
             @if (hasError('name', 'required')) {
-              <span class="error-msg">Name is required.</span>
+              <span class="error-msg">{{ constants.NAME_REQUIRED }}</span>
             }
             @if (hasError('name', 'minlength')) {
-              <span class="error-msg">Name must be at least 3 characters.</span>
+              <span class="error-msg">{{ constants.NAME_MIN_LENGTH }}</span>
             }
           </div>
           <div class="field">
-            <label for="email">Email Address</label>
-            <input id="email" type="email" formControlName="email" placeholder="e.g. rahul&#64;company.com" />
+            <label for="email">{{ constants.EMAIL_ADDRESS_LABEL }}</label>
+            <input id="email" type="email" formControlName="email" [placeholder]="constants.EMAIL_PLACEHOLDER" />
             @if (hasError('email', 'required')) {
-              <span class="error-msg">Email is required.</span>
+              <span class="error-msg">{{ constants.EMAIL_REQUIRED }}</span>
             }
             @if (hasError('email', 'email')) {
-              <span class="error-msg">Enter a valid email address.</span>
+              <span class="error-msg">{{ constants.EMAIL_INVALID }}</span>
             }
           </div>
           <div class="field">
-            <label for="phone">Phone Number</label>
-            <input id="phone" type="text" formControlName="phone" placeholder="10-digit number" maxlength="10" />
+            <label for="phone">{{ constants.PHONE_NUMBER_LABEL }}</label>
+            <input id="phone" type="text" formControlName="phone" [placeholder]="constants.PHONE_PLACEHOLDER" maxlength="10" />
             @if (hasError('phone', 'pattern')) {
-              <span class="error-msg">Enter a valid 10-digit phone number.</span>
+              <span class="error-msg">{{ constants.PHONE_INVALID }}</span>
             }
           </div>
           <div class="field">
-            <label for="department">Department</label>
+            <label for="department">{{ constants.DEPARTMENT_LABEL }}</label>
             <select id="department" formControlName="departmentId">
-              <option [ngValue]="null" disabled>Select a department</option>
+              <option [ngValue]="null" disabled>{{ constants.DEPARTMENT_PLACEHOLDER }}</option>
               @for (dept of departments; track dept.id) {
                 <option [ngValue]="dept.id">{{ dept.name }}</option>
               }
             </select>
             @if (hasError('departmentId', 'required')) {
-              <span class="error-msg">Please select a department.</span>
+              <span class="error-msg">{{ constants.DEPARTMENT_REQUIRED }}</span>
             }
           </div>
           <div class="form-actions">
-            <a routerLink="/employees" class="btn btn-secondary">Cancel</a>
+            <a routerLink="/employees" class="btn btn-secondary">{{ constants.CANCEL_BUTTON }}</a>
             <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
-              {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Update Employee' : 'Add Employee') }}
+              {{ isSubmitting ? constants.SAVING_BUTTON : (isEditMode ? constants.UPDATE_EMPLOYEE : constants.ADD_EMPLOYEE) }}
             </button>
           </div>
         </form>

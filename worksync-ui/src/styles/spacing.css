@@ -1,0 +1,22 @@
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.state-block {
+  padding: 70px 20px;
+  text-align: center;
+  color: var(--color-text-subtle);
+}
+
+.error-text {
+  color: var(--color-danger-dark);
+  margin-bottom: 12px;
+}
+
+.actions-col {
+  text-align: right;
+  white-space: nowrap;
+}

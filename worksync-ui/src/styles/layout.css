@@ -1,0 +1,90 @@
+.page {
+  min-height: 100vh;
+}
+
+.topbar {
+  background-color: var(--color-topbar);
+  padding: 18px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-surface);
+}
+
+.brand-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--color-primary-accent);
+}
+
+.brand-name {
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.plus-icon {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.content {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+.form-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 28px 28px 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.table-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.form-title {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.form-subtitle {
+  margin: 0 0 22px;
+  font-size: 13px;
+  color: var(--color-text-subtle);
+}
+
+.page-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.page-subtitle {
+  margin: 4px 0 24px;
+  color: var(--color-text-subtle);
+  font-size: 14px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--color-primary);
+}

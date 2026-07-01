@@ -1,0 +1,22 @@
+body {
+  background-color: var(--color-page-bg);
+  color: var(--color-text-primary);
+}
+.text-primary {
+  color: var(--color-text-primary);
+}
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+.text-muted {
+  color: var(--color-text-muted);
+}
+.text-soft {
+  color: var(--color-text-soft);
+}
+.surface-card {
+  background-color: var(--color-surface);
+}
+.surface-alt {
+  background-color: var(--color-surface-alt);
+}

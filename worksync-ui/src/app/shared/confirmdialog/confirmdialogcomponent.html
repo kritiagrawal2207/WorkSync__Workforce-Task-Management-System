@@ -9,11 +9,11 @@
         <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
       </svg>
     </div>
-    <h2>Delete Employee</h2>
-    <p>Are you sure you want to delete <strong>{{ employeeName }}</strong>? This action cannot be undone.</p>
+    <h2>{{ constants.DELETE_EMPLOYEE_TITLE }}</h2>
+    <p>{{ constants.DELETE_EMPLOYEE_MESSAGE_PREFIX }} <strong>{{ employeeName }}</strong>? {{ constants.DELETE_EMPLOYEE_MESSAGE_SUFFIX }}</p>
     <div class="actions">
-      <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-      <button class="btn btn-danger" (click)="onConfirm()">Delete</button>
+      <button class="btn btn-secondary" (click)="onCancel()">{{ constants.CANCEL_BUTTON }}</button>
+      <button class="btn btn-danger" (click)="onConfirm()">{{ constants.DELETE_BUTTON }}</button>
     </div>
   </div>
 </div>

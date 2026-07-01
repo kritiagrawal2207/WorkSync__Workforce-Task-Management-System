@@ -1,0 +1,36 @@
+:root {
+  --color-page-bg: #f1f5f9;
+  --color-text-primary: #1a1a2e;
+  --color-text-secondary: #374151;
+  --color-text-muted: #64748b;
+  --color-text-subtle: #6b7280;
+  --color-text-soft: #94a3b8;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f8fafc;
+  --color-surface-muted: #f9fafb;
+  --color-border: #d1d5db;
+  --color-border-soft: #e2e8f0;
+  --color-border-subtle: #f1f5f9;
+  --color-primary: #3b5bdb;
+  --color-primary-dark: #3049b8;
+  --color-primary-soft: #eef2ff;
+  --color-primary-accent: #6c8dff;
+  --color-success: #166534;
+  --color-danger: #ef4444;
+  --color-danger-dark: #dc2626;
+  --color-danger-soft: #fee2e2;
+  --color-danger-strong: #991b1b;
+  --color-topbar: #1a2438;
+  --color-shadow: rgba(0, 0, 0, 0.06);
+  --color-shadow-lg: rgba(0, 0, 0, 0.2);
+  --color-overlay: rgba(15, 23, 42, 0.5);
+  --color-focus-ring: rgba(59, 91, 219, 0.12);
+  --font-family-base: 'Roboto', 'Segoe UI', Arial, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.2);
+  --shadow-toast: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
