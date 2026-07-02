@@ -33,6 +33,7 @@ namespace WorkSyncAPI.Controllers
             return Ok(new LoginResponseDto
             {
                 Token = token,
+                UserId = user.Id,
                 Name = user.Name,
                 Email = user.Email,
                 Role = user.Role
