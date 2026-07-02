@@ -27,7 +27,6 @@
       <table>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
@@ -38,7 +37,6 @@
         <tbody>
           @for (emp of filteredEmployees; track emp.id) {
             <tr>
-              <td>{{ emp.id }}</td>
               <td>
                 <div class="emp-name-cell">
                   <div class="emp-avatar">{{ emp.name.charAt(0).toUpperCase() }}</div>
@@ -47,7 +45,7 @@
               </td>
               <td>{{ emp.email }}</td>
               <td>{{ emp.phone }}</td>
-              <td><span class="dept-badge">{{ emp.department?.name || '-' }}</span></td>
+              <td><span class="dept-badge">{{ emp.departmentName || '-' }}</span></td>
               <td>
                 <div class="action-btns">
                   <button class="icon-btn edit-btn" (click)="openEditModal(emp)" title="Edit">✏️</button>
@@ -121,19 +119,16 @@
         <div class="form-group">
           <label>Department <span class="req">*</span></label>
           <select
-            [(ngModel)]="form.department"
-            [class.input-error]="formErrors.department"
-            (change)="validateField('department')"
-          >
-            <option value="">Select Department</option>
-            <option value="IT">IT</option>
-            <option value="HR">HR</option>
-            <option value="Finance">Finance</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Admin">Admin</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Sales">Sales</option>
-          </select>
+               [(ngModel)]="form.department"
+                [class.input-error]="formErrors.department"
+                 (change)="validateField('department')"
+               >
+                  <option value="">Select Department</option>
+                    <option value="1">IT</option>
+                   <option value="2">HR</option>
+                  <option value="3">Finance</option>
+                  <option value="4">Marketing</option>
+                  </select>
           @if (formErrors.department) {
             <span class="err-msg">{{ formErrors.department }}</span>
           }

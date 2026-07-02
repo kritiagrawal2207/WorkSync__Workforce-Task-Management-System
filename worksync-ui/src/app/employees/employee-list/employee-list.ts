@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EmployeeService } from '../../shared/services/employee.service';
 import { Employee } from '../../shared/models/employee.model';
-
 interface EmpForm {
   name: string;
   email: string;
   phone: string;
   department: string;
 }
-
 interface FormErrors {
   name: string;
   email: string;
@@ -42,26 +40,28 @@ export class EmployeeListComponent implements OnInit {
 
   toast = { show: false, message: '', type: 'success' as 'success' | 'error' };
 
-  constructor(private empService: EmployeeService) {}
+  constructor(private empService: EmployeeService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.loadEmployees();
   }
 
-  loadEmployees() {
-    this.isLoading = true;
-    this.empService.getAll().subscribe({
-      next: (data) => {
-        this.employees = data;
-        this.filteredEmployees = data;
-        this.isLoading = false;
-      },
-      error: () => {
-        this.showToast('Failed to load employees', 'error');
-        this.isLoading = false;
-      }
-    });
-  }
+loadEmployees() {
+  this.isLoading = true;
+  this.empService.getAll().subscribe({
+    next: (data) => {
+      this.employees = data;
+      this.filteredEmployees = data;
+      this.isLoading = false;
+      this.cdr.detectChanges();  
+    },
+    error: () => {
+      this.showToast('Failed to load employees', 'error');
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    }
+  });
+}
 
   onSearch() {
     const term = this.searchTerm.toLowerCase();
@@ -84,7 +84,7 @@ export class EmployeeListComponent implements OnInit {
       name: emp.name,
       email: emp.email,
       phone: emp.phone || '',
-      department: emp.department?.toString() || ''
+      department: emp.departmentId ? emp.departmentId.toString() : ''
     };
     this.formErrors = { name: '', email: '', phone: '', department: '' };
     this.showModal = true;
@@ -140,7 +140,6 @@ export class EmployeeListComponent implements OnInit {
 
     this.isSaving = true;
    const payload = {
-  id: this.isEditMode && this.selectedEmployee ? this.selectedEmployee.id : 0,
   name: this.form.name.trim(),
   email: this.form.email.trim(),
   phone: this.form.phone.trim(),

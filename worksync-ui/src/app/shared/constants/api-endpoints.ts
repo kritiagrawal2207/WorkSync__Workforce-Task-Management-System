@@ -1,7 +1,7 @@
 export const API_BASE_URL = 'http://localhost:5180/api';
 
 export const API_ENDPOINTS = {
-  employees: `${API_BASE_URL}/employee`,
+  employees: `${API_BASE_URL}/Employees`,
   attendance: {
     root: `${API_BASE_URL}/attendance`,
     byEmployee: (employeeId: number) => `${API_BASE_URL}/attendance/employee/${employeeId}`,

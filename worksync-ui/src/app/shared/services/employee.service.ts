@@ -5,10 +5,11 @@ import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { Employee } from '../models/employee.model';
 
 export interface EmployeeCreateRequest {
+  id?: number;
   name: string;
   email: string;
   phone?: string;
-  department?: string;
+  departmentId: number | null;
 }
 
 @Injectable({ providedIn: 'root' })
