@@ -160,8 +160,8 @@ export class EmployeeDialogComponent implements OnInit {
       this.form.patchValue({
         name: this.data.employee.name,
         email: this.data.employee.email,
-        phoneNumber: this.data.employee.phoneNumber,
-        department: this.data.employee.department
+        phoneNumber: this.data.employee.phone,
+        department: this.data.employee.departmentId
       });
     }
   }
