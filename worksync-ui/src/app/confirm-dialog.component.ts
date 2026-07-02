@@ -35,47 +35,59 @@ export interface ConfirmDialogData {
     </div>
   `,
   styles: [`
-    .confirm-container {
-      padding: 32px 28px 20px;
-      width: 360px;
-      text-align: center;
-    }
-    .confirm-icon-wrapper {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background-color: #fee2e2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-    }
-    .warn-icon {
-      color: #ef4444;
-      font-size: 28px;
-      width: 28px;
-      height: 28px;
-    }
-    .confirm-title {
-      margin: 0 0 8px;
-      font-size: 18px;
-      font-weight: 600;
-      color: #1a1a2e;
-    }
-    .confirm-message {
-      margin: 0;
-      font-size: 14px;
-      color: #6b7280;
-      line-height: 1.5;
-    }
-    .confirm-actions {
-      padding: 24px 0 0;
-      gap: 8px;
-    }
-    .delete-confirm-btn {
-      background-color: #ef4444 !important;
-      color: white !important;
-    }
+    .confirm-container{
+    padding:
+        var(--spacing-3xl)
+        var(--spacing-2xl)
+        var(--spacing-xl);
+
+    width:var(--dialog-width);
+    text-align:center;
+}
+
+.confirm-icon-wrapper{
+    width:var(--dialog-icon-container-size);
+    height:var(--dialog-icon-container-size);
+    border-radius:var(--radius-round);
+    background:var(--color-danger-soft);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin:0 auto var(--spacing-lg);
+}
+
+.warn-icon{
+    color:var(--color-danger);
+    font-size:var(--icon-size-md);
+    width:var(--icon-size-md);
+    height:var(--icon-size-md);
+}
+
+.confirm-title{
+    margin:0 0 var(--spacing-sm);
+    font-size:var(--font-size-xl);
+    font-weight:var(--font-weight-semibold);
+    color:var(--color-text-primary);
+}
+
+.confirm-message{
+    margin:0;
+    font-size:var(--font-size-md);
+    color:var(--color-text-subtle);
+    line-height:var(--line-height-normal);
+}
+
+.confirm-actions{
+    padding:var(--spacing-2xl) 0 0;
+    gap:var(--spacing-sm);
+}
+
+.delete-confirm-btn{
+    background:var(--color-danger)!important;
+    color:var(--color-white)!important;
+}
   `]
 })
 export class ConfirmDialogComponent {

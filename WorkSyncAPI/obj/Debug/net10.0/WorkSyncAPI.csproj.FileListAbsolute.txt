@@ -1,6 +1,5 @@
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\appsettings.Development.json
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\appsettings.json
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\WorkSyncAPI.staticwebassets.endpoints.json
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\WorkSyncAPI.exe
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\WorkSyncAPI.deps.json
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\WorkSyncAPI.runtimeconfig.json
@@ -11,7 +10,6 @@ C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\Work
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\BCrypt-Net-Next.dll
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\Humanizer.dll
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\Microsoft.Build.Framework.dll
@@ -139,7 +137,6 @@ C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\Work
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\WorkSyncAPI.csproj.AssemblyReference.cache
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\rpswa.dswa.cache.json
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\WorkSyncAPI.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\WorkSyncAPI.AssemblyInfoInputs.cache
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\WorkSyncAPI.AssemblyInfo.cs
@@ -147,18 +144,12 @@ C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\Work
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\WorkSyncAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\WorkSyncAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\WorkSyncAPI.sourcelink.json
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\rjimswa.dswa.cache.json
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\scopedcss\bundle\WorkSyncAPI.styles.css
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\staticwebassets.build.json
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\staticwebassets.build.json.cache
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\staticwebassets.development.json
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\staticwebassets.build.endpoints.json
-C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\swae.build.ex.cache
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\WorkSync.EE5CBF97.Up2Date
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\WorkSyncAPI.dll
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\refint\WorkSyncAPI.dll
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\WorkSyncAPI.pdb
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\WorkSyncAPI.genruntimeconfig.cache
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\obj\Debug\net10.0\ref\WorkSyncAPI.dll
+<<<<<<< HEAD
+=======
+>>>>>>> week1
