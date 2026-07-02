@@ -1,27 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogModule
-} from '@angular/material/dialog';
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import {MAT_DIALOG_DATA,MatDialogRef,MatDialogModule} from '@angular/material/dialog';
+import {ReactiveFormsModule,FormBuilder,FormGroup,Validators} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { APP_CONSTANTS } from './constants/string';
-
+import { Employee } from './models/employeemodel';
 export interface EmployeeDialogData {
   isEdit: boolean;
-  employee?: any;
+  employee?: Employee;
 }
-
 @Component({
   selector: 'app-employee-dialog',
   standalone: true,
