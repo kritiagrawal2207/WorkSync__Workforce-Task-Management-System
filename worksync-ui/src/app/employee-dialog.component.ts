@@ -109,39 +109,43 @@ export interface EmployeeDialogData {
     </div>
   `,
   styles: [`
-    .dialog-container {
-      width: 460px;
-    }
-    .dialog-header {
-      padding: 24px 24px 8px;
-    }
-    .dialog-title {
-      margin: 0 0 4px;
-      font-size: 20px;
-      font-weight: 600;
-      color: #1a1a2e;
-    }
-    .dialog-subtitle {
-      margin: 0;
-      font-size: 13px;
-      color: #6b7280;
-    }
-    .dialog-form {
-      display: flex;
-      flex-direction: column;
-      padding: 8px 0 0;
-    }
-    .full-width {
-      width: 100%;
-    }
-    .dialog-actions {
-      padding: 8px 24px 20px;
-      gap: 8px;
-    }
-    .save-btn {
-      background-color: #3b5bdb !important;
-      color: white !important;
-    }
+   .dialog-container{
+    width:var(--employee-dialog-width);
+}
+
+.dialog-header{
+    padding:var(--dialog-header-padding);
+}
+
+.dialog-title{
+    margin:0 0 var(--dialog-title-margin-bottom);
+    font-size:var(--font-size-2xl);
+    font-weight:var(--font-weight-semibold);
+    color:var(--color-text-primary);
+}
+
+.dialog-subtitle{
+    margin:0;
+    font-size:var(--font-size-sm);
+    color:var(--color-text-subtle);
+}
+
+.dialog-form{
+    display:flex;
+    flex-direction:column;
+    padding-top:var(--dialog-form-padding-top);
+}
+
+.dialog-actions{
+    padding:var(--dialog-actions-padding);
+    gap:var(--spacing-sm);
+}
+
+.save-btn{
+    background:var(--color-primary)!important;
+    color:var(--color-white)!important;
+}
+    
   `]
 })
 export class EmployeeDialogComponent implements OnInit {

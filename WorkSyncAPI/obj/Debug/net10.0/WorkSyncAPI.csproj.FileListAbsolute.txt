@@ -160,3 +160,5 @@ C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\Work
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\BCrypt-Net-Next.dll
+C:\Users\kritiagrawal\Desktop\internship\Workforce & Task management System\WorkSyncAPI\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

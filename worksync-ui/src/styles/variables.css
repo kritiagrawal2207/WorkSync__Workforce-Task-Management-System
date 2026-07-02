@@ -86,4 +86,16 @@
   --letter-spacing-wide: 0.06em;
   --focus-ring-shadow: 0 0 0 3px var(--color-focus-ring);
   --transform-rotate-full: rotate(360deg);
+  --employee-dialog-width: 460px;
+--dialog-header-padding:
+    var(--spacing-2xl)
+    var(--spacing-2xl)
+    var(--spacing-sm);
+--dialog-actions-padding:
+    var(--spacing-sm)
+    var(--spacing-2xl)
+    var(--spacing-xl);
+--dialog-form-padding-top: var(--spacing-sm);
+--dialog-title-margin-bottom: var(--spacing-xs);
+--dialog-icon-container-size: var(--icon-size-lg);
 }
