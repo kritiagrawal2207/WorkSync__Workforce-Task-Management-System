@@ -1,15 +1,16 @@
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
-
+import { AuthUser } from '../shared/models/auth.model';
+import { DASHBOARD_TEXT } from '../shared/constants/ui-strings';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
-  template: `
-    <h2 style="margin:0 0 8px 0;">Dashboard</h2>
-    <p style="color:#6b7280;">Welcome back, {{ user?.name }}! You are logged in as <strong>{{ user?.role }}</strong>.</p>
-  `
+  imports: [CommonModule],
+  templateUrl: './dashboard.html',
+  styleUrl: './dashboard.css',
 })
 export class DashboardComponent {
-  user = inject(AuthService).getUser();
+  readonly strings = DASHBOARD_TEXT;
+  readonly user: AuthUser | null = inject(AuthService).getUser();
 }

@@ -21,12 +21,25 @@
   --color-danger: #ef4444;
   --color-danger-dark: #dc2626;
   --color-danger-soft: #fee2e2;
-  --color-danger-strong: #991b1b;
+  --color-danger-border: #fecaca;
   --color-topbar: #1a2438;
   --color-shadow: rgba(0, 0, 0, 0.06);
   --color-shadow-lg: rgba(0, 0, 0, 0.2);
   --color-overlay: rgba(15, 23, 42, 0.5);
   --color-focus-ring: rgba(59, 91, 219, 0.12);
+
+  --color-sidebar-bg-start: #1e293b;
+  --color-sidebar-bg-end: #0f172a;
+  --color-sidebar-border: rgba(255, 255, 255, 0.08);
+  --color-sidebar-hover: rgba(255, 255, 255, 0.07);
+  --color-nav-active-bg: rgba(99, 102, 241, 0.25);
+  --color-indigo: #6366f1;
+  --color-indigo-dark: #4f46e5;
+  --color-focus-indigo: rgba(99, 102, 241, 0.08);
+  --color-logout-bg: rgba(239, 68, 68, 0.15);
+  --color-logout-hover-bg: rgba(239, 68, 68, 0.28);
+  --color-logout-text: #fca5a5;
+
   --font-family-base: 'Roboto', 'Segoe UI', Arial, sans-serif;
   --font-size-xs: 12px;
   --font-size-sm: 13px;
@@ -41,18 +54,21 @@
   --font-weight-bold: 700;
   --line-height-tight: 1.2;
   --line-height-normal: 1.5;
+
   --radius-sm: 8px;
   --radius-md: 10px;
   --radius-lg: 14px;
+  --radius-xl: 16px;
   --radius-pill: 999px;
   --radius-round: 50%;
-  --radius-xl: 16px;
   --border-none: none;
   --border-width-thin: 1px;
   --border-width-medium: 3px;
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06);
   --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.2);
   --shadow-toast: 0 8px 20px rgba(0, 0, 0, 0.15);
+  --shadow-form: 0 4px 32px rgba(0, 0, 0, 0.08);
+
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 10px;
@@ -63,39 +79,34 @@
   --spacing-4xl: 50px;
   --spacing-5xl: 56px;
   --spacing-6xl: 70px;
+  --spacing-none: 0;
+
   --z-index-dropdown: 1000;
   --z-index-overlay: 900;
+  --z-index-toast: 2000;
+
   --transition-fast: 0.15s ease-out;
   --transition-normal: 0.2s ease-out;
   --transition-quick: 0.05s ease;
+
   --content-max-width: 1080px;
-  --form-max-width: 560px;
-  --dialog-width: 360px;
-  --dialog-max-width: 90vw;
-  --table-width: 100%;
   --search-width: 420px;
   --page-height: 100vh;
   --page-height-full: 100%;
-  --spacing-none: 0;
-  --toast-width: 260px;
-  --empty-state-icon-size: 46px;
-  --empty-state-icon-gap: 14px;
+  --sidebar-width: 220px;
+  --topbar-height: 56px;
+  --login-panel-width: 420px;
+  --logo-size-sm: 36px;
+  --logo-size-lg: 52px;
+  --logo-radius-sm: 10px;
+  --logo-radius-lg: 14px;
+  --spinner-size: 18px;
   --icon-size-sm: 18px;
   --icon-size-md: 28px;
   --icon-size-lg: 56px;
+  --dialog-width: 360px;
+
   --letter-spacing-wide: 0.06em;
   --focus-ring-shadow: 0 0 0 3px var(--color-focus-ring);
   --transform-rotate-full: rotate(360deg);
-  --employee-dialog-width: 460px;
---dialog-header-padding:
-    var(--spacing-2xl)
-    var(--spacing-2xl)
-    var(--spacing-sm);
---dialog-actions-padding:
-    var(--spacing-sm)
-    var(--spacing-2xl)
-    var(--spacing-xl);
---dialog-form-padding-top: var(--spacing-sm);
---dialog-title-margin-bottom: var(--spacing-xs);
---dialog-icon-container-size: var(--icon-size-lg);
 }

@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
+import { TASKS_TEXT } from '../shared/constants/ui-strings';
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  template: `
-    <h2>Tasks</h2>
-    <p style="color:#6b7280;"></p>
-  `
+  imports: [CommonModule],
+  templateUrl: './tasks.html',
+  styleUrl: './tasks.css',
 })
-export class TasksComponent {}
+export class TasksComponent {
+  readonly strings = TASKS_TEXT;
+}

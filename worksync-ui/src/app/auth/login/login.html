@@ -1,71 +1,57 @@
-import Constants from './string';
 <div class="login-page">
-
   <div class="left-panel">
     <div class="brand-block">
-      <div class="brand-logo">{{ Constants.brandname }}</div>
-      <h1 class="brand-name">WorkSync</h1>
-      <p class="brand-tagline">Workforce & Task Management</p>
+      <div class="brand-logo">{{ strings.brandAbbr }}</div>
+      <h1 class="brand-name">{{ strings.brandName }}</h1>
+      <p class="brand-tagline">{{ strings.brandTagline }}</p>
     </div>
     <ul class="feature-list">
-      <li><span class="feature-icon">👥</span> Manage your team in one place</li>
-      <li><span class="feature-icon">✅</span> Track tasks & attendance easily</li>
-      <li><span class="feature-icon">📊</span> Real-time productivity dashboards</li>
+      <li><span class="feature-icon">👥</span> {{ strings.feature1 }}</li>
+      <li><span class="feature-icon">✅</span> {{ strings.feature2 }}</li>
+      <li><span class="feature-icon">📊</span> {{ strings.feature3 }}</li>
     </ul>
-    <p class="brand-footer">© 2025 WorkSync. All rights reserved.</p>
+    <p class="brand-footer">{{ strings.copyright }}</p>
   </div>
-
   <div class="right-panel">
     <div class="form-container">
-
       <div class="form-header">
         <h2 class="form-title">{{ strings.title }}</h2>
         <p class="form-subtitle">{{ strings.subtitle }}</p>
       </div>
-
       <div class="field-section">
         <div class="section-label">{{ strings.accountLabel }}</div>
         <div class="input-group">
           <label for="email">{{ strings.emailLabel }}</label>
           <div class="input-wrapper">
             <span class="input-icon">✉</span>
-            <input
-              id="email"
-              type="email"
+            <input id="email" type="email"
               [placeholder]="strings.emailPlaceholder"
               [(ngModel)]="email"
-              autocomplete="username"
-            />
+              autocomplete="username" />
           </div>
         </div>
       </div>
-
       <div class="field-section">
         <div class="section-label">{{ strings.securityLabel }}</div>
         <div class="input-group">
           <label for="password">{{ strings.passwordLabel }}</label>
           <div class="input-wrapper">
             <span class="input-icon">🔒</span>
-            <input
-              id="password"
-              type="password"
+            <input id="password" type="password"
               [placeholder]="strings.passwordPlaceholder"
               [(ngModel)]="password"
-              autocomplete="current-password"
-            />
+              autocomplete="current-password" />
           </div>
         </div>
         <span class="forgot-link" (click)="showForgotModal = true">
           {{ strings.forgotPassword }}
         </span>
       </div>
-
       @if (errorMessage) {
         <div class="error-box">
-          <span class="error-icon">⚠</span> {{ errorMessage }}
+          <span>⚠</span> {{ errorMessage }}
         </div>
       }
-
       <button class="sign-btn" (click)="login()" [disabled]="isLoading">
         @if (isLoading) {
           <span class="spinner"></span>
@@ -74,11 +60,9 @@ import Constants from './string';
           {{ strings.signIn }}
         }
       </button>
-
     </div>
   </div>
 </div>
-
 @if (showForgotModal) {
   <div class="modal-overlay" (click)="showForgotModal = false">
     <div class="modal" (click)="$event.stopPropagation()">
@@ -88,7 +72,9 @@ import Constants from './string';
         <label>{{ strings.emailLabel }}</label>
         <div class="input-wrapper">
           <span class="input-icon">✉</span>
-          <input type="email" [placeholder]="strings.emailPlaceholder" [(ngModel)]="forgotEmail" />
+          <input type="email"
+            [placeholder]="strings.emailPlaceholder"
+            [(ngModel)]="forgotEmail" />
         </div>
       </div>
       <div class="modal-actions">
@@ -98,7 +84,6 @@ import Constants from './string';
     </div>
   </div>
 }
-
 @if (showToast) {
   <div class="toast">{{ strings.toast }}</div>
 }

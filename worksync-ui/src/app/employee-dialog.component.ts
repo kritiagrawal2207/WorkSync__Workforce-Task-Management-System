@@ -1,39 +1,21 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogModule
-} from '@angular/material/dialog';
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import {MAT_DIALOG_DATA,MatDialogRef,MatDialogModule} from '@angular/material/dialog';
+import {ReactiveFormsModule,FormBuilder,FormGroup,Validators} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { APP_CONSTANTS } from './constants/string';
-
+import { Employee } from './models/employeemodel';
 export interface EmployeeDialogData {
   isEdit: boolean;
-  employee?: any;
+  employee?: Employee;
 }
-
 @Component({
   selector: 'app-employee-dialog',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule
-  ],
+  imports: [CommonModule,ReactiveFormsModule,MatDialogModule,MatFormFieldModule,MatInputModule,MatSelectModule,MatButtonModule],
   template: `
     <div class="dialog-container">
       <div class="dialog-header">
@@ -92,10 +74,8 @@ export interface EmployeeDialogData {
               <mat-error>{{ constants.DEPARTMENT_REQUIRED }}</mat-error>
             }
           </mat-form-field>
-
         </form>
       </mat-dialog-content>
-
       <mat-dialog-actions align="end" class="dialog-actions">
         <button mat-stroked-button mat-dialog-close>{{ constants.CANCEL_BUTTON }}</button>
         <button
@@ -170,8 +150,8 @@ export class EmployeeDialogComponent implements OnInit {
       this.form.patchValue({
         name: this.data.employee.name,
         email: this.data.employee.email,
-        phoneNumber: this.data.employee.phoneNumber,
-        department: this.data.employee.department
+        phoneNumber: this.data.employee.phone,
+        department: this.data.employee.departmentId
       });
     }
   }

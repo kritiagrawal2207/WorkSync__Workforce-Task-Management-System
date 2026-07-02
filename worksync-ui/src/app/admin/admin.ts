@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
+const ADMIN_TEXT = {
+  title:    'Admin',
+  subtitle: 'System administration panel.',
+};
 @Component({
   selector: 'app-admin',
   standalone: true,
-  template: `
-    <h2>Admin</h2>
-    <p style="color:#6b7280;"></p>
-  `
+  imports: [CommonModule],
+  templateUrl: './admin.html',
+  styleUrl: './admin.css',
 })
-export class AdminComponent {}
+export class AdminComponent {
+  readonly strings = ADMIN_TEXT;
+}

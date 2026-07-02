@@ -3,34 +3,30 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { Constants } from '../string';
-
+import { LOGIN_TEXT } from '../../shared/constants/ui-strings';
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrl: './login.css',
 })
 export class LoginComponent {
-  strings = Constants.login;
-
-  email = '';
-  password = '';
+  readonly strings = LOGIN_TEXT; 
+  email        = '';
+  password     = '';
   errorMessage = '';
-  isLoading = false;
+  isLoading    = false;
   showForgotModal = false;
-  forgotEmail = '';
-  showToast = false;
-
+  forgotEmail  = '';
+  showToast    = false;
   constructor(private authService: AuthService, private router: Router) {}
-
-  login() {
+  login(): void {
     if (!this.email || !this.password) {
-      this.errorMessage = 'Please fill in all fields.';
+      this.errorMessage = this.strings.errorFillFields;
       return;
     }
-    this.isLoading = true;
+    this.isLoading    = true;
     this.errorMessage = '';
     this.authService.login(this.email, this.password).subscribe({
       next: (res) => {
@@ -42,13 +38,12 @@ export class LoginComponent {
         this.errorMessage =
           typeof err.error === 'string'
             ? err.error
-            : err.error?.message || 'Invalid email or password.';
+            : err.error?.message || this.strings.errorInvalid;
         this.isLoading = false;
-      }
+      },
     });
   }
-
-  submitForgot() {
+  submitForgot(): void {
     this.showForgotModal = false;
     this.showToast = true;
     setTimeout(() => (this.showToast = false), 4000);

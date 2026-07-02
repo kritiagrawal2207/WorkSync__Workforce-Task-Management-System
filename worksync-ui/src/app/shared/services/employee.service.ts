@@ -8,7 +8,7 @@ export interface EmployeeCreateRequest {
   name: string;
   email: string;
   phone?: string;
-  department: string;
+  department?: string;
 }
 
 @Injectable({ providedIn: 'root' })
