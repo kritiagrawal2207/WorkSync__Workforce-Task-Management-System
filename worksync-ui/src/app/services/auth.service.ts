@@ -16,7 +16,7 @@ export class AuthService {
       name: data.name,
       role: data.role,
       userId: data.userId,
-      employeeId: data.employeeId
+      employeeId: data.employeeId ?? null
     } as AuthUser));
   }
   getToken(): string | null {

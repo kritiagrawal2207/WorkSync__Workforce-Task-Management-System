@@ -7,7 +7,7 @@ import { AttendanceComponent }from './pages/attendance/attendance';
 import { TasksComponent }from './pages/tasks/tasks';
 import { AdminComponent } from './pages/admin/admin';
 import { authGuard } from './guards/auth.guard';
-import { roleGuard }from './guards/role.guard';
+import { roleGuard }from './guards/roleguard';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {path: '',component: LayoutComponent,canActivate: [authGuard],children: [
@@ -15,7 +15,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'employees',component: EmployeeListComponent,canActivate: [roleGuard],data: { roles: ['Admin', 'Manager'] },},
       { path: 'attendance', component: AttendanceComponent },
-      { path: 'tasks',      component: TasksComponent },
+      { path: 'tasks', component: TasksComponent },
       {path: 'admin',component: AdminComponent,canActivate: [roleGuard],data: { roles: ['Admin'] },
       },
     ],
