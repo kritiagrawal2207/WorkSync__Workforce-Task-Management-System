@@ -1,5 +1,6 @@
 :root {
   --content-max-width:1080px;
+  --content-max-width-full: 100%;
   --form-max-width:560px;
   --dialog-width:360px;
   --dialog-max-width:90vw;
