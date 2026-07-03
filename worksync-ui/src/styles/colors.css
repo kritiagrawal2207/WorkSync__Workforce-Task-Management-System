@@ -1,22 +1,13 @@
-body {
-  background-color: var(--color-page-bg);
-  color: var(--color-text-primary);
-}
-.text-primary {
-  color: var(--color-text-primary);
-}
-.text-secondary {
-  color: var(--color-text-secondary);
-}
-.text-muted {
-  color: var(--color-text-muted);
-}
-.text-soft {
-  color: var(--color-text-soft);
-}
-.surface-card {
-  background-color: var(--color-surface);
-}
-.surface-alt {
-  background-color: var(--color-surface-alt);
+:root {
+  --primaryColor: #1976d2;
+  --primaryHoverColor: #1565c0;
+  --successColor: #2e7d32;
+  --warningColor: #ed6c02;
+  --dangerColor: #d32f2f;
+  --whiteColor: #ffffff;
+  --blackColor: #000000;
+  --textPrimaryColor: #212121;
+  --textSecondaryColor: #616161;
+  --borderColor: #e0e0e0;
+  --tableHeaderColor: #f5f5f5;
 }

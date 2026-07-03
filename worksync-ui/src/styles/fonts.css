@@ -1,0 +1,17 @@
+:root {
+  --primaryFont: 'Roboto', 'Segoe UI', Arial, sans-serif;
+  --helperTextSize: 12px;
+  --smallTextSize: 13px;
+  --bodyTextSize: 14px;
+  --buttonTextSize: 15px;
+  --cardTitleSize: 18px;
+  --sectionTitleSize: 20px;
+  --pageTitleSize: 26px;
+  --regularWeight: 400;
+  --mediumWeight: 500;
+  --semiBoldWeight: 600;
+  --boldWeight: 700;
+  --tightLineHeight: 1.2;
+  --normalLineHeight: 1.5;
+  --headingLetterSpacing: 0.06em;
+}
