@@ -1,4 +1,4 @@
-import { Employee } from './employee.model';
+import { Employee } from '../shared/models/employee.model';
 
 export type TaskPriority = 'Low' | 'Medium' | 'High';
 export type TaskStatus = 'Pending' | 'In Progress' | 'Completed';

@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
-import { AuthUser } from '../shared/models/auth.model';
-import { LAYOUT_TEXT } from '../shared/constants/ui-strings';
+import { AuthService } from '../services/auth.service';
+import { AuthUser } from '../models/auth.model';
+import { LAYOUT_TEXT } from '../constants/string';
 @Component({
   selector: 'app-layout',
   standalone: true,

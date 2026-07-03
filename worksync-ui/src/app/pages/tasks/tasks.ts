@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TASKS_TEXT } from '../shared/constants/ui-strings';
+import { TASKS_TEXT } from '../../constants/string';
 @Component({
   selector: 'app-tasks',
   standalone: true,

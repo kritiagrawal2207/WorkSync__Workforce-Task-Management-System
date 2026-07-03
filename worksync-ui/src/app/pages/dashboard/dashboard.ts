@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../auth/auth.service';
-import { AuthUser } from '../shared/models/auth.model';
-import { DASHBOARD_TEXT } from '../shared/constants/ui-strings';
+import { AuthService } from '../../services/auth.service';
+import { AuthUser } from '../../models/auth.model';
+import { DASHBOARD_TEXT } from '../../constants/string';
 @Component({
   selector: 'app-dashboard',
   standalone: true,

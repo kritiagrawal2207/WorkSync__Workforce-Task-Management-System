@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
-import { LoginComponent }from './auth/login/login';
+import { LoginComponent }from './pages/login/login';
 import { LayoutComponent } from './layout/layout';
-import { DashboardComponent }from './dashboard/dashboard';
-import { EmployeeListComponent }from './employees/employee-list/employee-list';
-import { AttendanceComponent }from './attendance/attendance';
-import { TasksComponent }from './tasks/tasks';
-import { AdminComponent } from './admin/admin';
-import { authGuard } from './auth/auth.guard';
-import { roleGuard }from './auth/roleguard';
+import { DashboardComponent }from './pages/dashboard/dashboard';
+import { EmployeeListComponent }from './components/employees/employeelist/employeelistcomponent';
+import { AttendanceComponent }from './pages/attendance/attendance';
+import { TasksComponent }from './pages/tasks/tasks';
+import { AdminComponent } from './pages/admin/admin';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard }from './guards/role.guard';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {path: '',component: LayoutComponent,canActivate: [authGuard],children: [
