@@ -1,4 +1,4 @@
-import { Employee } from './employee.model';
+import { Employee } from './employeemodel';
 
 export type AttendanceStatus = 'Present' | 'Late' | 'Half Day' | 'Absent';
 

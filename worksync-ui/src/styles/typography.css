@@ -1,31 +1,31 @@
 body {
-  font-family: var(--primaryFont);
-  font-size: var(--bodyTextSize);
-  font-weight: var(--regularWeight);
-  line-height: var(--normalLineHeight);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
   color: var(--color-text-primary);
 }
 h1 {
-  font-size: var(--pageTitleSize);
-  font-weight: var(--boldWeight);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
 }
 h2 {
-  font-size: var(--sectionTitleSize);
-  font-weight: var(--boldWeight);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
 }
 h3 {
-  font-size: var(--cardTitleSize);
-  font-weight: var(--semiBoldWeight);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
 }
 label {
-  font-size: var(--smallTextSize);
-  font-weight: var(--mediumWeight);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
 }
 small,
 .small {
-  font-size: var(--helperTextSize);
+  font-size: var(--font-size-xs);
 }
 strong,
 .strong {
-  font-weight: var(--semiBoldWeight);
+  font-weight: var(--font-weight-semibold);
 }

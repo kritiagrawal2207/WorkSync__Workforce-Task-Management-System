@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WorkSyncAPI.Data;
 using WorkSyncAPI.DTOs.Auth;
 using WorkSyncAPI.Models;
@@ -29,6 +31,8 @@ namespace WorkSyncAPI.Controllers
             var isValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
             if (!isValid)
                 return Unauthorized(new { message = "Invalid email or password." });
+            var employee = await _context.Employees
+                .FirstOrDefaultAsync(e => e.Email == user.Email);
             var token = _tokenService.GenerateToken(user);
             return Ok(new LoginResponseDto
             {
@@ -36,7 +40,8 @@ namespace WorkSyncAPI.Controllers
                 UserId = user.Id,
                 Name = user.Name,
                 Email = user.Email,
-                Role = user.Role
+                Role = user.Role,
+                EmployeeId = employee?.Id
             });
         }
         [HttpPost("register")]
@@ -46,8 +51,7 @@ namespace WorkSyncAPI.Controllers
                 string.IsNullOrWhiteSpace(dto.Email) ||
                 string.IsNullOrWhiteSpace(dto.Password))
                 return BadRequest(new { message = "All fields are required." });
-            var emailExists = await _context.Users
-                .AnyAsync(u => u.Email == dto.Email);
+            var emailExists = await _context.Users.AnyAsync(u => u.Email == dto.Email);
             if (emailExists)
                 return Conflict(new { message = "Email already registered." });
             var user = new User
@@ -64,14 +68,28 @@ namespace WorkSyncAPI.Controllers
             return Ok(new { message = "User registered successfully." });
         }
         [HttpGet("me")]
-        [Microsoft.AspNetCore.Authorization.Authorize]
-        public IActionResult GetCurrentUser()
+        [Authorize]
+        public async Task<IActionResult> GetCurrentUser()
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            var name = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
-            var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
-            var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
-            return Ok(new { userId, name, email, role });
+            var userId   = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var name     = User.FindFirst(ClaimTypes.Name)?.Value;
+            var email    = User.FindFirst(ClaimTypes.Email)?.Value;
+            var role     = User.FindFirst(ClaimTypes.Role)?.Value;
+            var employee = email != null
+                ? await _context.Employees.FirstOrDefaultAsync(e => e.Email == email)
+                : null;
+            return Ok(new
+            {
+                userId,name,email,role,employeeId = employee?.Id
+            });
+        }
+        [HttpGet("validate")]
+        [Authorize]
+        public IActionResult ValidateToken()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var role   = User.FindFirst(ClaimTypes.Role)?.Value;
+            return Ok(new { valid = true, userId, role });
         }
     }
 }
