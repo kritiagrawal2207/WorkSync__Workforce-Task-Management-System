@@ -1,14 +1,17 @@
-@import './styles/variables.css';
 @import './styles/colors.css';
+@import './styles/fonts.css';
+@import './styles/spacing.css';
+@import './styles/radius.css';
+@import './styles/shadows.css';
 @import './styles/typography.css';
+@import './styles/layout.css';
 @import './styles/buttons.css';
+@import './styles/sizes.css';
+@import './styles/dialogs.css';
 @import './styles/forms.css';
 @import './styles/tables.css';
-@import './styles/dialogs.css';
-@import './styles/layout.css';
-@import './styles/spacing.css';
 @import './styles/utilities.css';
-@import './styles/animations.css';
+@import "./styles/animations.css";
 * {
   box-sizing: border-box;
 }

@@ -1,7 +1,6 @@
 .page {
   min-height: var(--page-height);
 }
-
 .topbar {
   background-color: var(--color-topbar);
   padding: var(--spacing-lg) var(--spacing-4xl);
@@ -9,74 +8,62 @@
   align-items: center;
   justify-content: space-between;
 }
-
 .brand {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
   color: var(--color-surface);
 }
-
 .brand-icon {
   width: var(--icon-size-sm);
   height: var(--icon-size-sm);
   color: var(--color-primary-accent);
 }
-
 .brand-name {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
 }
-
 .plus-icon {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
 }
-
 .content {
   max-width: var(--content-max-width);
   margin: 0 auto;
   padding: var(--spacing-3xl) var(--spacing-2xl) var(--spacing-5xl);
 }
-
 .form-card {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   padding: var(--spacing-2xl) var(--spacing-2xl) var(--spacing-xl);
   box-shadow: var(--shadow-card);
 }
-
 .table-card {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
   overflow: hidden;
 }
-
 .form-title {
   margin: 0 0 var(--spacing-xs);
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
 }
-
 .form-subtitle {
   margin: 0 0 var(--spacing-2xl);
   font-size: var(--font-size-sm);
   color: var(--color-text-subtle);
 }
-
 .page-title {
   margin: 0;
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
 }
-
 .page-subtitle {
   margin: var(--spacing-xs) 0 var(--spacing-2xl);
   color: var(--color-text-subtle);
   font-size: var(--font-size-md);
 }
-
 .back-link {
   display: inline-block;
   margin-bottom: var(--spacing-lg);
@@ -84,7 +71,6 @@
   color: var(--color-text-muted);
   text-decoration: none;
 }
-
 .back-link:hover {
   color: var(--color-primary);
 }

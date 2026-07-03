@@ -2,12 +2,10 @@
   width: var(--table-width);
   border-collapse: collapse;
 }
-
 .employee-table thead {
   background-color: var(--color-surface-alt);
   border-bottom: var(--border-width-thin) solid var(--color-border-soft);
 }
-
 .employee-table th {
   text-align: left;
   padding: var(--spacing-lg) var(--spacing-2xl);
@@ -17,11 +15,9 @@
   text-transform: uppercase;
   color: var(--color-text-muted);
 }
-
 .actions-col {
   text-align: right;
 }
-
 .dept-badge {
   display: inline-block;
   padding: var(--spacing-xs) var(--spacing-md);

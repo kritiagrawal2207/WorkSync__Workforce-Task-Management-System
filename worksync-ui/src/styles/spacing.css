@@ -1,22 +1,16 @@
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-sm);
-}
+:root {
 
-.state-block {
-  padding: var(--spacing-6xl) var(--spacing-xl);
-  text-align: center;
-  color: var(--color-text-subtle);
-}
+  --spacing-none: 0;
 
-.error-text {
-  color: var(--color-danger-dark);
-  margin-bottom: var(--spacing-lg);
-}
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 10px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+  --spacing-4xl: 50px;
+  --spacing-5xl: 56px;
+  --spacing-6xl: 70px;
 
-.actions-col {
-  text-align: right;
-  white-space: nowrap;
 }
