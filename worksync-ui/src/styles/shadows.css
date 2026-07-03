@@ -1,4 +1,9 @@
 :root {
-  --cardShadow: 0 2px 6px rgba(0,0,0,.15);
-  --dialogShadow: 0 4px 12px rgba(0,0,0,.20);
+
+  --shadow-card: 0 1px 3px rgba(0,0,0,.06);
+
+  --shadow-modal: 0 20px 40px rgba(0,0,0,.2);
+
+  --shadow-toast: 0 8px 20px rgba(0,0,0,.15);
+
 }

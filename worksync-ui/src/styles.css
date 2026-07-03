@@ -1,10 +1,9 @@
 @import './styles/colors.css';
 @import './styles/fonts.css';
 @import './styles/spacing.css';
-@import './styles/dimensions.css';
 @import './styles/radius.css';
 @import './styles/shadows.css';
-@import "./styles/zindex.css";
+
 @import './styles/typography.css';
 @import './styles/layout.css';
 @import './styles/buttons.css';
