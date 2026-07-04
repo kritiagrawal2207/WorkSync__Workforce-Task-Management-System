@@ -111,3 +111,9 @@
   background: transparent;
   width: 100%;
 }
+.form-card .content {
+  max-width: var(--form-max-width);
+}
+.table-card .state-block {
+  padding: var(--spacing-6xl) var(--spacing-xl);
+}

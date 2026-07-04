@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { constants } from '../../constants/string';
 const ADMIN_TEXT = {
   title:    'Admin',
   subtitle: 'System administration panel.',
@@ -12,5 +13,5 @@ const ADMIN_TEXT = {
   styleUrl: './admin.css',
 })
 export class AdminComponent {
-  readonly strings = ADMIN_TEXT;
+  readonly constants = constants;
 }

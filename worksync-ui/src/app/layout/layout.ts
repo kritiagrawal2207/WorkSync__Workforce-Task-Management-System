@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { AuthUser } from '../models/auth.model';
-import { LAYOUT_TEXT } from '../constants/string';
+import { constants } from '../constants/string';
 @Component({
   selector: 'app-layout',
   standalone: true,
@@ -13,7 +13,7 @@ import { LAYOUT_TEXT } from '../constants/string';
   styleUrl: './layout.css',
 })
 export class LayoutComponent {
-  readonly strings = LAYOUT_TEXT;
+  readonly constants = constants;
   user: AuthUser | null;
   role: string;
   constructor(private authService: AuthService, private router: Router) {

@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { AuthUser } from '../../models/auth.model';
-import { DASHBOARD_TEXT } from '../../constants/string';
+import { constants } from '../../constants/string';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -11,6 +11,6 @@ import { DASHBOARD_TEXT } from '../../constants/string';
   styleUrl: './dashboard.css',
 })
 export class DashboardComponent {
-  readonly strings = DASHBOARD_TEXT;
+  readonly constants = constants;
   readonly user: AuthUser | null = inject(AuthService).getUser();
 }

@@ -7,7 +7,7 @@ import { ConfirmDialogComponent } from '../../../shared/confirmdialog/confirmdia
 import { EmployeeTableComponent } from '../employeetable/employeetablecomponent';
 import { EmptyStateComponent } from '../../../shared/emptystate/emptystatecomponent';
 import { LoadingSpinnerComponent } from '../../../shared/loadingspinner/loadingspinnercomponent';
-import { APP_CONSTANTS } from '../../../constants/string';
+import { constants } from '../../../constants/string';
 @Component({
   selector: 'app-employee-list',
   standalone: true,
@@ -19,10 +19,9 @@ import { APP_CONSTANTS } from '../../../constants/string';
     LoadingSpinnerComponent
   ],
   templateUrl: './employeelistcomponent.html',
-  styleUrl: './employeelistcomponent.css'
 })
 export class EmployeeListComponent implements OnInit {
-  readonly constants = APP_CONSTANTS;
+  readonly constants = constants;
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
   searchTerm = '';

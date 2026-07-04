@@ -116,4 +116,5 @@
   --letter-spacing-wide: 0.06em;
   --focus-ring-shadow: 0 0 0 3px var(--color-focus-ring);
   --transform-rotate-full: rotate(360deg);
+  --form-max-width: 640px;
 }

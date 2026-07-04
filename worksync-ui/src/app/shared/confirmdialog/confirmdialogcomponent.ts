@@ -1,14 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { APP_CONSTANTS } from '../../constants/string';
+import { constants } from '../../constants/string';
 @Component({
   selector: 'app-confirmdialog',
   standalone: true,
   imports: [],
   templateUrl: './confirmdialogcomponent.html',
-  styleUrl: './confirmdialogcomponent.css'
 })
 export class ConfirmDialogComponent {
-  readonly constants = APP_CONSTANTS;
+  readonly constants = constants;
   @Input() employeeName = '';
   @Output() confirmed = new EventEmitter<void>();
   @Output() cancelled = new EventEmitter<void>();

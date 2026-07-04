@@ -1,50 +1,50 @@
 <div class="login-page">
   <div class="left-panel">
     <div class="brand-block">
-      <div class="brand-logo">{{ strings.brandAbbr }}</div>
-      <h1 class="brand-name">{{ strings.brandName }}</h1>
-      <p class="brand-tagline">{{ strings.brandTagline }}</p>
+      <div class="brand-logo">{{ constants.BRAND_ABBR }}</div>
+      <h1 class="brand-name">{{ constants.APP_NAME }}</h1>
+      <p class="brand-tagline">{{ constants.LOGIN_BRAND_TAGLINE }}</p>
     </div>
     <ul class="feature-list">
-      <li><span class="feature-icon">👥</span> {{ strings.feature1 }}</li>
-      <li><span class="feature-icon">✅</span> {{ strings.feature2 }}</li>
-      <li><span class="feature-icon">📊</span> {{ strings.feature3 }}</li>
+      <li><span class="feature-icon">👥</span> {{ constants.LOGIN_FEATURE_1 }}</li>
+      <li><span class="feature-icon">✅</span> {{ constants.LOGIN_FEATURE_2 }}</li>
+      <li><span class="feature-icon">📊</span> {{ constants.LOGIN_FEATURE_3 }}</li>
     </ul>
-    <p class="brand-footer">{{ strings.copyright }}</p>
+    <p class="brand-footer">{{ constants.LOGIN_COPYRIGHT }}</p>
   </div>
   <div class="right-panel">
     <div class="form-container">
       <div class="form-header">
-        <h2 class="form-title">{{ strings.title }}</h2>
-        <p class="form-subtitle">{{ strings.subtitle }}</p>
+        <h2 class="form-title">{{ constants.LOGIN_TITLE }}</h2>
+        <p class="form-subtitle">{{ constants.LOGIN_SUBTITLE }}</p>
       </div>
       <div class="field-section">
-        <div class="section-label">{{ strings.accountLabel }}</div>
+        <div class="section-label">{{ constants.LOGIN_ACCOUNT_LABEL }}</div>
         <div class="input-group">
-          <label for="email">{{ strings.emailLabel }}</label>
+          <label for="email">{{ constants.LOGIN_EMAIL_LABEL }}</label>
           <div class="input-wrapper">
             <span class="input-icon">✉</span>
             <input id="email" type="email"
-              [placeholder]="strings.emailPlaceholder"
+              [placeholder]="constants.LOGIN_EMAIL_PLACEHOLDER"
               [(ngModel)]="email"
               autocomplete="username" />
           </div>
         </div>
       </div>
       <div class="field-section">
-        <div class="section-label">{{ strings.securityLabel }}</div>
+        <div class="section-label">{{ constants.LOGIN_SECURITY_LABEL }}</div>
         <div class="input-group">
-          <label for="password">{{ strings.passwordLabel }}</label>
+          <label for="password">{{ constants.LOGIN_PASSWORD_LABEL }}</label>
           <div class="input-wrapper">
             <span class="input-icon">🔒</span>
             <input id="password" type="password"
-              [placeholder]="strings.passwordPlaceholder"
+              [placeholder]="constants.LOGIN_PASSWORD_PLACEHOLDER"
               [(ngModel)]="password"
               autocomplete="current-password" />
           </div>
         </div>
         <span class="forgot-link" (click)="showForgotModal = true">
-          {{ strings.forgotPassword }}
+          {{ constants.LOGIN_FORGOT_PASSWORD }}
         </span>
       </div>
       @if (errorMessage) {
@@ -55,9 +55,9 @@
       <button class="sign-btn" (click)="login()" [disabled]="isLoading">
         @if (isLoading) {
           <span class="spinner"></span>
-          <span>{{ strings.signingIn }}</span>
+          <span>{{ constants.LOGIN_SIGNING_IN }}</span>
         } @else {
-          {{ strings.signIn }}
+          {{ constants.LOGIN_SIGN_IN }}
         }
       </button>
     </div>
@@ -66,24 +66,24 @@
 @if (showForgotModal) {
   <div class="modal-overlay" (click)="showForgotModal = false">
     <div class="modal" (click)="$event.stopPropagation()">
-      <h3>{{ strings.forgotTitle }}</h3>
-      <p>{{ strings.forgotSubtitle }}</p>
+      <h3>{{ constants.LOGIN_FORGOT_TITLE }}</h3>
+      <p>{{ constants.LOGIN_FORGOT_SUBTITLE }}</p>
       <div class="input-group">
-        <label>{{ strings.emailLabel }}</label>
+        <label>{{ constants.LOGIN_EMAIL_LABEL }}</label>
         <div class="input-wrapper">
           <span class="input-icon">✉</span>
           <input type="email"
-            [placeholder]="strings.emailPlaceholder"
+            [placeholder]="constants.LOGIN_EMAIL_PLACEHOLDER"
             [(ngModel)]="forgotEmail" />
         </div>
       </div>
       <div class="modal-actions">
-        <button class="sign-btn" (click)="submitForgot()">{{ strings.submit }}</button>
-        <button class="cancel-btn" (click)="showForgotModal = false">{{ strings.cancel }}</button>
+        <button class="sign-btn" (click)="submitForgot()">{{ constants.LOGIN_SUBMIT }}</button>
+        <button class="cancel-btn" (click)="showForgotModal = false">{{ constants.LOGIN_CANCEL }}</button>
       </div>
     </div>
   </div>
 }
 @if (showToast) {
-  <div class="toast">{{ strings.toast }}</div>
+  <div class="toast">{{ constants.LOGIN_TOAST }}</div>
 }

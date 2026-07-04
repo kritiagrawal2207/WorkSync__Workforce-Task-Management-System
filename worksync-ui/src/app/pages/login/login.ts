@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { LOGIN_TEXT } from '../../constants/string';
+import { constants } from '../../constants/string';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -12,7 +12,7 @@ import { LOGIN_TEXT } from '../../constants/string';
   styleUrl: './login.css',
 })
 export class LoginComponent {
-  readonly strings = LOGIN_TEXT; 
+  readonly constants = constants; 
   email        = '';
   password     = '';
   errorMessage = '';
@@ -23,7 +23,7 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
   login(): void {
     if (!this.email || !this.password) {
-      this.errorMessage = this.strings.errorFillFields;
+      this.errorMessage = constants.LOGIN_ERROR_FILL_FIELDS;
       return;
     }
     this.isLoading    = true;
@@ -38,7 +38,7 @@ export class LoginComponent {
         this.errorMessage =
           typeof err.error === 'string'
             ? err.error
-            : err.error?.message || this.strings.errorInvalid;
+            : err.error?.message || constants.LOGIN_ERROR_INVALID;
         this.isLoading = false;
       },
     });

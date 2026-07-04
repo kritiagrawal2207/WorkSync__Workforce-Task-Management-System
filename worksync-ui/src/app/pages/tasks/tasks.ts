@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TASKS_TEXT } from '../../constants/string';
+import { constants } from '../../constants/string';
 @Component({
   selector: 'app-tasks',
   standalone: true,
@@ -9,5 +9,5 @@ import { TASKS_TEXT } from '../../constants/string';
   styleUrl: './tasks.css',
 })
 export class TasksComponent {
-  readonly strings = TASKS_TEXT;
+  readonly constants = constants;
 }

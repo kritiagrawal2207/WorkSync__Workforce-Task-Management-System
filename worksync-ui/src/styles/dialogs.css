@@ -10,3 +10,52 @@
   --dialog-form-padding-top:var(--spacing-sm);
   --dialog-title-margin-bottom:var(--spacing-xs);
 }
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-overlay);
+  z-index: var(--z-index-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  width: var(--dialog-width);
+  max-width: var(--dialog-max-width);
+  padding: var(--spacing-2xl);
+  text-align: center;
+}
+.modal h2 {
+  margin: 0 0 var(--spacing-sm);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+.modal p {
+  margin: 0 0 var(--spacing-2xl);
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+}
+.icon-circle {
+  width: var(--spacing-5xl);
+  height: var(--spacing-5xl);
+  border-radius: var(--radius-round);
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-lg);
+}
+.icon-circle svg {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+.actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+}

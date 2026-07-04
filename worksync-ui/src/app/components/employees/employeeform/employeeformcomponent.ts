@@ -7,16 +7,15 @@ import { EmployeeCreateDto } from '../../../models/employeemodel';
 import { EmployeeService } from '../../../services/employeeservice';
 import { DepartmentService } from '../../../services/departmentservice';
 import { ToastService } from '../../../shared/toast/toastservice';
-import { APP_CONSTANTS } from '../../../constants/string';
+import { constants } from '../../../constants/string';
 @Component({
   selector: 'app-employee-form',
   standalone: true,
   imports: [CommonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './employeeformcomponent.html',
-  styleUrl: './employeeformcomponent.css'
 })
 export class EmployeeFormComponent implements OnInit {
-  readonly constants = APP_CONSTANTS;
+  readonly constants = constants;
   form!: FormGroup;
   departments: Department[] = [];
   employeeId: number | null = null;
