@@ -3,7 +3,6 @@ using WorkSyncAPI.Data;
 using WorkSyncAPI.DTOs.Auth;
 using WorkSyncAPI.Models;
 using WorkSyncAPI.Services.Interfaces;
-
 namespace WorkSyncAPI.Services.Implementations
 {
     public class AuthService : IAuthService

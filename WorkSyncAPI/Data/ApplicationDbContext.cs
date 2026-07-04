@@ -11,6 +11,10 @@ namespace WorkSyncAPI.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<TaskItem> Tasks { get; set; }
+        public DbSet<TaskAssignment> TaskAssignments { get; set; }
+        public DbSet<TaskComment> TaskComments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -45,7 +49,7 @@ namespace WorkSyncAPI.Data
             });
             modelBuilder.Entity<Role>(entity =>
             {
-                entity.ToTable("Role");  
+                entity.ToTable("Role");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.RoleName).IsRequired().HasMaxLength(100);
             });
@@ -53,16 +57,63 @@ namespace WorkSyncAPI.Data
             {
                 entity.ToTable("UserRole");
                 entity.HasKey(ur => new { ur.UserId, ur.RoleId });
-
                 entity.HasOne(ur => ur.User)
                       .WithMany(u => u.UserRoles)
                       .HasForeignKey(ur => ur.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
-
                 entity.HasOne(ur => ur.Role)
                       .WithMany(r => r.UserRoles)
                       .HasForeignKey(ur => ur.RoleId)
                       .OnDelete(DeleteBehavior.Cascade);
+            });
+            modelBuilder.Entity<Attendance>(entity =>
+            {
+                entity.ToTable("Attendances");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Status).IsRequired().HasMaxLength(50);
+                entity.HasOne(e => e.Employee)
+                      .WithMany()
+                      .HasForeignKey(e => e.EmployeeId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+            modelBuilder.Entity<TaskItem>(entity =>
+            {
+                entity.ToTable("Tasks");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Title).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.Priority).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Status).IsRequired().HasMaxLength(50);
+                entity.HasOne(e => e.CreatedBy)
+                      .WithMany()
+                      .HasForeignKey(e => e.CreatedByUserId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<TaskAssignment>(entity =>
+            {
+                entity.ToTable("TaskAssignments");
+                entity.HasKey(e => e.Id);
+                entity.HasOne(e => e.Task)
+                      .WithMany(t => t.Assignments)
+                      .HasForeignKey(e => e.TaskId)
+                      .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(e => e.Employee)
+                      .WithMany()
+                      .HasForeignKey(e => e.EmployeeId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+            modelBuilder.Entity<TaskComment>(entity =>
+            {
+                entity.ToTable("TaskComments");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Content).IsRequired();
+                entity.HasOne(e => e.Task)
+                      .WithMany(t => t.Comments)
+                      .HasForeignKey(e => e.TaskId)
+                      .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(e => e.User)
+                      .WithMany()
+                      .HasForeignKey(e => e.UserId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

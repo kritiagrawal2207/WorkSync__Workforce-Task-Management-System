@@ -1,19 +1,18 @@
 using WorkSyncAPI.Models;
-
-namespace WorkSyncAPI.Repositories.Interfaces;
-
-public interface ITaskRepository
+namespace WorkSyncAPI.Repositories.Interfaces
 {
-    Task<List<TaskItem>> GetAllAsync();
-    Task<TaskItem?> GetByIdAsync(int id);
-    Task<TaskItem?> GetByIdWithDetailsAsync(int id);
-    Task<List<TaskItem>> GetByEmployeeIdAsync(int employeeId);
-
-    Task AddAsync(TaskItem task);
-    Task DeleteAsync(TaskItem task);
-    Task AssignAsync(TaskAssignment assignment);
-    Task AddCommentAsync(TaskComment comment);
-    Task SaveAsync();
-    Task DeleteAssignmentsAsync(ICollection<TaskAssignment> assignments);
-Task DeleteCommentsAsync(ICollection<TaskComment> comments);
+    public interface ITaskRepository
+    {
+        Task<List<TaskItem>> GetAllAsync();
+        Task<TaskItem?> GetByIdAsync(int id);
+        Task<TaskItem?> GetByIdWithDetailsAsync(int id);
+        Task<List<TaskItem>> GetByEmployeeIdAsync(int employeeId);
+        Task AddAsync(TaskItem task);
+        Task DeleteAsync(TaskItem task);
+        Task AssignAsync(TaskAssignment assignment);
+        Task AddCommentAsync(TaskComment comment);
+        Task DeleteAssignmentsAsync(ICollection<TaskAssignment> assignments);
+        Task DeleteCommentsAsync(ICollection<TaskComment> comments);
+        Task SaveAsync();
+    }
 }

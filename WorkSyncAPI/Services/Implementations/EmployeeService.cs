@@ -2,7 +2,6 @@ using WorkSyncAPI.DTOs;
 using WorkSyncAPI.Models;
 using WorkSyncAPI.Repositories.Interfaces;
 using WorkSyncAPI.Services.Interfaces;
-
 namespace WorkSyncAPI.Services.Implementations
 {
     public class EmployeeService : IEmployeeService
