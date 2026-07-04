@@ -9,6 +9,7 @@ import { TasksComponent }from './pages/tasks/tasks';
 import { AdminComponent } from './pages/admin/admin';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard }from './guards/roleguard';
+import { AttendanceHistoryComponent } from './pages/attendance/history/attendance-history.component'
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {path: '',component: LayoutComponent,canActivate: [authGuard],children: [
@@ -27,4 +28,11 @@ export const routes: Routes = [
     ],
   },
   { path: '**', redirectTo: 'login' },
+  {
+  path: 'attendance',
+  children: [
+    { path: '',        component: AttendanceComponent },
+    { path: 'history', component: AttendanceHistoryComponent }
+  ]
+},
 ];

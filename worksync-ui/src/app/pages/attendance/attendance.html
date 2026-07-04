@@ -1,4 +1,59 @@
-<div>
-  <h2 class="page-title">{{ constants.ATTENDANCE_TITLE }}</h2>
-  <p class="page-subtitle">{{ constants.ATTENDANCE_SUBTITLE }}</p>
+<div class="content">
+  <h1 class="page-title">{{ constants.ATTENDANCE_TITLE }}</h1>
+  @if (state === 'loading') {
+    <div class="state-block">
+      <p class="page-subtitle">{{ constants.ATTENDANCE_LOADING }}</p>
+    </div>
+  }
+
+  @if (state === 'no-employee') {
+    <div class="form-card">
+      <p class="page-subtitle">{{ constants.ATTENDANCE_NO_EMPLOYEE }}</p>
+    </div>
+  }
+
+  @if (state !== 'loading' && state !== 'no-employee') {
+    <div class="form-card att-card">
+
+      @if (errorMessage) {
+        <p class="att-error">{{ errorMessage }}</p>
+      }
+
+      <p class="att-label">{{ constants.ATTENDANCE_TODAY_STATUS }}</p>
+
+      <p class="att-status"
+         [class.att-status--red]="state === 'not-checked-in'"
+         [class.att-status--green]="state === 'checked-in' || state === 'checked-out'">
+        {{ statusLabel }}
+      </p>
+
+      @if (state === 'not-checked-in') {
+        <button class="btn btn-primary att-btn" (click)="checkIn()" [disabled]="actionLoading">
+          {{ actionLoading ? constants.ATTENDANCE_CHECKING_IN : constants.ATTENDANCE_CHECK_IN_BTN }}
+        </button>
+      }
+
+      @if (state === 'checked-in') {
+        <p class="page-subtitle">
+          {{ constants.ATTENDANCE_CHECKED_IN_AT }} {{ formatTime(todayRecord?.checkIn) }}
+        </p>
+        <button class="btn btn-primary att-btn" (click)="checkOut()" [disabled]="actionLoading">
+          {{ actionLoading ? constants.ATTENDANCE_CHECKING_OUT : constants.ATTENDANCE_CHECK_OUT_BTN }}
+        </button>
+      }
+
+      @if (state === 'checked-out') {
+        <p class="page-subtitle">
+          {{ formatTime(todayRecord?.checkIn) }} → {{ formatTime(todayRecord?.checkOut) }}
+          &nbsp;|&nbsp; {{ getDuration() }}
+        </p>
+        <p class="att-done">{{ constants.ATTENDANCE_WORK_COMPLETE }}</p>
+      }
+
+      <button class="att-link" (click)="viewHistory()">
+        {{ constants.ATTENDANCE_VIEW_HISTORY }}
+      </button>
+
+    </div>
+  }
 </div>
