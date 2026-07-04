@@ -1,0 +1,48 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ constants.EMPLOYEES_PAGE_TITLE }}</h1>
+    <p class="page-subtitle">{{ constants.EMPLOYEES_PAGE_SUBTITLE }}</p>
+  </div>
+  <a routerLink="/employees/add" class="btn btn-primary">
+    <span class="plus-icon">+</span> {{ constants.ADD_EMPLOYEE }}
+  </a>
+</div>
+<div class="search-box">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="11" cy="11" r="7" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </svg>
+  <input
+    type="text"
+    [placeholder]="constants.SEARCH_EMPLOYEES_PLACEHOLDER"
+    [value]="searchTerm"
+    (input)="onSearchChange($any($event.target).value)"
+  />
+</div>
+<div class="table-card">
+  @if (isLoading) {
+    <app-loadingspinner [message]="constants.LOADING_EMPLOYEES"></app-loadingspinner>
+  } @else if (errorMessage) {
+    <div class="state-block">
+      <p class="error-text">{{ errorMessage }}</p>
+      <button class="btn btn-secondary" (click)="loadEmployees()">{{ constants.RETRY_BUTTON }}</button>
+    </div>
+  } @else if (filteredEmployees.length === 0) {
+    <app-emptystate
+      [title]="searchTerm ? constants.NO_EMPLOYEES_FOUND : constants.NO_EMPLOYEES_YET"
+      [subtitle]="searchTerm ? constants.NO_EMPLOYEES_SEARCH_SUBTITLE : constants.NO_EMPLOYEES_EMPTY_SUBTITLE"
+    ></app-emptystate>
+  } @else {
+    <app-employeetable
+      [employees]="filteredEmployees"
+      (delete)="askDelete($event)"
+    ></app-employeetable>
+  }
+</div>
+@if (showDeleteConfirm && employeeToDelete) {
+  <app-confirmdialog
+    [employeeName]="employeeToDelete.name"
+    (confirmed)="confirmDelete()"
+    (cancelled)="cancelDelete()"
+  ></app-confirmdialog>
+}

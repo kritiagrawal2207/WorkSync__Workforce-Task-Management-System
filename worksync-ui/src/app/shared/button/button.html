@@ -1,0 +1,10 @@
+<button
+  type="button"
+  class="app-btn"
+  [class.app-btn-primary]="variant === 'primary'"
+  [class.app-btn-danger]="variant === 'danger'"
+  [class.app-btn-link]="variant === 'link'"
+  [disabled]="disabled"
+  (click)="onClick()">
+  {{ label }}
+</button>

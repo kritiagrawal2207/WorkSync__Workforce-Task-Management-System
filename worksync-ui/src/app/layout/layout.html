@@ -1,29 +1,45 @@
-<div class="shell">
+<div class="app-shell">
   <aside class="sidebar">
-    <div class="brand">WorkSync</div>
-    <nav class="nav-links">
-      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <div class="sidebar-brand">
+      <div class="brand-logo">{{ constants.BRAND_ABBR }}</div>
+      <span class="brand-name">{{ constants.APP_NAME }}</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">📊</span>{{ constants.NAV_DASHBOARD }}
+      </a>
       @if (role === 'Admin' || role === 'Manager') {
-  <a routerLink="/employees" routerLinkActive="active">Employees</a>
-}
-      <a routerLink="/attendance" routerLinkActive="active">Attendance</a>
-
-     <a routerLink="/tasks" routerLinkActive="active">Tasks</a>
-
+        <a routerLink="/employees" routerLinkActive="active" class="nav-item">
+          <span class="nav-icon">👥</span>{{ constants.NAV_EMPLOYEES }}
+        </a>
+      }
+      <a routerLink="/attendance" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">🕐</span>{{ constants.NAV_ATTENDANCE }}
+      </a>
+      <a routerLink="/tasks" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">✅</span>{{ constants.NAV_TASKS }}
+      </a>
       @if (role === 'Admin') {
-        <a routerLink="/admin" routerLinkActive="active">Admin</a>
+        <a routerLink="/admin" routerLinkActive="active" class="nav-item">
+          <span class="nav-icon">⚙️</span>{{ constants.NAV_ADMIN }}
+        </a>
       }
     </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <span>🚪</span> {{ constants.LOGOUT }}
+      </button>
+    </div>
   </aside>
-
   <div class="main-area">
-    <header class="top-bar">
-  <span class="welcome">Welcome, {{ user?.name }}</span>
-  <span class="role-badge role-{{ role?.toLowerCase() }}">{{ role }}</span>
-  <button class="logout-btn" (click)="logout()">Logout</button>
-</header>
-    <main class="content">
-      <router-outlet />
+    <header class="topbar">
+      <div class="topbar-left"></div>
+      <div class="topbar-right">
+        <span class="user-name">{{ constants.WELCOME_PREFIX }}{{ user?.name }}</span>
+      </div>
+    </header>
+    <main class="page-content">
+      <router-outlet></router-outlet>
     </main>
   </div>
 </div>

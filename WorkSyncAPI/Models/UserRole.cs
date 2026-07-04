@@ -1,9 +1,10 @@
-namespace WorkSyncAPI.Models;
-
-public class UserRole
+namespace WorkSyncAPI.Models
 {
-    public int UserId { get; set; }
-    public User? User { get; set; }
-    public int RoleId { get; set; }
-    public Role? Role { get; set; }
+    public class UserRole
+    {
+        public int UserId { get; set; }
+        public int RoleId { get; set; }
+        public User User { get; set; } = null!;
+        public Role Role { get; set; } = null!;
+    }
 }

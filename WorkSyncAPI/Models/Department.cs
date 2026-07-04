@@ -1,8 +1,10 @@
-namespace WorkSyncAPI.Models;
-
-public class Department
+using System.Collections.Generic;
+namespace WorkSyncAPI.Models
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = "";
-    public ICollection<Employee>? Employees { get; set; }
+    public class Department
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public ICollection<Employee> Employees { get; set; } = new List<Employee>();
+    }
 }

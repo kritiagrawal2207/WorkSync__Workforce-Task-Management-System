@@ -1,51 +1,69 @@
 using Microsoft.EntityFrameworkCore;
 using WorkSyncAPI.Models;
-
-namespace WorkSyncAPI.Data;
-
-public class ApplicationDbContext : DbContext
+namespace WorkSyncAPI.Data
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-
-    public DbSet<Employee> Employees => Set<Employee>();
-    public DbSet<Department> Departments => Set<Department>();
-    public DbSet<User> Users => Set<User>();
-    public DbSet<Role> Roles => Set<Role>();
-    public DbSet<UserRole> UserRoles => Set<UserRole>();
-    public DbSet<Attendance> Attendances => Set<Attendance>();
-    public DbSet<TaskItem> Tasks => Set<TaskItem>();
-    public DbSet<TaskAssignment> TaskAssignments => Set<TaskAssignment>();
-    public DbSet<TaskComment> TaskComments => Set<TaskComment>();
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public class ApplicationDbContext : DbContext
     {
-        modelBuilder.Entity<User>().ToTable("User");
-        modelBuilder.Entity<Role>().ToTable("Role");
-        modelBuilder.Entity<UserRole>().ToTable("UserRole");
-        modelBuilder.Entity<Employee>().ToTable("Employees");
-        modelBuilder.Entity<Department>().ToTable("Departments");
-        modelBuilder.Entity<Attendance>().ToTable("Attendances");
-        modelBuilder.Entity<TaskItem>().ToTable("Tasks");
-        modelBuilder.Entity<TaskAssignment>().ToTable("TaskAssignments");
-        modelBuilder.Entity<TaskComment>().ToTable("TaskComments");
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options) { }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Department>(entity =>
+            {
+                entity.ToTable("Departments");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
+            });
+            modelBuilder.Entity<Employee>(entity =>
+            {
+                entity.ToTable("Employees");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.Phone).HasMaxLength(50);
+                entity.HasOne(e => e.Department)
+                      .WithMany(d => d.Employees)
+                      .HasForeignKey(e => e.DepartmentId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("User");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.PasswordHash).IsRequired().HasMaxLength(500);
+                entity.Property(e => e.Role).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.IsActive).IsRequired();
+                entity.Property(e => e.CreatedAt).IsRequired();
+            });
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.ToTable("Role");  
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.RoleName).IsRequired().HasMaxLength(100);
+            });
+            modelBuilder.Entity<UserRole>(entity =>
+            {
+                entity.ToTable("UserRole");
+                entity.HasKey(ur => new { ur.UserId, ur.RoleId });
 
-        modelBuilder.Entity<UserRole>().HasKey(ur => new { ur.UserId, ur.RoleId });
+                entity.HasOne(ur => ur.User)
+                      .WithMany(u => u.UserRoles)
+                      .HasForeignKey(ur => ur.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<UserRole>()
-            .HasOne(ur => ur.User)
-            .WithMany(u => u.UserRoles)
-            .HasForeignKey(ur => ur.UserId);
-
-        modelBuilder.Entity<UserRole>()
-            .HasOne(ur => ur.Role)
-            .WithMany(r => r.UserRoles)
-            .HasForeignKey(ur => ur.RoleId);
-
-        modelBuilder.Entity<TaskItem>()
-            .HasOne(t => t.CreatedBy)
-            .WithMany(u => u.CreatedTasks)
-            .HasForeignKey(t => t.CreatedByUserId);
-
-        base.OnModelCreating(modelBuilder);
+                entity.HasOne(ur => ur.Role)
+                      .WithMany(r => r.UserRoles)
+                      .HasForeignKey(ur => ur.RoleId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+        }
     }
 }
