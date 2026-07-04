@@ -55,7 +55,7 @@
 .logout-btn:hover { background: var(--color-logout-hover-bg); }
 .main-area {
   flex: 1; display: flex; flex-direction: column;
-  overflow: hidden; background: var(--color-surface-alt);
+  overflow: auto; background: var(--color-surface-alt);
 }
 .topbar {
   height: var(--topbar-height); background: var(--color-surface);

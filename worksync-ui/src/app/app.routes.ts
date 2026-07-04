@@ -3,6 +3,7 @@ import { LoginComponent }from './pages/login/login';
 import { LayoutComponent } from './layout/layout';
 import { DashboardComponent }from './pages/dashboard/dashboard';
 import { EmployeeListComponent }from './components/employees/employeelist/employeelistcomponent';
+import { EmployeeFormComponent } from './components/employees/employeeform/employeeformcomponent';
 import { AttendanceComponent }from './pages/attendance/attendance';
 import { TasksComponent }from './pages/tasks/tasks';
 import { AdminComponent } from './pages/admin/admin';
@@ -13,7 +14,12 @@ export const routes: Routes = [
   {path: '',component: LayoutComponent,canActivate: [authGuard],children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'employees',component: EmployeeListComponent,canActivate: [roleGuard],data: { roles: ['Admin', 'Manager'] },},
+      {path: 'employees',canActivate: [roleGuard],data: { roles: ['Admin', 'Manager'] },children: [
+          { path: '', component: EmployeeListComponent },
+          { path: 'add', component: EmployeeFormComponent },
+          { path: 'edit/:id', component: EmployeeFormComponent },
+        ]
+      },
       { path: 'attendance', component: AttendanceComponent },
       { path: 'tasks', component: TasksComponent },
       {path: 'admin',component: AdminComponent,canActivate: [roleGuard],data: { roles: ['Admin'] },

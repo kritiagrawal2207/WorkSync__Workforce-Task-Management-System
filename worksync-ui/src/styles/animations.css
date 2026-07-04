@@ -29,7 +29,7 @@
   background-color: var(--color-success);
 }
 .toast-error {
-  background-color: var(--color-danger-strong);
+  background-color: var(--color-danger-dark);
 }
 .toast-close {
   margin-left: auto;

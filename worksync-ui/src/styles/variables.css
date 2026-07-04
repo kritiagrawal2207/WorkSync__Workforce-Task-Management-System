@@ -22,6 +22,7 @@
   --color-danger-dark: #dc2626;
   --color-danger-soft: #fee2e2;
   --color-danger-border: #fecaca;
+  --color-danger-strong: #991b1b;
   --color-topbar: #1a2438;
   --color-shadow: rgba(0, 0, 0, 0.06);
   --color-shadow-lg: rgba(0, 0, 0, 0.2);
@@ -105,6 +106,12 @@
   --icon-size-md: 28px;
   --icon-size-lg: 56px;
   --dialog-width: 360px;
+  --dialog-max-width: 90vw;           
+--employee-dialog-width: 460px;         
+--toast-width: 260px;                 
+--table-width: 100%;                  
+--empty-state-icon-size: 46px;      
+--empty-state-icon-gap: 14px;
 
   --letter-spacing-wide: 0.06em;
   --focus-ring-shadow: 0 0 0 3px var(--color-focus-ring);
