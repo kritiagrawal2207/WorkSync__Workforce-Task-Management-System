@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
   tasks: {
     root: `${API_BASE_URL}/tasks`,
     byId: (taskId: number) => `${API_BASE_URL}/tasks/${taskId}`,
+    my: `${API_BASE_URL}/tasks/my`,
     byEmployee: (employeeId: number) => `${API_BASE_URL}/tasks/employee/${employeeId}`,
     updateStatus: (taskId: number) => `${API_BASE_URL}/tasks/${taskId}/status`,
     assign: `${API_BASE_URL}/tasks/assign`,

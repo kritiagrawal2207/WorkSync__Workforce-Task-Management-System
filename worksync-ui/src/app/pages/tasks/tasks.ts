@@ -37,17 +37,22 @@ export class TasksComponent implements OnInit {
 
   loadTasks(): void {
     this.errorMsg = '';
+
     const obs = this.isAdminOrManager
       ? this.taskService.getAll()
-      : this.taskService.getByEmployee(this.authService.getEmployeeId());
+      : this.taskService.getMyTasks();
 
     obs.subscribe({
       next: (tasks) => {
         this.tasks = tasks ?? [];
         this.cdr.detectChanges();
       },
-      error: () => {
-        this.errorMsg = this.c.TASKS_LOAD_ERROR;
+      error: (err) => {
+        if (!this.isAdminOrManager && err?.status === 404) {
+          this.errorMsg = 'Your account is not linked to an employee profile. Please contact your Admin.';
+        } else {
+          this.errorMsg = this.c.TASKS_LOAD_ERROR;
+        }
         this.cdr.detectChanges();
       },
     });

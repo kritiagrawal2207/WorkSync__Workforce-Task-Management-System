@@ -29,6 +29,9 @@ export class TaskDetailComponent implements OnInit {
   selectedPriority = '';
   allEmployees: Employee[] = [];
   isSaving = false;
+  showAssignMenu = false;
+  newComment = '';
+  isCommenting = false;
  
   readonly statuses = ['Pending', 'In Progress', 'Completed'];
   readonly priorities = ['Low', 'Medium', 'High'];
@@ -100,6 +103,10 @@ export class TaskDetailComponent implements OnInit {
     });
   }
  
+  toggleAssignMenu(): void {
+    this.showAssignMenu = !this.showAssignMenu;
+  }
+ 
   assignEmployee(empId: number): void {
     if (!this.task) return;
     this.taskService.assign({ taskId: this.task.id, employeeId: empId }).subscribe({
@@ -111,10 +118,37 @@ export class TaskDetailComponent implements OnInit {
             employeeId: empId, employeeName: emp.name, assignedAt: new Date().toISOString()
           }];
         }
+        this.showAssignMenu = false;
         this.toastService.show(emp?.name + ' assigned');
         this.cdr.detectChanges();
       },
       error: () => { this.toastService.show('Failed to assign', 'error'); }
+    });
+  }
+ 
+  postComment(): void {
+    if (!this.task || !this.newComment.trim()) return;
+    this.isCommenting = true;
+    const userId = this.authService.getUserId();
+    const userName = this.authService.getUser()?.name ?? 'You';
+    const content = this.newComment.trim();
+ 
+    this.taskService.addComment({ taskId: this.task.id, userId, content }).subscribe({
+      next: (comment) => {
+        this.task!.comments = [...(this.task!.comments ?? []), {
+          ...comment,
+          userName: comment.userName || userName
+        }];
+        this.newComment = '';
+        this.isCommenting = false;
+        this.toastService.show('Comment added');
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.isCommenting = false;
+        this.toastService.show('Failed to add comment', 'error');
+        this.cdr.detectChanges();
+      }
     });
   }
  

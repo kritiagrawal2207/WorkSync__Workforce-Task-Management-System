@@ -11,6 +11,9 @@ export class TaskService {
   getAll(): Observable<TaskItem[]> {
     return this.http.get<TaskItem[]>(API_ENDPOINTS.tasks.root);
   }
+  getMyTasks(): Observable<TaskItem[]> {
+    return this.http.get<TaskItem[]>(API_ENDPOINTS.tasks.my);
+  }
   getById(taskId: number): Observable<TaskItem> {
     return this.http.get<TaskItem>(API_ENDPOINTS.tasks.byId(taskId));
   }

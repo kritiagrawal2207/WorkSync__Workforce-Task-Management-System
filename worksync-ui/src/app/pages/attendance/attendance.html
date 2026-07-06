@@ -25,15 +25,14 @@
               [class.att-status-badge--green]="state === 'checked-in'">
               {{ statusLabel }}
             </span>
-            @if (state === 'not-checked-in') {
-              <p class="att-time-label">{{ constants.ATTENDANCE_CHECK_IN_TIME_LABEL }}</p>
-              <p class="att-time-big">{{ nowTime }}</p>
-              <p class="att-date-text">{{ nowDate }}</p>
-            }
+
             @if (state === 'checked-in') {
               <p class="att-time-label">{{ constants.ATTENDANCE_CHECK_IN_TIME_LABEL }}</p>
               <p class="att-time-big">{{ formatTime(todayRecord?.checkIn) }}</p>
               <p class="att-date-text">{{ nowDate }}</p>
+            }
+            @if (state === 'not-checked-in') {
+              <p class="att-date-text" style="margin-top: 10px;">{{ nowDate }}</p>
             }
           </div>
           <div class="att-card-divider"></div>
@@ -52,7 +51,6 @@
               <button class="btn btn-primary att-btn" (click)="checkIn()" [disabled]="actionLoading">
                 {{ actionLoading ? constants.ATTENDANCE_CHECKING_IN : constants.ATTENDANCE_CHECK_IN_BTN }}
               </button>
-              <p class="att-hint">{{ constants.ATTENDANCE_CLICK_TO_START }}</p>
             }
             @if (state === 'checked-in') {
               <button class="btn btn-primary att-btn" (click)="checkOut()" [disabled]="actionLoading">
@@ -60,12 +58,6 @@
               </button>
             }
           </div>
-
-        </div>
-      }
-      @if (isCheckedOut) {
-        <div class="att-done-row">
-          <p class="att-done">{{ constants.ATTENDANCE_WORK_COMPLETE }}</p>
         </div>
       }
     </div>

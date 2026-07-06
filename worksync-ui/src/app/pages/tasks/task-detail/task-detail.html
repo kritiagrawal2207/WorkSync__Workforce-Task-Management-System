@@ -45,28 +45,22 @@
 
       <div class="divider"></div>
       <div class="field-group">
-        <label class="field-label">Assigned To</label>
+        <div class="section-header">
+          <label class="field-label" style="margin-bottom:0">Assigned To</label>
+          @if (isAdminOrManager && unassignedEmployees.length > 0) {
+            <button class="btn-icon-add" (click)="toggleAssignMenu()" title="Assign employee"
+              [class.active]="showAssignMenu">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+          }
+        </div>
 
-        @if (task.assignments?.length) {
-          <div class="assignee-list">
-            @for (a of task.assignments; track a.id) {
-              <div class="assignee-chip">
-                <div class="avatar">{{ a.employeeName.charAt(0).toUpperCase() }}</div>
-                <span>{{ a.employeeName }}</span>
-                @if (isAdminOrManager) {
-                  <button class="chip-remove" (click)="removeAssignment(a.id, a.employeeName)" title="Remove">×</button>
-                }
-              </div>
-            }
-          </div>
-        } @else {
-          <p class="empty-sub" style="margin:4px 0 0">No one assigned yet.</p>
-        }
-
-        @if (isAdminOrManager && unassignedEmployees.length > 0) {
+        @if (showAssignMenu) {
           <div class="assign-row">
             <select #empSelect class="mini-select" style="flex:1">
-              <option value="">+ Add employee</option>
+              <option value="">Select employee…</option>
               @for (e of unassignedEmployees; track e.id) {
                 <option [value]="e.id">{{ e.name }}</option>
               }
@@ -77,6 +71,62 @@
             </button>
           </div>
         }
+
+        @if (task.assignments?.length) {
+          <div class="assignee-list">
+            @for (a of task.assignments; track a.id) {
+              <div class="assignee-row">
+                <div class="assignee-info">
+                  <div class="avatar">{{ a.employeeName.charAt(0).toUpperCase() }}</div>
+                  <span class="assignee-name">{{ a.employeeName }}</span>
+                </div>
+                @if (isAdminOrManager) {
+                  <button class="btn-icon-remove" (click)="removeAssignment(a.id, a.employeeName)" title="Remove">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
+                    </svg>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty-sub" style="margin:4px 0 0">No one assigned yet.</p>
+        }
+      </div>
+
+      <!-- Comments -->
+      <div class="divider"></div>
+      <div class="field-group">
+        <label class="field-label">Comments</label>
+
+        @if (task.comments?.length) {
+          <div class="comment-list">
+            @for (c of task.comments; track c.id) {
+              <div class="comment-item">
+                <div class="avatar comment-avatar">{{ (c.userName || 'U').charAt(0).toUpperCase() }}</div>
+                <div class="comment-body">
+                  <div class="comment-meta">
+                    <span class="comment-author">{{ c.userName || 'You' }}</span>
+                    <span class="comment-date">{{ c.createdAt | date:'d MMM, h:mm a' }}</span>
+                  </div>
+                  <p class="comment-text">{{ c.content }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty-sub" style="margin:4px 0 0">No comments yet.</p>
+        }
+
+        <div class="comment-input-row">
+          <input type="text" [(ngModel)]="newComment" placeholder="Write a comment…"
+            class="comment-input" (keyup.enter)="postComment()" [disabled]="isCommenting" />
+          <button class="btn btn-primary" style="white-space:nowrap"
+            (click)="postComment()" [disabled]="!newComment.trim() || isCommenting">
+            {{ isCommenting ? 'Posting…' : 'Post' }}
+          </button>
+        </div>
       </div>
 
       <!-- Meta -->

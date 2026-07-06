@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WorkSyncAPI.Data;
 using WorkSyncAPI.DTOs.Task;
 using WorkSyncAPI.Services.Interfaces;
 namespace WorkSyncAPI.Controllers
@@ -10,9 +12,11 @@ namespace WorkSyncAPI.Controllers
     public class TasksController : ControllerBase
     {
         private readonly ITaskService _taskService;
-        public TasksController(ITaskService taskService)
+        private readonly ApplicationDbContext _context;
+        public TasksController(ITaskService taskService, ApplicationDbContext context)
         {
             _taskService = taskService;
+            _context = context;
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -26,6 +30,20 @@ namespace WorkSyncAPI.Controllers
             var task = await _taskService.GetByIdWithDetailsAsync(id);
             if (task == null) return NotFound(new { message = "Task not found." });
             return Ok(MapToResponse(task));
+        }
+        [HttpGet("my")]
+        public async Task<IActionResult> GetMyTasks()
+        {
+            var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+                return Unauthorized(new { message = "Cannot identify current user." });
+
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Email == email);
+            if (employee == null)
+                return NotFound(new { message = "No employee profile linked to this account." });
+
+            var tasks = await _taskService.GetByEmployeeIdAsync(employee.Id);
+            return Ok(tasks.Select(MapToResponse));
         }
         [HttpGet("employee/{employeeId}")]
         public async Task<IActionResult> GetByEmployee(int employeeId)
@@ -73,7 +91,6 @@ namespace WorkSyncAPI.Controllers
             if (!success) return NotFound(new { message });
             return Ok(new { message });
         }
- 
         [HttpPatch("{id}/priority")]
         public async Task<IActionResult> UpdatePriority(int id, [FromBody] TaskPriorityUpdateDto dto)
         {
@@ -82,7 +99,6 @@ namespace WorkSyncAPI.Controllers
             task.Priority = dto.Priority;
             return Ok(new { message = "Priority updated", priority = task.Priority });
         }
- 
         [HttpPost("comment")]
         public async Task<IActionResult> AddComment(TaskCommentCreateDto dto)
         {
