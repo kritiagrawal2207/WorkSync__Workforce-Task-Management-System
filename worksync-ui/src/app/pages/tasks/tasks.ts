@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { TaskService } from '../../services/task.service';
@@ -21,7 +21,8 @@ export class TasksComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone
   ) {}
   ngOnInit(): void {
     this.role = this.authService.getRole();
@@ -36,10 +37,20 @@ export class TasksComponent implements OnInit {
     const obs = this.isAdminOrManager
       ? this.taskService.getAll()
       : this.taskService.getByEmployee(this.authService.getEmployeeId());
-
     obs.subscribe({
-      next: (tasks) => { this.tasks = tasks; this.isLoading = false; },
-      error: () => { this.errorMsg = this.c.TASKS_LOAD_ERROR; this.isLoading = false; },
+      next: (tasks) => {
+        this.ngZone.run(() => {
+          this.tasks = tasks ?? [];
+          this.isLoading = false;
+        });
+      },
+      error: () => {
+        this.ngZone.run(() => {
+          this.errorMsg = this.c.TASKS_LOAD_ERROR;
+          this.isLoading = false;
+        });
+        setTimeout(() => { if (this.isLoading) this.isLoading = false; }, 2000);
+      },
     });
   }
   openTask(id: number): void {

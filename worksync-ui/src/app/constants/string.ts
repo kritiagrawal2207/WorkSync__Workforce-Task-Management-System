@@ -38,7 +38,7 @@ export const constants = {
   ATTENDANCE_TITLE: 'Attendance',
   ATTENDANCE_SUBTITLE: 'Attendance tracking coming soon.',
   TASKS_PAGE_TITLE: 'Task Management',
-  TASKS_PAGE_SUBTITLE: 'Task management coming in a future sprint.',
+  TASKS_PAGE_SUBTITLE: 'View and manage all tasks across your team.',
   BACK_TO_EMPLOYEES: '← Back to Employees',
   EMPLOYEES_PAGE_TITLE: 'Employees',
   EMPLOYEES_PAGE_SUBTITLE: 'Manage your workforce from one place',

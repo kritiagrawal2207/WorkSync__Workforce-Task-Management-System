@@ -8,11 +8,12 @@
   }
 </div>
 <div class="table-card">
-  @if (isLoading) {
+  @if (isLoading && tasks.length === 0 && !errorMsg) {
     <div class="state-block">
       <p class="empty-sub">{{ c.TASKS_LOADING }}</p>
     </div>
-  } @else if (errorMsg) {
+  }
+   @else if (errorMsg) {
     <div class="state-block">
       <p class="task-error-msg">{{ errorMsg }}</p>
       <button class="btn btn-secondary" (click)="loadTasks()">{{ c.RETRY_BUTTON }}</button>
