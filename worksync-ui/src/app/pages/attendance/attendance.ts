@@ -40,12 +40,12 @@ export class AttendanceComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-  this.state = err.status === 404 ? 'not-checked-in' : 'not-checked-in';
-  if (err.status !== 404) {
-    this.errorMessage = err.error?.message ?? 'Something went wrong. Please try again.';
-  }
-  this.cdr.detectChanges();
-}
+        this.state = err.status === 404 ? 'not-checked-in' : 'not-checked-in';
+        if (err.status !== 404) {
+          this.errorMessage = err.error?.message ?? 'Something went wrong. Please try again.';
+        }
+        this.cdr.detectChanges();
+      }
     });
   }
   checkIn(): void {
@@ -94,6 +94,15 @@ export class AttendanceComponent implements OnInit {
     const h = Math.floor(diff / 3600000);
     const m = Math.floor((diff % 3600000) / 60000);
     return `${h}h ${m}m`;
+  }
+  get isCheckedOut(): boolean { return this.state === 'checked-out'; }
+  get nowTime(): string {
+    return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  }
+  get nowDate(): string {
+    return new Date().toLocaleDateString('en-US', {
+      day: 'numeric', month: 'long', year: 'numeric', weekday: 'long'
+    });
   }
   get statusLabel(): string {
     if (this.state === 'not-checked-in') return constants.ATTENDANCE_NOT_CHECKED_IN;

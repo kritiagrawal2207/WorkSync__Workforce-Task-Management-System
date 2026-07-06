@@ -116,4 +116,10 @@ export const constants = {
   ATTENDANCE_COL_CHECK_OUT: 'Check Out',
   ATTENDANCE_COL_DURATION: 'Duration',
   ATTENDANCE_COL_STATUS: 'Status',
+  ATTENDANCE_CHECK_IN_TIME_LABEL: 'CHECK IN TIME',
+ATTENDANCE_CHECK_OUT_TIME_LABEL: 'CHECK OUT TIME',
+ATTENDANCE_CLICK_TO_START: 'Click the button above to start your day.',
+ATTENDANCE_TODAY_TIMELINE: 'TODAY TIMELINE',
+ATTENDANCE_VIEW_HISTORY_TITLE: 'View full history',
+ATTENDANCE_VIEW_HISTORY_SUB: 'See your complete attendance records and check in/out history.',
 };
