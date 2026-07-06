@@ -6,7 +6,7 @@ import { Employee, EmployeeCreateDto } from '../models/employeemodel';
   providedIn: 'root'
 })
 export class EmployeeService {
-  private apiUrl = 'http://localhost:5180/api/employees';
+  private apiUrl = 'http://localhost:5180/api/employee';
   constructor(private http: HttpClient) {}
   getAll(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.apiUrl);

@@ -12,27 +12,38 @@ import { roleGuard }from './guards/roleguard';
 import { AttendanceHistoryComponent } from './pages/attendance/history/attendance-history.component'
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  {path: '',component: LayoutComponent,canActivate: [authGuard],children: [
+  {
+    path: '',
+    component: LayoutComponent,
+    canActivate: [authGuard],
+    children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
-      {path: 'employees',canActivate: [roleGuard],data: { roles: ['Admin', 'Manager'] },children: [
+      {
+        path: 'employees',
+        canActivate: [roleGuard],
+        data: { roles: ['Admin', 'Manager'] },
+        children: [
           { path: '', component: EmployeeListComponent },
           { path: 'add', component: EmployeeFormComponent },
           { path: 'edit/:id', component: EmployeeFormComponent },
         ]
       },
-      { path: 'attendance', component: AttendanceComponent },
+      {
+        path: 'attendance',
+        children: [
+          { path: '', component: AttendanceComponent },
+          { path: 'history', component: AttendanceHistoryComponent }  // ✅ history yahan
+        ]
+      },
       { path: 'tasks', component: TasksComponent },
-      {path: 'admin',component: AdminComponent,canActivate: [roleGuard],data: { roles: ['Admin'] },
+      {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [roleGuard],
+        data: { roles: ['Admin'] },
       },
     ],
   },
   { path: '**', redirectTo: 'login' },
-  {
-  path: 'attendance',
-  children: [
-    { path: '',        component: AttendanceComponent },
-    { path: 'history', component: AttendanceHistoryComponent }
-  ]
-},
 ];
