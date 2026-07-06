@@ -1,0 +1,35 @@
+.task-back-link { font-size: var(--font-size-sm); color: var(--color-text-muted); text-decoration: none; display: inline-block; margin-bottom: var(--spacing-sm); transition: color var(--transition-fast); }
+.task-back-link:hover { color: var(--color-primary); }
+.task-meta-row { display: flex; align-items: center; gap: var(--spacing-sm); margin-top: var(--spacing-sm); flex-wrap: wrap; }
+.task-due-chip { font-size: var(--font-size-xs); color: var(--color-text-muted); padding: var(--spacing-xs) var(--spacing-md); background: var(--color-surface-alt); border: var(--border-width-thin) solid var(--color-border-soft); border-radius: var(--radius-pill); }
+.task-header-actions { display: flex; gap: var(--spacing-md); align-items: center; }
+
+.task-detail-card, .task-comments-card { display: flex; flex-direction: column; gap: var(--spacing-xl); margin-bottom: var(--spacing-xl); }
+
+.task-section { display: flex; flex-direction: column; gap: var(--spacing-sm); }
+.task-section-label { font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); letter-spacing: var(--letter-spacing-wide); text-transform: uppercase; color: var(--color-text-muted); margin: 0; }
+.task-meta-value { font-size: var(--font-size-md); color: var(--color-text-secondary); margin: 0; }
+.task-desc-text { font-size: var(--font-size-md); color: var(--color-text-secondary); margin: 0; line-height: var(--line-height-normal); }
+.task-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl); }
+
+.task-assignee-list { display: flex; flex-wrap: wrap; gap: var(--spacing-sm); }
+.task-assignee-chip { display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-xs) var(--spacing-md); background: var(--color-surface-alt); border: var(--border-width-thin) solid var(--color-border-soft); border-radius: var(--radius-pill); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+.emp-avatar-sm { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #3b82f6); color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+
+.task-status-section { border-top: var(--border-width-thin) solid var(--color-border-subtle); padding-top: var(--spacing-lg); }
+.task-status-row { display: flex; gap: var(--spacing-md); align-items: center; }
+.task-status-select { padding: var(--spacing-md) var(--spacing-lg); border: var(--border-width-thin) solid var(--color-border); border-radius: var(--radius-sm); font-size: var(--font-size-md); font-family: inherit; background: var(--color-surface); color: var(--color-text-primary); min-width: 160px; }
+.task-status-select:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--focus-ring-shadow); }
+.task-success-msg { font-size: var(--font-size-sm); color: var(--color-success); margin: 0; }
+
+.task-comments-list { display: flex; flex-direction: column; gap: var(--spacing-lg); }
+.task-comment { display: flex; gap: var(--spacing-md); align-items: flex-start; }
+.task-comment-body { flex: 1; }
+.task-comment-meta { display: flex; align-items: center; gap: var(--spacing-md); margin-bottom: var(--spacing-xs); }
+.task-comment-author { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
+.task-comment-time { font-size: var(--font-size-xs); color: var(--color-text-soft); }
+.task-comment-text { font-size: var(--font-size-md); color: var(--color-text-secondary); margin: 0; line-height: var(--line-height-normal); }
+
+.task-add-comment { display: flex; flex-direction: column; gap: var(--spacing-sm); border-top: var(--border-width-thin) solid var(--color-border-subtle); padding-top: var(--spacing-lg); }
+.task-comment-input { padding: var(--spacing-md) var(--spacing-lg); border: var(--border-width-thin) solid var(--color-border); border-radius: var(--radius-sm); font-size: var(--font-size-md); font-family: inherit; color: var(--color-text-primary); background: var(--color-surface); resize: vertical; min-height: 70px; }
+.task-comment-input:focus { outline: none; border-color: var(--color-primary); box-shadow: var(--focus-ring-shadow); }

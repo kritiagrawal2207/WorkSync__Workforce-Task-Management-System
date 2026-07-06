@@ -1,13 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { TaskService } from '../../services/task.service';
+import { AuthService } from '../../services/auth.service';
+import { TaskItem } from '../../models/task.model';
 import { constants } from '../../constants/string';
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })
-export class TasksComponent {
-  readonly constants = constants;
+export class TasksComponent implements OnInit {
+  readonly c = constants;
+  tasks: TaskItem[] = [];
+  isLoading = true;
+  errorMsg = '';
+  role = '';
+  constructor(
+    private taskService: TaskService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
+  ngOnInit(): void {
+    this.role = this.authService.getRole();
+    this.loadTasks();
+  }
+  get isAdminOrManager(): boolean {
+    return this.role === 'Admin' || this.role === 'Manager';
+  }
+  loadTasks(): void {
+    this.isLoading = true;
+    this.errorMsg = '';
+    const obs = this.isAdminOrManager
+      ? this.taskService.getAll()
+      : this.taskService.getByEmployee(this.authService.getEmployeeId());
+
+    obs.subscribe({
+      next: (tasks) => { this.tasks = tasks; this.isLoading = false; },
+      error: () => { this.errorMsg = this.c.TASKS_LOAD_ERROR; this.isLoading = false; },
+    });
+  }
+  openTask(id: number): void {
+    this.router.navigate(['/tasks', id]);
+  }
+  priorityClass(p: string): string {
+    return 'badge-priority-' + p.toLowerCase();
+  }
+  statusClass(s: string): string {
+    return 'badge-status-' + s.toLowerCase().replace(/\s+/g, '-');
+  }
+  assigneeLabel(task: TaskItem): string {
+    if (!task.assignments?.length) return '—';
+    if (task.assignments.length === 1) return task.assignments[0].employeeName;
+    return task.assignments[0].employeeName + ' +' + (task.assignments.length - 1);
+  }
 }

@@ -1,0 +1,57 @@
+.task-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+}
+.task-form-full { grid-column: 1 / -1; }
+
+.field textarea {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-md);
+  font-family: inherit;
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  resize: vertical;
+  min-height: 80px;
+}
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--focus-ring-shadow);
+}
+
+.task-employee-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  border: var(--border-width-thin) solid var(--color-border-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--color-surface);
+}
+.task-emp-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.task-emp-item:hover { background: var(--color-surface-alt); }
+.task-emp-item input[type='checkbox'] { width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
+.task-emp-info { display: flex; flex-direction: column; }
+.task-emp-name { font-size: var(--font-size-md); font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
+.task-emp-dept { font-size: var(--font-size-xs); color: var(--color-text-muted); }
+
+.task-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: var(--border-width-thin) solid var(--color-border-subtle);
+}

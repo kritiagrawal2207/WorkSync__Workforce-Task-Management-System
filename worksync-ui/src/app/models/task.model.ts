@@ -1,31 +1,20 @@
-import { Employee } from '../models/employeemodel';
-
 export type TaskPriority = 'Low' | 'Medium' | 'High';
 export type TaskStatus = 'Pending' | 'In Progress' | 'Completed';
-
-export interface TaskUser {
-  id: number;
-  name: string;
-  email: string;
-}
-
 export interface TaskAssignment {
   id: number;
   taskId: number;
   employeeId: number;
-  employee?: Employee;
+  employeeName: string;
   assignedAt: string;
 }
-
 export interface TaskComment {
   id: number;
   taskId: number;
   userId: number;
-  user?: TaskUser;
+  userName: string;
   content: string;
   createdAt: string;
 }
-
 export interface TaskItem {
   id: number;
   title: string;
@@ -33,13 +22,12 @@ export interface TaskItem {
   priority: TaskPriority | string;
   status: TaskStatus | string;
   createdByUserId: number;
-  createdBy?: TaskUser;
+  createdByName: string;
   dueDate: string;
   createdAt: string;
-  assignments?: TaskAssignment[];
-  comments?: TaskComment[];
+  assignments: TaskAssignment[];
+  comments: TaskComment[];
 }
-
 export interface TaskCreateRequest {
   title: string;
   description: string;
@@ -48,16 +36,13 @@ export interface TaskCreateRequest {
   createdByUserId: number;
   dueDate: string;
 }
-
 export interface TaskAssignRequest {
   taskId: number;
   employeeId: number;
 }
-
 export interface TaskStatusUpdateRequest {
   status: string;
 }
-
 export interface TaskCommentCreateRequest {
   taskId: number;
   userId: number;
