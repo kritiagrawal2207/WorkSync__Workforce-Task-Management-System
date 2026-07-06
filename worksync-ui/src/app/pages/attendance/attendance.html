@@ -32,7 +32,7 @@
               <p class="att-date-text">{{ nowDate }}</p>
             }
             @if (state === 'not-checked-in') {
-              <p class="att-date-text" style="margin-top: 10px;">{{ nowDate }}</p>
+              <p class="att-date-text att-mt-sm">{{ nowDate }}</p>
             }
           </div>
           <div class="att-card-divider"></div>
@@ -74,7 +74,7 @@
                 <line x1="3" y1="10" x2="21" y2="10"/>
               </svg>
             </div>
-            <p class="att-timeline-label">Check In</p>
+            <p class="att-timeline-label">{{ constants.ATTENDANCE_CHECK_IN_BTN }}</p>
             <p class="att-timeline-time">{{ formatTime(todayRecord?.checkIn) }}</p>
           </div>
           <div class="att-timeline-line"></div>
@@ -86,7 +86,7 @@
                 <line x1="21" y1="12" x2="9" y2="12"/>
               </svg>
             </div>
-            <p class="att-timeline-label">Check Out</p>
+            <p class="att-timeline-label">{{ constants.ATTENDANCE_CHECK_OUT_BTN }}</p>
             <p class="att-timeline-time">{{ formatTime(todayRecord?.checkOut) }}</p>
           </div>
         </div>

@@ -17,7 +17,6 @@ import { constants } from '../../../constants/string';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './task-detail.html',
-  styleUrl: './task-detail.css',
 })
 export class TaskDetailComponent implements OnInit {
   readonly c = constants;

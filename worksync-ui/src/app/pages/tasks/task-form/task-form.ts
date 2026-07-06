@@ -15,7 +15,6 @@ import { constants } from '../../../constants/string';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './task-form.html',
-  styleUrl: './task-form.css',
 })
 export class TaskFormComponent implements OnInit {
   readonly c = constants;

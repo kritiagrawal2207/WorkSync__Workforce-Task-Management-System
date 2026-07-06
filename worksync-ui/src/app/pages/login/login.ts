@@ -11,7 +11,6 @@ import { constants } from '../../constants/string';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.css',
 })
 export class LoginComponent {
   readonly constants = constants;

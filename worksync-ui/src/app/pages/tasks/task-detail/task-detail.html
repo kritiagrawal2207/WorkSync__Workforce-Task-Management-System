@@ -1,17 +1,17 @@
 @if (notFound || !task) {
   <div class="detail-card">
-    <p class="empty-title">Task not found.</p>
-    <a routerLink="/tasks" class="btn btn-secondary">← Back to Tasks</a>
+    <p class="empty-title">{{ c.TASK_DETAIL_NOT_FOUND }}</p>
+    <a routerLink="/tasks" class="btn btn-secondary">{{ c.TASK_DETAIL_BACK }}</a>
   </div>
 } @else {
   <div class="detail-wrapper">
-    <a routerLink="/tasks" class="back-link">← Back to Tasks</a>
+    <a routerLink="/tasks" class="back-link">{{ c.TASK_DETAIL_BACK }}</a>
 
     <div class="detail-card">
       <div class="card-header">
         <h2 class="task-title">{{ task.title }}</h2>
         @if (isAdminOrManager) {
-          <button class="btn-icon-danger" (click)="deleteTask()" title="Delete task">
+          <button class="btn-icon-danger" (click)="deleteTask()" title="{{ c.TASK_DELETE_BTN }}">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
             </svg>
@@ -25,20 +25,20 @@
       <div class="divider"></div>
       <div class="field-row">
         <div class="field-group">
-          <label class="field-label">Status</label>
+          <label class="field-label">{{ c.TASK_STATUS_LABEL }}</label>
           <select [(ngModel)]="selectedStatus" class="mini-select">
             @for (s of statuses; track s) { <option [value]="s">{{ s }}</option> }
           </select>
         </div>
         <div class="field-group">
-          <label class="field-label">Priority</label>
+          <label class="field-label">{{ c.TASK_PRIORITY_LABEL }}</label>
           <select [(ngModel)]="selectedPriority" class="mini-select">
             @for (p of priorities; track p) { <option [value]="p">{{ p }}</option> }
           </select>
         </div>
         @if (isAdminOrManager) {
           <button class="btn btn-primary save-btn" (click)="saveChanges()" [disabled]="isSaving">
-            {{ isSaving ? 'Saving...' : 'Save' }}
+            {{ isSaving ? c.TASK_SAVING : c.SAVE_BUTTON }}
           </button>
         }
       </div>
@@ -46,9 +46,9 @@
       <div class="divider"></div>
       <div class="field-group">
         <div class="section-header">
-          <label class="field-label" style="margin-bottom:0">Assigned To</label>
+          <label class="field-label td-no-mb">{{ c.TASK_ASSIGNED_TO }}</label>
           @if (isAdminOrManager && unassignedEmployees.length > 0) {
-            <button class="btn-icon-add" (click)="toggleAssignMenu()" title="Assign employee"
+            <button class="btn-icon-add" (click)="toggleAssignMenu()" title="{{ c.TASK_ASSIGN_BTN }}"
               [class.active]="showAssignMenu">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
                 <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
@@ -59,15 +59,15 @@
 
         @if (showAssignMenu) {
           <div class="assign-row">
-            <select #empSelect class="mini-select" style="flex:1">
-              <option value="">Select employee…</option>
+            <select #empSelect class="mini-select td-flex-1">
+              <option value="">{{ c.TASK_SELECT_EMPLOYEE_PLACEHOLDER }}</option>
               @for (e of unassignedEmployees; track e.id) {
                 <option [value]="e.id">{{ e.name }}</option>
               }
             </select>
-            <button class="btn btn-secondary" style="white-space:nowrap"
+            <button class="btn btn-secondary td-no-wrap"
               (click)="empSelect.value && assignEmployee(+empSelect.value); empSelect.value=''">
-              Assign
+              {{ c.TASK_ASSIGN_BTN }}
             </button>
           </div>
         }
@@ -81,7 +81,7 @@
                   <span class="assignee-name">{{ a.employeeName }}</span>
                 </div>
                 @if (isAdminOrManager) {
-                  <button class="btn-icon-remove" (click)="removeAssignment(a.id, a.employeeName)" title="Remove">
+                  <button class="btn-icon-remove" (click)="removeAssignment(a.id, a.employeeName)" title="{{ c.TASK_DELETE_BTN }}">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
                     </svg>
@@ -91,49 +91,47 @@
             }
           </div>
         } @else {
-          <p class="empty-sub" style="margin:4px 0 0">No one assigned yet.</p>
+          <p class="empty-sub td-mt-xs">{{ c.TASK_NO_ASSIGNEES }}</p>
         }
       </div>
 
-      <!-- Comments -->
       <div class="divider"></div>
       <div class="field-group">
-        <label class="field-label">Comments</label>
+        <label class="field-label">{{ c.TASK_COMMENTS_TITLE }}</label>
 
         @if (task.comments?.length) {
           <div class="comment-list">
-            @for (c of task.comments; track c.id) {
+            @for (cm of task.comments; track cm.id) {
               <div class="comment-item">
-                <div class="avatar comment-avatar">{{ (c.userName || 'U').charAt(0).toUpperCase() }}</div>
+                <div class="avatar comment-avatar">{{ (cm.userName || 'U').charAt(0).toUpperCase() }}</div>
                 <div class="comment-body">
                   <div class="comment-meta">
-                    <span class="comment-author">{{ c.userName || 'You' }}</span>
-                    <span class="comment-date">{{ c.createdAt | date:'d MMM, h:mm a' }}</span>
+                    <span class="comment-author">{{ cm.userName || 'You' }}</span>
+                    <span class="comment-date">{{ cm.createdAt | date:'d MMM, h:mm a' }}</span>
                   </div>
-                  <p class="comment-text">{{ c.content }}</p>
+                  <p class="comment-text">{{ cm.content }}</p>
                 </div>
               </div>
             }
           </div>
         } @else {
-          <p class="empty-sub" style="margin:4px 0 0">No comments yet.</p>
+          <p class="empty-sub td-mt-xs">{{ c.TASK_NO_COMMENTS }}</p>
         }
 
         <div class="comment-input-row">
-          <input type="text" [(ngModel)]="newComment" placeholder="Write a comment…"
+          <input type="text" [(ngModel)]="newComment" [placeholder]="c.TASK_COMMENT_PLACEHOLDER"
             class="comment-input" (keyup.enter)="postComment()" [disabled]="isCommenting" />
-          <button class="btn btn-primary" style="white-space:nowrap"
+          <button class="btn btn-primary td-no-wrap"
             (click)="postComment()" [disabled]="!newComment.trim() || isCommenting">
-            {{ isCommenting ? 'Posting…' : 'Post' }}
+            {{ isCommenting ? c.TASK_COMMENT_POSTING : c.TASK_COMMENT_POST_BTN }}
           </button>
         </div>
       </div>
 
-      <!-- Meta -->
       <div class="divider"></div>
       <div class="meta-row">
-        <span class="meta-item">Created by <strong>{{ task.createdByName || '—' }}</strong></span>
-        <span class="meta-item">Due <strong>{{ task.dueDate | date:'d MMM y' }}</strong></span>
+        <span class="meta-item">{{ c.TASK_META_CREATED_BY }} <strong>{{ task.createdByName || '—' }}</strong></span>
+        <span class="meta-item">{{ c.TASK_META_DUE }} <strong>{{ task.dueDate | date:'d MMM y' }}</strong></span>
       </div>
     </div>
   </div>

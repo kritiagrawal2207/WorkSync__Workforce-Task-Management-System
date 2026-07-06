@@ -10,7 +10,6 @@ import { constants } from '../../constants/string';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './tasks.html',
-  styleUrl: './tasks.css',
 })
 export class TasksComponent implements OnInit {
   readonly c = constants;

@@ -6,7 +6,6 @@ export type ButtonVariant = 'primary' | 'danger' | 'link';
   selector: 'app-button',
   standalone: true,
   templateUrl: './button.html',
-  styleUrl: './button.css'
 })
 export class ButtonComponent {
   @Input() label = '';

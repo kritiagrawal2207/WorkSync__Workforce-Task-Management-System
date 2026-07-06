@@ -10,7 +10,6 @@ import { constants } from '../constants/string';
   standalone: true,
   imports: [RouterModule, CommonModule],
   templateUrl: './layout.html',
-  styleUrl: './layout.css',
 })
 export class LayoutComponent {
   readonly constants = constants;

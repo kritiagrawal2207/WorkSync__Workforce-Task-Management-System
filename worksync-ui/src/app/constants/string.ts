@@ -171,4 +171,10 @@ ATTENDANCE_VIEW_HISTORY_SUB: 'See your complete attendance records and check in/
   TASK_COMMENT_BTN: 'Add Comment',
   TASK_COMMENT_ADDING: 'Adding...',
   TASK_COMMENT_ERROR: 'Failed to add comment.',
+  TASK_SELECT_EMPLOYEE_PLACEHOLDER: 'Select employee…',
+  TASK_ASSIGN_BTN: 'Assign',
+  TASK_COMMENT_POST_BTN: 'Post',
+  TASK_COMMENT_POSTING: 'Posting…',
+  TASK_META_CREATED_BY: 'Created by',
+  TASK_META_DUE: 'Due',
 };
