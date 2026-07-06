@@ -1,6 +1,6 @@
 using WorkSyncAPI.DTOs.Task;
 using WorkSyncAPI.Models;
-
+ 
 namespace WorkSyncAPI.Services.Interfaces
 {
     public interface ITaskService
@@ -13,6 +13,7 @@ namespace WorkSyncAPI.Services.Interfaces
         Task<(bool Success, string Message)> DeleteAsync(int id);
         Task<(bool Success, string Message, TaskItem? Task)> UpdateStatusAsync(int id, TaskStatusUpdateDto dto);
         Task<TaskAssignment> AssignAsync(TaskAssignDto dto);
+        Task<(bool Success, string Message)> UnassignAsync(int assignmentId);
         Task<TaskComment> AddCommentAsync(TaskCommentCreateDto dto);
     }
 }

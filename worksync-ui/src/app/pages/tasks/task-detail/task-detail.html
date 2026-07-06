@@ -1,123 +1,90 @@
-@if (isLoading) {
-  <div class="table-card"><div class="state-block"><p class="empty-sub">{{ c.TASK_DETAIL_LOADING }}</p></div></div>
-} @else if (notFound || !task) {
-  <div class="table-card">
-    <div class="state-block">
-      <p class="empty-title">{{ c.TASK_DETAIL_NOT_FOUND }}</p>
-      <a routerLink="/tasks" class="btn btn-secondary">{{ c.TASK_DETAIL_BACK }}</a>
-    </div>
+@if (notFound || !task) {
+  <div class="detail-card">
+    <p class="empty-title">Task not found.</p>
+    <a routerLink="/tasks" class="btn btn-secondary">← Back to Tasks</a>
   </div>
 } @else {
-  <div class="page-header">
-    <div>
-      <a routerLink="/tasks" class="task-back-link">{{ c.TASK_DETAIL_BACK }}</a>
-      <h1 class="page-title">{{ task.title }}</h1>
-      <div class="task-meta-row">
-        <span class="task-badge" [ngClass]="priorityClass(task.priority)">{{ task.priority }}</span>
-        <span class="task-badge" [ngClass]="statusClass(task.status)">{{ task.status }}</span>
-        @if (task.dueDate) {
-          <span class="task-due-chip">Due {{ task.dueDate | date:'d MMM y' }}</span>
+  <div class="detail-wrapper">
+    <a routerLink="/tasks" class="back-link">← Back to Tasks</a>
+
+    <div class="detail-card">
+      <div class="card-header">
+        <h2 class="task-title">{{ task.title }}</h2>
+        @if (isAdminOrManager) {
+          <button class="btn-icon-danger" (click)="deleteTask()" title="Delete task">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
+            </svg>
+          </button>
         }
       </div>
-    </div>
-    @if (isAdminOrManager) {
-      <div class="task-header-actions">
-        <button class="btn btn-secondary" (click)="editTask()">{{ c.TASK_EDIT_BTN }}</button>
-        <button class="btn btn-danger" (click)="showDeleteConfirm = true">{{ c.TASK_DELETE_BTN }}</button>
-      </div>
-    }
-  </div>
+      @if (task.description) {
+        <p class="task-desc">{{ task.description }}</p>
+      }
 
-  <div class="table-card task-detail-card">
-    @if (task.description) {
-      <div class="task-section">
-        <p class="task-section-label">Description</p>
-        <p class="task-desc-text">{{ task.description }}</p>
+      <div class="divider"></div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Status</label>
+          <select [(ngModel)]="selectedStatus" class="mini-select">
+            @for (s of statuses; track s) { <option [value]="s">{{ s }}</option> }
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Priority</label>
+          <select [(ngModel)]="selectedPriority" class="mini-select">
+            @for (p of priorities; track p) { <option [value]="p">{{ p }}</option> }
+          </select>
+        </div>
+        @if (isAdminOrManager) {
+          <button class="btn btn-primary save-btn" (click)="saveChanges()" [disabled]="isSaving">
+            {{ isSaving ? 'Saving...' : 'Save' }}
+          </button>
+        }
       </div>
-    }
 
-    <div class="task-two-col">
-      <div class="task-section">
-        <p class="task-section-label">{{ c.TASK_ASSIGNED_TO }}</p>
-        @if (!task.assignments?.length) {
-          <p class="task-meta-value">{{ c.TASK_NO_ASSIGNEES }}</p>
-        } @else {
-          <div class="task-assignee-list">
+      <div class="divider"></div>
+      <div class="field-group">
+        <label class="field-label">Assigned To</label>
+
+        @if (task.assignments?.length) {
+          <div class="assignee-list">
             @for (a of task.assignments; track a.id) {
-              <div class="task-assignee-chip">
-                <div class="emp-avatar-sm">{{ a.employeeName.charAt(0).toUpperCase() }}</div>
+              <div class="assignee-chip">
+                <div class="avatar">{{ a.employeeName.charAt(0).toUpperCase() }}</div>
                 <span>{{ a.employeeName }}</span>
+                @if (isAdminOrManager) {
+                  <button class="chip-remove" (click)="removeAssignment(a.id, a.employeeName)" title="Remove">×</button>
+                }
               </div>
             }
           </div>
+        } @else {
+          <p class="empty-sub" style="margin:4px 0 0">No one assigned yet.</p>
         }
-      </div>
 
-      <div class="task-section">
-        <p class="task-section-label">{{ c.TASK_CREATED_BY }}</p>
-        <p class="task-meta-value">{{ task.createdByName || '—' }}</p>
-        <p class="task-section-label" style="margin-top:var(--spacing-md)">{{ c.TASK_CREATED_AT }}</p>
-        <p class="task-meta-value">{{ task.createdAt | date:'d MMM y, h:mm a' }}</p>
-      </div>
-    </div>
-
-    <div class="task-section task-status-section">
-      <p class="task-section-label">{{ c.TASK_UPDATE_STATUS_LABEL }}</p>
-      <div class="task-status-row">
-        <select [(ngModel)]="selectedStatus" class="task-status-select">
-          @for (s of statuses; track s) { <option [value]="s">{{ s }}</option> }
-        </select>
-        <button class="btn btn-primary" (click)="updateStatus()"
-          [disabled]="isUpdatingStatus || selectedStatus === task.status">
-          {{ isUpdatingStatus ? c.TASK_STATUS_UPDATING : c.TASK_STATUS_UPDATE_BTN }}
-        </button>
-      </div>
-      @if (statusMsg) { <p class="task-success-msg">{{ statusMsg }}</p> }
-      @if (statusError) { <p class="error-msg">{{ statusError }}</p> }
-    </div>
-  </div>
-
-  <div class="table-card task-comments-card">
-    <p class="task-section-label">{{ c.TASK_COMMENTS_TITLE }}</p>
-    @if (!task.comments?.length) {
-      <p class="empty-sub">{{ c.TASK_NO_COMMENTS }}</p>
-    } @else {
-      <div class="task-comments-list">
-        @for (comment of task.comments; track comment.id) {
-          <div class="task-comment">
-            <div class="emp-avatar-sm">{{ (comment.userName || '?').charAt(0).toUpperCase() }}</div>
-            <div class="task-comment-body">
-              <div class="task-comment-meta">
-                <span class="task-comment-author">{{ comment.userName || 'Unknown' }}</span>
-                <span class="task-comment-time">{{ comment.createdAt | date:'d MMM, h:mm a' }}</span>
-              </div>
-              <p class="task-comment-text">{{ comment.content }}</p>
-            </div>
+        @if (isAdminOrManager && unassignedEmployees.length > 0) {
+          <div class="assign-row">
+            <select #empSelect class="mini-select" style="flex:1">
+              <option value="">+ Add employee</option>
+              @for (e of unassignedEmployees; track e.id) {
+                <option [value]="e.id">{{ e.name }}</option>
+              }
+            </select>
+            <button class="btn btn-secondary" style="white-space:nowrap"
+              (click)="empSelect.value && assignEmployee(+empSelect.value); empSelect.value=''">
+              Assign
+            </button>
           </div>
         }
       </div>
-    }
-    <div class="task-add-comment">
-      <textarea [(ngModel)]="commentText" [placeholder]="c.TASK_COMMENT_PLACEHOLDER"
-        rows="2" class="task-comment-input"></textarea>
-      <button class="btn btn-primary" (click)="addComment()"
-        [disabled]="isAddingComment || !commentText.trim()">
-        {{ isAddingComment ? c.TASK_COMMENT_ADDING : c.TASK_COMMENT_BTN }}
-      </button>
-      @if (commentError) { <p class="error-msg">{{ commentError }}</p> }
-    </div>
-  </div>
 
-  @if (showDeleteConfirm) {
-    <div class="dialog-overlay">
-      <div class="dialog">
-        <p class="dialog-title">{{ c.TASK_DELETE_BTN }}</p>
-        <p class="dialog-message">{{ c.TASK_DELETE_CONFIRM }}</p>
-        <div class="dialog-actions">
-          <button class="btn btn-secondary" (click)="showDeleteConfirm = false" [disabled]="isDeleting">{{ c.CANCEL_BUTTON }}</button>
-          <button class="btn btn-danger" (click)="confirmDelete()" [disabled]="isDeleting">{{ c.DELETE_BUTTON }}</button>
-        </div>
+      <!-- Meta -->
+      <div class="divider"></div>
+      <div class="meta-row">
+        <span class="meta-item">Created by <strong>{{ task.createdByName || '—' }}</strong></span>
+        <span class="meta-item">Due <strong>{{ task.dueDate | date:'d MMM y' }}</strong></span>
       </div>
     </div>
-  }
+  </div>
 }

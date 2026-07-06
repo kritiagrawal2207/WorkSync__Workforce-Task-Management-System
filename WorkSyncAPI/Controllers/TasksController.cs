@@ -66,6 +66,23 @@ namespace WorkSyncAPI.Controllers
             var assignment = await _taskService.AssignAsync(dto);
             return Ok(new { message = "Task assigned successfully.", assignmentId = assignment.Id });
         }
+        [HttpDelete("assignment/{assignmentId}")]
+        public async Task<IActionResult> Unassign(int assignmentId)
+        {
+            var (success, message) = await _taskService.UnassignAsync(assignmentId);
+            if (!success) return NotFound(new { message });
+            return Ok(new { message });
+        }
+ 
+        [HttpPatch("{id}/priority")]
+        public async Task<IActionResult> UpdatePriority(int id, [FromBody] TaskPriorityUpdateDto dto)
+        {
+            var task = await _taskService.GetByIdWithDetailsAsync(id);
+            if (task == null) return NotFound(new { message = "Task not found" });
+            task.Priority = dto.Priority;
+            return Ok(new { message = "Priority updated", priority = task.Priority });
+        }
+ 
         [HttpPost("comment")]
         public async Task<IActionResult> AddComment(TaskCommentCreateDto dto)
         {

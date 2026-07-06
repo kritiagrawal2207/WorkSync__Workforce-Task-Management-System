@@ -8,7 +8,6 @@ import { AttendanceComponent } from './pages/attendance/attendance';
 import { TasksComponent } from './pages/tasks/tasks';
 import { TaskFormComponent } from './pages/tasks/task-form/task-form';
 import { TaskDetailComponent } from './pages/tasks/task-detail/task-detail';
-import { AdminComponent } from './pages/admin/admin';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/roleguard';
 import { AttendanceHistoryComponent } from './pages/attendance/history/attendance-history.component';
@@ -57,13 +56,7 @@ export const routes: Routes = [
             data: { roles: ['Admin', 'Manager'] },
           },
         ],
-      },
-      {
-        path: 'admin',
-        component: AdminComponent,
-        canActivate: [roleGuard],
-        data: { roles: ['Admin'] },
-      },
+      }
     ],
   },
   { path: '**', redirectTo: 'login' },

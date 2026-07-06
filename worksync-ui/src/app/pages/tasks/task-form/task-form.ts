@@ -21,7 +21,7 @@ export class TaskFormComponent implements OnInit {
   readonly c = constants;
   isEdit = false;
   taskId = 0;
-  isLoading = true;
+  isLoading = false;
   isSaving = false;
   errorMsg = '';
   title = '';
@@ -116,4 +116,3 @@ export class TaskFormComponent implements OnInit {
     this.router.navigate([this.isEdit ? '/tasks/' + this.taskId : '/tasks']);
   }
 }
- 

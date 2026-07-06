@@ -47,6 +47,13 @@ namespace WorkSyncAPI.Repositories.Implementations
             _context.TaskAssignments.RemoveRange(assignments);
             return Task.CompletedTask;
         }
+        public Task<TaskAssignment?> GetAssignmentAsync(int assignmentId) =>
+            _context.TaskAssignments.FirstOrDefaultAsync(a => a.Id == assignmentId);
+        public Task DeleteAssignmentAsync(TaskAssignment assignment)
+        {
+            _context.TaskAssignments.Remove(assignment);
+            return Task.CompletedTask;
+        }
         public Task DeleteCommentsAsync(ICollection<TaskComment> comments)
         {
             _context.TaskComments.RemoveRange(comments);

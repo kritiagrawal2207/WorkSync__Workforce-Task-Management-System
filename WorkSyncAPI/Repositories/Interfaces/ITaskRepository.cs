@@ -13,6 +13,8 @@ namespace WorkSyncAPI.Repositories.Interfaces
         Task AddCommentAsync(TaskComment comment);
         Task DeleteAssignmentsAsync(ICollection<TaskAssignment> assignments);
         Task DeleteCommentsAsync(ICollection<TaskComment> comments);
+        Task<TaskAssignment?> GetAssignmentAsync(int assignmentId);
+        Task DeleteAssignmentAsync(TaskAssignment assignment);
         Task SaveAsync();
     }
 }
