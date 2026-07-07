@@ -1,7 +1,16 @@
 export const API_BASE_URL = 'http://localhost:5180/api';
-
 export const API_ENDPOINTS = {
-  employees: `${API_BASE_URL}/Employees`,
+  auth: {
+    login: `${API_BASE_URL}/auth/login`,
+    register: `${API_BASE_URL}/auth/register`
+  },
+  employees: {
+    root: `${API_BASE_URL}/Employees`,
+    byId: (id: number) => `${API_BASE_URL}/Employees/${id}`
+  },
+  departments: {
+    root: `${API_BASE_URL}/departments`
+  },
   attendance: {
     root: `${API_BASE_URL}/attendance`,
     byEmployee: (employeeId: number) => `${API_BASE_URL}/attendance/employee/${employeeId}`,
@@ -11,7 +20,6 @@ export const API_ENDPOINTS = {
   tasks: {
     root: `${API_BASE_URL}/tasks`,
     byId: (taskId: number) => `${API_BASE_URL}/tasks/${taskId}`,
-    my: `${API_BASE_URL}/tasks/my`,
     byEmployee: (employeeId: number) => `${API_BASE_URL}/tasks/employee/${employeeId}`,
     updateStatus: (taskId: number) => `${API_BASE_URL}/tasks/${taskId}/status`,
     assign: `${API_BASE_URL}/tasks/assign`,

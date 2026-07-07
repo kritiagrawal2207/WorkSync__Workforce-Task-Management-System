@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { constants } from '../../constants/string';
-
 @Component({
   selector: 'app-login',
   standalone: true,

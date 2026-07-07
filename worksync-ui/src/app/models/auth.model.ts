@@ -6,7 +6,6 @@ export interface LoginResponse {
   userId: number;
   employeeId?: number;
 }
-
 export interface AuthUser {
   name: string;
   role: string;

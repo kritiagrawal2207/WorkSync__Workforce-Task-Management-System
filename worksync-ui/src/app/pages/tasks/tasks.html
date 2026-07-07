@@ -1,16 +1,16 @@
 <div class="page-header">
   <div>
-    <h1 class="page-title">{{ c.TASKS_PAGE_TITLE }}</h1>
-    <p class="page-subtitle">{{ c.TASKS_PAGE_SUBTITLE }}</p>
+    <h1 class="page-title">{{ constants.TASKS_PAGE_TITLE }}</h1>
+    <p class="page-subtitle">{{ constants.TASKS_PAGE_SUBTITLE }}</p>
   </div>
   @if (isAdminOrManager) {
-    <a routerLink="/tasks/add" class="btn btn-primary">+ {{ c.TASKS_ADD_BTN }}</a>
+    <a routerLink="/tasks/add" class="btn btn-primary">+ {{ constants.TASKS_ADD_BTN }}</a>
   }
 </div>
 <div class="table-card">
   @if (false) {
     <div class="state-block">
-      <p class="empty-sub">{{ c.TASKS_LOADING }}</p>
+      <p class="empty-sub">{{ constants.TASKS_LOADING }}</p>
     </div>
   }
    @else if (errorMsg) {
