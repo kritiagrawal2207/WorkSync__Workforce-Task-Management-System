@@ -72,7 +72,7 @@
           </div>
         }
 
-        @if (task.assignments?.length) {
+        @if (task.assignments.length) {
           <div class="assignee-list">
             @for (a of task.assignments; track a.id) {
               <div class="assignee-row">
@@ -99,7 +99,7 @@
       <div class="field-group">
         <label class="field-label">{{ c.TASK_COMMENTS_TITLE }}</label>
 
-        @if (task.comments?.length) {
+        @if (task.comments.length) {
           <div class="comment-list">
             @for (cm of task.comments; track cm.id) {
               <div class="comment-item">
