@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { APP_CONSTANTS } from '../../constants/string';
 @Component({
   selector: 'app-loadingspinner',
   standalone: true,
@@ -7,5 +8,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './loadingspinnercomponent.css'
 })
 export class LoadingSpinnerComponent {
-  @Input() message = 'Loading...';
+  readonly constants = APP_CONSTANTS;
+  @Input() message = APP_CONSTANTS.LOADING_MESSAGE;
 }

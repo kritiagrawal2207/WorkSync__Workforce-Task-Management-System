@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { APP_CONSTANTS } from '../../constants/string';
 @Component({
   selector: 'app-emptystate',
   standalone: true,
@@ -7,6 +8,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './emptystatecomponent.css'
 })
 export class EmptyStateComponent {
-  @Input() title = 'Nothing here yet';
-  @Input() subtitle = '';
+  readonly constants = APP_CONSTANTS;
+  @Input() title = APP_CONSTANTS.EMPTY_STATE_TITLE;
+  @Input() subtitle = APP_CONSTANTS.EMPTY_STATE_SUBTITLE;
 }

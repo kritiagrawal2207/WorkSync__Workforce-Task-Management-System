@@ -54,5 +54,8 @@ export const APP_CONSTANTS = {
   NO_EMPLOYEES_FOUND: 'No employees found',
   NO_EMPLOYEES_YET: 'No employees yet',
   NO_EMPLOYEES_SEARCH_SUBTITLE: 'Try a different search term.',
-  NO_EMPLOYEES_EMPTY_SUBTITLE: 'Click Add Employee to get started.'
+  NO_EMPLOYEES_EMPTY_SUBTITLE: 'Click Add Employee to get started.',
+  EMPTY_STATE_TITLE: 'Nothing here yet',
+  EMPTY_STATE_SUBTITLE: '',
+  LOADING_MESSAGE: 'Loading...',
 };
