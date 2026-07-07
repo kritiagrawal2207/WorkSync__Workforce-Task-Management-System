@@ -12,12 +12,11 @@ import { constants } from '../../constants/string';
   templateUrl: './tasks.html',
 })
 export class TasksComponent implements OnInit {
-  readonly c = constants;
+  readonly constants = constants;
   tasks: TaskItem[] = [];
   isLoading = false;
   errorMsg = '';
   role = '';
-
   constructor(
     private taskService: TaskService,
     private authService: AuthService,
@@ -48,9 +47,9 @@ export class TasksComponent implements OnInit {
       },
       error: (err) => {
         if (!this.isAdminOrManager && err?.status === 404) {
-          this.errorMsg = 'Your account is not linked to an employee profile. Please contact your Admin.';
+          this.errorMsg = this.constants.ATTENDANCE_NO_EMPLOYEE;
         } else {
-          this.errorMsg = this.c.TASKS_LOAD_ERROR;
+          this.errorMsg = this.constants.TASKS_LOAD_ERROR;
         }
         this.cdr.detectChanges();
       },

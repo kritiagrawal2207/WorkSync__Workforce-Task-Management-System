@@ -19,7 +19,7 @@ import { constants } from '../../../constants/string';
   templateUrl: './task-detail.html',
 })
 export class TaskDetailComponent implements OnInit {
-  readonly c = constants;
+  readonly constants = constants;
   task: TaskItem | null = null;
   notFound = false;
   role = '';
@@ -64,28 +64,22 @@ export class TaskDetailComponent implements OnInit {
       this.cdr.detectChanges();
     });
   }
- 
   get isAdminOrManager(): boolean {
     return this.role === 'Admin' || this.role === 'Manager';
   }
- 
   get unassignedEmployees(): Employee[] {
     const assignedIds = this.task?.assignments?.map(a => a.employeeId) ?? [];
     return this.allEmployees.filter(e => !assignedIds.includes(e.id));
   }
- 
   saveChanges(): void {
     if (!this.task) return;
     this.isSaving = true;
     const statusChanged = this.selectedStatus !== this.task.status;
     const priorityChanged = this.selectedPriority !== this.task.priority;
- 
     if (!statusChanged && !priorityChanged) { this.isSaving = false; return; }
- 
     const calls: any[] = [];
     if (statusChanged) calls.push(this.taskService.updateStatus(this.task.id, { status: this.selectedStatus }));
     if (priorityChanged) calls.push(this.taskService.updatePriority(this.task.id, this.selectedPriority));
- 
     forkJoin(calls).subscribe({
       next: () => {
         this.task!.status = this.selectedStatus;
@@ -101,11 +95,9 @@ export class TaskDetailComponent implements OnInit {
       }
     });
   }
- 
   toggleAssignMenu(): void {
     this.showAssignMenu = !this.showAssignMenu;
   }
- 
   assignEmployee(empId: number): void {
     if (!this.task) return;
     this.taskService.assign({ taskId: this.task.id, employeeId: empId }).subscribe({
@@ -124,14 +116,12 @@ export class TaskDetailComponent implements OnInit {
       error: () => { this.toastService.show('Failed to assign', 'error'); }
     });
   }
- 
   postComment(): void {
     if (!this.task || !this.newComment.trim()) return;
     this.isCommenting = true;
     const userId = this.authService.getUserId();
     const userName = this.authService.getUser()?.name ?? 'You';
     const content = this.newComment.trim();
- 
     this.taskService.addComment({ taskId: this.task.id, userId, content }).subscribe({
       next: (comment) => {
         this.task!.comments = [...(this.task!.comments ?? []), {
