@@ -6,6 +6,7 @@ namespace WorkSyncAPI.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
+ 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<User> Users { get; set; }
@@ -19,6 +20,7 @@ namespace WorkSyncAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+ 
             modelBuilder.Entity<Department>(entity =>
             {
                 entity.ToTable("Departments");
@@ -67,6 +69,7 @@ namespace WorkSyncAPI.Data
                       .HasForeignKey(ur => ur.RoleId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
+ 
             modelBuilder.Entity<Attendance>(entity =>
             {
                 entity.ToTable("Attendances");
@@ -117,18 +120,18 @@ namespace WorkSyncAPI.Data
                       .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<Notification>(entity =>
-{
-    entity.ToTable("Notifications");
-    entity.HasKey(e => e.Id);
-    entity.Property(e => e.Title).IsRequired().HasMaxLength(255);
-    entity.Property(e => e.Message).IsRequired().HasMaxLength(1000);
-    entity.Property(e => e.IsRead).IsRequired();
-    entity.Property(e => e.CreatedAt).IsRequired();
-    entity.HasOne(e => e.User)
-          .WithMany()
-          .HasForeignKey(e => e.UserId)
-          .OnDelete(DeleteBehavior.Cascade);
-});
+            {
+                entity.ToTable("Notifications");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Type).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Message).IsRequired().HasMaxLength(500);
+                entity.Property(e => e.IsRead).IsRequired();
+                entity.Property(e => e.CreatedAt).IsRequired();
+                entity.HasOne(e => e.User)
+                      .WithMany()
+                      .HasForeignKey(e => e.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }

@@ -10,6 +10,7 @@ public class NotificationService : INotificationService
     {
         _repo = repo;
     }
+ 
     public async Task<List<NotificationResponseDto>> GetByUserIdAsync(int userId)
     {
         var list = await _repo.GetByUserIdAsync(userId);
@@ -23,7 +24,7 @@ public class NotificationService : INotificationService
         var notification = new Notification
         {
             UserId    = dto.UserId,
-            Title     = dto.Title,
+            Type      = dto.Type,
             Message   = dto.Message,
             IsRead    = false,
             CreatedAt = DateTime.UtcNow
@@ -41,7 +42,7 @@ public class NotificationService : INotificationService
     {
         Id        = n.Id,
         UserId    = n.UserId,
-        Title     = n.Title,
+        Type      = n.Type,
         Message   = n.Message,
         IsRead    = n.IsRead,
         CreatedAt = n.CreatedAt

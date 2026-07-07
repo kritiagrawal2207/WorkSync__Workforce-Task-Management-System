@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
-import { DashboardService } from '../../services/dashboard.service';
-import { NotificationService } from '../../services/notification.service';
-import { DashboardSummary, Notification } from '../../models/dashboard.model';
+import { DashboardService } from '../../shared/services/dashboard.service';
+import { NotificationService } from '../../shared/services/notification.service';
+import { DashboardSummary, Notification } from '../../shared/models/dashboard.model';
 import { AuthUser } from '../../models/auth.model';
 import { constants } from '../../constants/string';
 @Component({

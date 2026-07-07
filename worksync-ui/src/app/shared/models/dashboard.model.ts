@@ -13,7 +13,7 @@ export interface DashboardSummary {
 export interface Notification {
   id: number;
   userId: number;
-  title: string;
+  type: string;
   message: string;
   isRead: boolean;
   createdAt: string;

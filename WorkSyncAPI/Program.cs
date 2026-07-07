@@ -7,10 +7,6 @@ using WorkSyncAPI.Repositories.Interfaces;
 using WorkSyncAPI.Repositories.Implementations;
 using WorkSyncAPI.Services.Interfaces;
 using WorkSyncAPI.Services.Implementations;
-using WorkSyncAPI.Repositories.Interfaces;
-using WorkSyncAPI.Repositories.Implementations;
-using WorkSyncAPI.Services.Interfaces;
-using WorkSyncAPI.Services.Implementations;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

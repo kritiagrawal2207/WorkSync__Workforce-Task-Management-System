@@ -46,7 +46,7 @@
         >
           <div class="notif-dot" *ngIf="!notification.isRead"></div>
           <div class="notif-item-body">
-            <div class="notif-item-title">{{ notification.title }}</div>
+            <div class="notif-item-title">{{ notification.type }}</div>
             <div class="notif-item-message">{{ notification.message }}</div>
             <div class="notif-item-time">{{ notification.createdAt | date:'MMM d, h:mm a' }}</div>
           </div>
