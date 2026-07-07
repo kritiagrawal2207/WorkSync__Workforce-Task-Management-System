@@ -1,0 +1,9 @@
+.icon-circle {
+  width: var(--spacing-5xl);
+  height: var(--spacing-5xl);
+  border-radius: var(--radius-round);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-lg);
+}

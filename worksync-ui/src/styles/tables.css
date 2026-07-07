@@ -1,0 +1,29 @@
+.employee-table {
+  width: var(--table-width);
+  border-collapse: collapse;
+}
+.employee-table thead {
+  background-color: var(--color-surface-alt);
+  border-bottom: var(--border-width-thin) solid var(--color-border-soft);
+}
+.employee-table th {
+  text-align: left;
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.actions-col {
+  text-align: right;
+}
+.dept-badge {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}

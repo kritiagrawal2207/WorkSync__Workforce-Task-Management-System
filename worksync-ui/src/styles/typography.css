@@ -1,0 +1,31 @@
+body {
+  font-family: var(--primaryFont);
+  font-size: var(--bodyTextSize);
+  font-weight: var(--regularWeight);
+  line-height: var(--normalLineHeight);
+  color: var(--color-text-primary);
+}
+h1 {
+  font-size: var(--pageTitleSize);
+  font-weight: var(--boldWeight);
+}
+h2 {
+  font-size: var(--sectionTitleSize);
+  font-weight: var(--boldWeight);
+}
+h3 {
+  font-size: var(--cardTitleSize);
+  font-weight: var(--semiBoldWeight);
+}
+label {
+  font-size: var(--smallTextSize);
+  font-weight: var(--mediumWeight);
+}
+small,
+.small {
+  font-size: var(--helperTextSize);
+}
+strong,
+.strong {
+  font-weight: var(--semiBoldWeight);
+}

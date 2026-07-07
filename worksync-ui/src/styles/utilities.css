@@ -1,0 +1,17 @@
+.u-flex {
+  display: flex;
+}
+.u-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.u-text-center {
+  text-align: center;
+}
+.u-m-0 {
+  margin: 0;
+}
+.u-p-0 {
+  padding: 0;
+}

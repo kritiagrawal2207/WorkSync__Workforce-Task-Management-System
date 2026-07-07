@@ -1,0 +1,44 @@
+:host {
+  display: table-row;
+}
+
+:host:hover {
+  background-color: var(--color-surface-alt);
+}
+
+td {
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-3xl);
+  height: var(--spacing-3xl);
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  margin-left: var(--spacing-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.icon-btn svg {
+  width: var(--spacing-lg);
+  height: var(--spacing-lg);
+}
+
+.edit-btn:hover {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.delete-btn:hover {
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger);
+}
