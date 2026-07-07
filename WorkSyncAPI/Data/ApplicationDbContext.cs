@@ -15,6 +15,7 @@ namespace WorkSyncAPI.Data
         public DbSet<TaskItem> Tasks { get; set; }
         public DbSet<TaskAssignment> TaskAssignments { get; set; }
         public DbSet<TaskComment> TaskComments { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -115,6 +116,19 @@ namespace WorkSyncAPI.Data
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Restrict);
             });
+            modelBuilder.Entity<Notification>(entity =>
+{
+    entity.ToTable("Notifications");
+    entity.HasKey(e => e.Id);
+    entity.Property(e => e.Title).IsRequired().HasMaxLength(255);
+    entity.Property(e => e.Message).IsRequired().HasMaxLength(1000);
+    entity.Property(e => e.IsRead).IsRequired();
+    entity.Property(e => e.CreatedAt).IsRequired();
+    entity.HasOne(e => e.User)
+          .WithMany()
+          .HasForeignKey(e => e.UserId)
+          .OnDelete(DeleteBehavior.Cascade);
+});
         }
     }
 }

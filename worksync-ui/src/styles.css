@@ -13,6 +13,7 @@
 @import './styles/tables.css';
 @import './styles/utilities.css';
 @import "./styles/animations.css";
+ @import './styles/dashboard.css';
 * {
   box-sizing: border-box;
 }

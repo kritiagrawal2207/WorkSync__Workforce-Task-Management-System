@@ -7,6 +7,10 @@ using WorkSyncAPI.Repositories.Interfaces;
 using WorkSyncAPI.Repositories.Implementations;
 using WorkSyncAPI.Services.Interfaces;
 using WorkSyncAPI.Services.Implementations;
+using WorkSyncAPI.Repositories.Interfaces;
+using WorkSyncAPI.Repositories.Implementations;
+using WorkSyncAPI.Services.Interfaces;
+using WorkSyncAPI.Services.Implementations;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -18,6 +22,10 @@ builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IDashboardService,DashboardService>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<INotificationService,NotificationService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
