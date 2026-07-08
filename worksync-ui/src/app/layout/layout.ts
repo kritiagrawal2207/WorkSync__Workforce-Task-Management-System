@@ -12,9 +12,9 @@ import { constants } from '../constants/string';
   templateUrl: './layout.html',
 })
 export class LayoutComponent {
-  readonly constants = constants;
   user: AuthUser | null;
   role: string;
+  protected readonly constants = constants;
   constructor(private authService: AuthService, private router: Router) {
     this.user = this.authService.getUser();
     this.role = this.authService.getRole();

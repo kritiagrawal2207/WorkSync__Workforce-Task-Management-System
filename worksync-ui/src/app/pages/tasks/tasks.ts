@@ -12,7 +12,7 @@ import { constants } from '../../constants/string';
   templateUrl: './tasks.html',
 })
 export class TasksComponent implements OnInit {
-  readonly constants = constants;
+  protected readonly constants = constants;
   tasks: TaskItem[] = [];
   isLoading = false;
   errorMsg = '';

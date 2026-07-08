@@ -21,28 +21,28 @@
 </div>
 <div class="table-card">
   @if (isLoading) {
-    <app-loadingspinner [message]="constants.LOADING_EMPLOYEES"></app-loadingspinner>
+    <app-loading-spinner [message]="constants.LOADING_EMPLOYEES"></app-loading-spinner>
   } @else if (errorMessage) {
     <div class="state-block">
       <p class="error-text">{{ errorMessage }}</p>
       <button class="btn btn-secondary" (click)="loadEmployees()">{{ constants.RETRY_BUTTON }}</button>
     </div>
   } @else if (filteredEmployees.length === 0) {
-    <app-emptystate
+    <app-empty-state
       [title]="searchTerm ? constants.NO_EMPLOYEES_FOUND : constants.NO_EMPLOYEES_YET"
       [subtitle]="searchTerm ? constants.NO_EMPLOYEES_SEARCH_SUBTITLE : constants.NO_EMPLOYEES_EMPTY_SUBTITLE"
-    ></app-emptystate>
+    ></app-empty-state>
   } @else {
-    <app-employeetable
+    <app-employee-table
       [employees]="filteredEmployees"
       (delete)="askDelete($event)"
-    ></app-employeetable>
+    ></app-employee-table>
   }
 </div>
 @if (showDeleteConfirm && employeeToDelete) {
-  <app-confirmdialog
+  <app-confirm-dialog
     [employeeName]="employeeToDelete.name"
     (confirmed)="confirmDelete()"
     (cancelled)="cancelDelete()"
-  ></app-confirmdialog>
+  ></app-confirm-dialog>
 }

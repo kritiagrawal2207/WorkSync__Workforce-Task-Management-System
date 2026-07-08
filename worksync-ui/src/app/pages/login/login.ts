@@ -12,7 +12,7 @@ import { constants } from '../../constants/string';
   templateUrl: './login.html',
 })
 export class LoginComponent {
-  readonly constants = constants;
+  protected readonly constants = constants;
   email        = '';
   password     = '';
   errorMessage = '';

@@ -1,16 +1,16 @@
 <div class="login-page">
   <div class="left-panel">
     <div class="brand-block">
-      <div class="brand-logo">{{ constants.BRAND_ABBR }}</div>
+      <div class="brand-logo">{{ constants.App_LOGO }}</div>
       <h1 class="brand-name">{{ constants.APP_NAME }}</h1>
-      <p class="brand-tagline">{{ constants.LOGIN_BRAND_TAGLINE }}</p>
+      <p class="brand-tagline">{{ constants.APP_TAGLINE }}</p>
     </div>
     <ul class="feature-list">
-      <li><span class="feature-icon">👥</span> {{ constants.LOGIN_FEATURE_1 }}</li>
-      <li><span class="feature-icon">✅</span> {{ constants.LOGIN_FEATURE_2 }}</li>
-      <li><span class="feature-icon">📊</span> {{ constants.LOGIN_FEATURE_3 }}</li>
+      <li>{{ constants.FEATURE_1 }}</li>
+      <li>{{ constants.FEATURE_2 }}</li>
+     <li>{{ constants.FEATURE_3 }}</li>
     </ul>
-    <p class="brand-footer">{{ constants.LOGIN_COPYRIGHT }}</p>
+    <p class="brand-footer">{{ constants.COPYRIGHT }}</p>
   </div>
   <div class="right-panel">
     <div class="form-container">
@@ -19,45 +19,45 @@
         <p class="form-subtitle">{{ constants.LOGIN_SUBTITLE }}</p>
       </div>
       <div class="field-section">
-        <div class="section-label">{{ constants.LOGIN_ACCOUNT_LABEL }}</div>
+        <div class="section-label">{{ constants.ACCOUNT_LABEL }}</div>
         <div class="input-group">
-          <label for="email">{{ constants.LOGIN_EMAIL_LABEL }}</label>
+          <label for="email">{{ constants.EMAIL_LABEL }}</label>
           <div class="input-wrapper">
-            <span class="input-icon">✉</span>
+            <span class="input-icon">{{ constants.LOGIN_EMAIL_ICON }}</span>
             <input id="email" type="email"
-              [placeholder]="constants.LOGIN_EMAIL_PLACEHOLDER"
+              [placeholder]="constants.EMAIL_PLACEHOLDER"
               [(ngModel)]="email"
               autocomplete="username" />
           </div>
         </div>
       </div>
       <div class="field-section">
-        <div class="section-label">{{ constants.LOGIN_SECURITY_LABEL }}</div>
+        <div class="section-label">{{ constants.SECURITY_LABEL }}</div>
         <div class="input-group">
-          <label for="password">{{ constants.LOGIN_PASSWORD_LABEL }}</label>
+          <label for="password">{{ constants.PASSWORD_LABEL }}</label>
           <div class="input-wrapper">
-            <span class="input-icon">🔒</span>
+            <span class="input-icon">{{ constants.LOGIN_PASSWORD_ICON }}</span>
             <input id="password" type="password"
-              [placeholder]="constants.LOGIN_PASSWORD_PLACEHOLDER"
+              [placeholder]="constants.PASSWORD_PLACEHOLDER"
               [(ngModel)]="password"
               autocomplete="current-password" />
           </div>
         </div>
         <span class="forgot-link" (click)="showForgotModal = true">
-          {{ constants.LOGIN_FORGOT_PASSWORD }}
+          {{ constants.FORGOT_PASSWORD }}
         </span>
       </div>
       @if (errorMessage) {
         <div class="error-box">
-          <span>⚠</span> {{ errorMessage }}
+          <span>{{ constants.LOGIN_ERROR_ICON }}</span> {{ errorMessage }}
         </div>
       }
       <button class="sign-btn" (click)="login()" [disabled]="isLoading">
         @if (isLoading) {
           <span class="spinner"></span>
-          <span>{{ constants.LOGIN_SIGNING_IN }}</span>
+          <span>{{ constants.LOADING }}</span>
         } @else {
-          {{ constants.LOGIN_SIGN_IN }}
+          <span>{{ constants.SIGN_IN }}</span>
         }
       </button>
     </div>
@@ -69,11 +69,11 @@
       <h3>{{ constants.LOGIN_FORGOT_TITLE }}</h3>
       <p>{{ constants.LOGIN_FORGOT_SUBTITLE }}</p>
       <div class="input-group">
-        <label>{{ constants.LOGIN_EMAIL_LABEL }}</label>
+        <label>{{ constants.EMAIL_LABEL }}</label>
         <div class="input-wrapper">
           <span class="input-icon">✉</span>
           <input type="email"
-            [placeholder]="constants.LOGIN_EMAIL_PLACEHOLDER"
+            [placeholder]="constants.EMAIL_PLACEHOLDER"
             [(ngModel)]="forgotEmail" />
         </div>
       </div>

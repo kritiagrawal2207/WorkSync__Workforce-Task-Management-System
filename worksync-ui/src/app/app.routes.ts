@@ -11,7 +11,6 @@ import { TaskDetailComponent } from './pages/tasks/task-detail/task-detail';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/roleguard';
 import { AttendanceHistoryComponent } from './pages/attendance/history/attendance-history.component';
-
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {

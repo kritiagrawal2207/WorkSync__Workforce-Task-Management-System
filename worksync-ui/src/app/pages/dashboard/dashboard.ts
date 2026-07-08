@@ -10,6 +10,6 @@ import { constants } from '../../constants/string';
   templateUrl: './dashboard.html',
 })
 export class DashboardComponent {
-  readonly constants = constants;
+  protected readonly constants = constants;
   readonly user: AuthUser | null = inject(AuthService).getUser();
 }

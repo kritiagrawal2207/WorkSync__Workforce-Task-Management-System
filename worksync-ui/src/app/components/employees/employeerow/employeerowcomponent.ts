@@ -3,13 +3,13 @@ import { RouterLink } from '@angular/router';
 import { Employee } from '../../../models/employeemodel';
 import { constants } from '../../../constants/string';
 @Component({
-  selector: '[app-employeerow]',
+  selector: '[app-employee-row]',
   standalone: true,
   imports: [RouterLink],
   templateUrl: './employeerowcomponent.html',
 })
 export class EmployeeRowComponent {
-  readonly constants = constants;
   @Input() employee!: Employee;
   @Output() delete = new EventEmitter<void>();
+  protected readonly constants = constants;
 }
