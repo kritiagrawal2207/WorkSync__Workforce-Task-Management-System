@@ -7,7 +7,7 @@ import { constants } from '../../constants/string';
   templateUrl: './confirmdialogcomponent.html',
 })
 export class ConfirmDialogComponent {
-  readonly constants = constants;
+  constants: any;
   @Input() employeeName = '';
   @Output() confirmed = new EventEmitter<void>();
   @Output() cancelled = new EventEmitter<void>();

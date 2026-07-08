@@ -10,7 +10,7 @@ import { constants } from '../../../constants/string';
   templateUrl: './employeetablecomponent.html',
 })
 export class EmployeeTableComponent {
-  readonly constants = constants;
   @Input() employees: Employee[] = [];
   @Output() delete = new EventEmitter<Employee>();
+  constants: any;
 }

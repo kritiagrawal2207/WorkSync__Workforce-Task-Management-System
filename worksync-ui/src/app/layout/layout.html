@@ -19,11 +19,6 @@
       <a routerLink="/tasks" routerLinkActive="active" class="nav-item">
         <span class="nav-icon">✅</span>{{ constants.NAV_TASKS }}
       </a>
-      @if (role === 'Admin') {
-        <a routerLink="/admin" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">⚙️</span>{{ constants.NAV_ADMIN }}
-        </a>
-      }
     </nav>
     <div class="sidebar-footer">
       <button class="logout-btn" (click)="logout()">

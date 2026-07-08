@@ -21,7 +21,6 @@ import { constants } from '../../../constants/string';
   templateUrl: './employeelistcomponent.html',
 })
 export class EmployeeListComponent implements OnInit {
-  readonly constants = constants;
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
   searchTerm = '';
@@ -29,6 +28,7 @@ export class EmployeeListComponent implements OnInit {
   errorMessage = '';
   showDeleteConfirm = false;
   employeeToDelete: Employee | null = null;
+  constants: any;
   constructor(
     private employeeService: EmployeeService,
     private toastService: ToastService,
@@ -48,7 +48,7 @@ export class EmployeeListComponent implements OnInit {
       this.cdr.detectChanges(); 
     },
     error: () => {
-      this.errorMessage = this.constants.UNABLE_TO_LOAD_EMPLOYEES;
+      this.errorMessage = constants.UNABLE_TO_LOAD_EMPLOYEES;
       this.isLoading = false;
       this.cdr.detectChanges(); 
     }
@@ -87,12 +87,12 @@ export class EmployeeListComponent implements OnInit {
       next: () => {
         this.employees = this.employees.filter((e) => e.id !== id);
         this.applyFilter();
-        this.toastService.show(this.constants.DELETE_SUCCESS.replace('{name}', name), 'success');
+        this.toastService.show(constants.DELETE_SUCCESS.replace('{name}', name), 'success');
         this.showDeleteConfirm = false;
         this.employeeToDelete = null;
       },
       error: () => {
-        this.toastService.show(this.constants.DELETE_FAILED, 'error');
+        this.toastService.show(constants.DELETE_FAILED, 'error');
         this.showDeleteConfirm = false;
       }
     });

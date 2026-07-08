@@ -11,8 +11,7 @@ import { constants } from '../../constants/string';
   styleUrl: './attendance.css'
 })
 export class AttendanceComponent implements OnInit {
-  readonly constants = constants; 
+   constants: any;
   constructor(private attendanceService: AttendanceService) {}
-
   ngOnInit() {}
 }

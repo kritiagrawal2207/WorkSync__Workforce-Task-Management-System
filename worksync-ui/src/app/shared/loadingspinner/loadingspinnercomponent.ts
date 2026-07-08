@@ -7,6 +7,5 @@ import { constants } from '../../constants/string';
   templateUrl: './loadingspinnercomponent.html',
 })
 export class LoadingSpinnerComponent {
-  readonly constants = constants;
   @Input() message = constants.LOADING_MESSAGE;
 }

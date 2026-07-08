@@ -6,7 +6,6 @@ import { EmployeeListComponent }from './components/employees/employeelist/employ
 import { EmployeeFormComponent } from './components/employees/employeeform/employeeformcomponent';
 import { AttendanceComponent }from './pages/attendance/attendance';
 import { TasksComponent }from './pages/tasks/tasks';
-import { AdminComponent } from './pages/admin/admin';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard }from './guards/roleguard';
 export const routes: Routes = [
@@ -21,9 +20,8 @@ export const routes: Routes = [
         ]
       },
       { path: 'attendance', component: AttendanceComponent },
-      { path: 'tasks', component: TasksComponent },
-      {path: 'admin',component: AdminComponent,canActivate: [roleGuard],data: { roles: ['Admin'] },
-      },
+      { path: 'tasks', component: TasksComponent }
+       ,
     ],
   },
   { path: '**', redirectTo: 'login' },

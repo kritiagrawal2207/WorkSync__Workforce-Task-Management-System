@@ -13,9 +13,9 @@ import { constants } from '../constants/string';
   styleUrl: './layout.css',
 })
 export class LayoutComponent {
-  readonly constants = constants;
   user: AuthUser | null;
   role: string;
+  constants: any;
   constructor(private authService: AuthService, private router: Router) {
     this.user = this.authService.getUser();
     this.role = this.authService.getRole();

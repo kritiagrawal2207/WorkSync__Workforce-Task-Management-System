@@ -9,5 +9,5 @@ import { constants } from '../../constants/string';
   styleUrl: './tasks.css',
 })
 export class TasksComponent {
-  readonly constants = constants;
+  constants: any;
 }
