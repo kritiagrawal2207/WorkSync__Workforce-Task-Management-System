@@ -1,22 +1,22 @@
 <div class="page-header">
   <div>
-    <h1 class="page-title">{{ c.TASKS_PAGE_TITLE }}</h1>
-    <p class="page-subtitle">{{ c.TASKS_PAGE_SUBTITLE }}</p>
+    <h1 class="page-title">{{ constants.TASKS_PAGE_TITLE }}</h1>
+    <p class="page-subtitle">{{ constants.TASKS_PAGE_SUBTITLE }}</p>
   </div>
   @if (isAdminOrManager) {
-    <a routerLink="/tasks/add" class="btn btn-primary">+ {{ c.TASKS_ADD_BTN }}</a>
+    <a routerLink="/tasks/add" class="btn btn-primary">+ {{ constants.TASKS_ADD_BTN }}</a>
   }
 </div>
 <div class="table-card">
   @if (false) {
     <div class="state-block">
-      <p class="empty-sub">{{ c.TASKS_LOADING }}</p>
+      <p class="empty-sub">{{ constants.TASKS_LOADING }}</p>
     </div>
   }
    @else if (errorMsg) {
     <div class="state-block">
       <p class="task-error-msg">{{ errorMsg }}</p>
-      <button class="btn btn-secondary" (click)="loadTasks()">{{ c.RETRY_BUTTON }}</button>
+      <button class="btn btn-secondary" (click)="loadTasks()">{{ constants.RETRY_BUTTON }}</button>
     </div>
   } @else if (tasks.length === 0) {
     <div class="state-block">
@@ -24,18 +24,18 @@
         <path stroke-linecap="round" stroke-linejoin="round"
           d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
       </svg>
-      <p class="empty-title">{{ c.TASKS_EMPTY_TITLE }}</p>
-      <p class="empty-sub">{{ isAdminOrManager ? c.TASKS_EMPTY_ADMIN_SUB : c.TASKS_EMPTY_EMP_SUB }}</p>
+      <p class="empty-title">{{ constants.TASKS_EMPTY_TITLE }}</p>
+      <p class="empty-sub">{{ isAdminOrManager ? constants.TASKS_EMPTY_ADMIN_SUB : constants.TASKS_EMPTY_EMP_SUB }}</p>
     </div>
   } @else {
     <table class="employee-table">
       <thead>
         <tr>
-          <th>{{ c.TASKS_COL_TITLE }}</th>
-          <th>{{ c.TASKS_COL_PRIORITY }}</th>
-          <th>{{ c.TASKS_COL_STATUS }}</th>
-          <th>{{ c.TASKS_COL_DUE }}</th>
-          <th>{{ c.TASKS_COL_ASSIGNED }}</th>
+          <th>{{ constants.TASKS_COL_TITLE }}</th>
+          <th>{{ constants.TASKS_COL_PRIORITY }}</th>
+          <th>{{ constants.TASKS_COL_STATUS }}</th>
+          <th>{{ constants.TASKS_COL_DUE }}</th>
+          <th>{{ constants.TASKS_COL_ASSIGNED }}</th>
         </tr>
       </thead>
       <tbody>

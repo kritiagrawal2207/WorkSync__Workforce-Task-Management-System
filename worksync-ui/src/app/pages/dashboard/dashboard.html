@@ -55,27 +55,18 @@
     </div>
   </div>
 </div>
-
-<!-- ── Loading ─────────────────────────────────────────────────────────────── -->
 <div class="dashboard-state" *ngIf="loading">
   <span class="spinner"></span>
   <span>{{ constants.DASHBOARD_LOADING }}</span>
 </div>
-
-<!-- ── Error ───────────────────────────────────────────────────────────────── -->
 <div class="dashboard-state dashboard-state--error" *ngIf="error && !loading">
   <p>{{ constants.DASHBOARD_ERROR }}</p>
   <button class="btn btn-primary" (click)="retry()">
     {{ constants.DASHBOARD_RETRY }}
   </button>
 </div>
-
-<!-- ── Dashboard content ───────────────────────────────────────────────────── -->
 <div class="dashboard-content" *ngIf="!loading && !error && summary">
-
-  <!-- Stats grid -->
   <div class="stats-grid">
-
     <div class="stat-card stat-card--blue">
       <div class="stat-icon">📋</div>
       <div class="stat-body">
@@ -83,7 +74,6 @@
         <div class="stat-value">{{ summary.totalTasks }}</div>
       </div>
     </div>
-
     <div class="stat-card stat-card--green">
       <div class="stat-icon">✅</div>
       <div class="stat-body">
@@ -91,7 +81,6 @@
         <div class="stat-value">{{ summary.completedTasks }}</div>
       </div>
     </div>
-
     <div class="stat-card stat-card--orange">
       <div class="stat-icon">⏳</div>
       <div class="stat-body">
@@ -99,7 +88,6 @@
         <div class="stat-value">{{ summary.pendingTasks }}</div>
       </div>
     </div>
-
     <div class="stat-card stat-card--purple">
       <div class="stat-icon">👥</div>
       <div class="stat-body">
@@ -109,17 +97,11 @@
         </div>
       </div>
     </div>
-
   </div>
-
-  <!-- Charts row -->
   <div class="charts-row">
-
-    <!-- Bar chart: Task Status -->
     <div class="chart-card">
       <h3 class="chart-title">{{ constants.DASHBOARD_TASKS_CHART_TITLE }}</h3>
       <div class="bar-chart">
-
         <div class="bar-row">
           <span class="bar-label">{{ constants.DASHBOARD_COMPLETED_TASKS }}</span>
           <div class="bar-track">
@@ -130,7 +112,6 @@
           </div>
           <span class="bar-count">{{ summary.completedTasks }}</span>
         </div>
-
         <div class="bar-row">
           <span class="bar-label">{{ constants.DASHBOARD_PENDING_TASKS }}</span>
           <div class="bar-track">
@@ -144,8 +125,6 @@
 
       </div>
     </div>
-
-    <!-- Donut chart: Attendance -->
     <div class="chart-card chart-card--center">
       <h3 class="chart-title">{{ constants.DASHBOARD_ATTENDANCE }}</h3>
       <div class="donut-wrapper">
@@ -168,15 +147,11 @@
     </div>
 
   </div>
-
-  <!-- Employee workload table -->
   <div class="workload-card">
     <h3 class="chart-title">{{ constants.DASHBOARD_WORKLOAD_CHART_TITLE }}</h3>
-
     <div class="dashboard-state" *ngIf="summary.employeeWorkloads.length === 0">
       {{ constants.DASHBOARD_NO_WORKLOAD }}
     </div>
-
     <table class="workload-table" *ngIf="summary.employeeWorkloads.length > 0">
       <thead>
         <tr>
@@ -201,5 +176,4 @@
       </tbody>
     </table>
   </div>
-
 </div>

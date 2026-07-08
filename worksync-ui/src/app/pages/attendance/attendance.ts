@@ -13,7 +13,7 @@ type AttendanceState = 'loading' | 'not-checked-in' | 'checked-in' | 'checked-ou
   templateUrl: './attendance.html',
 })
 export class AttendanceComponent implements OnInit {
-  readonly constants = constants;
+  protected readonly constants = constants;
   state: AttendanceState = 'loading';
   todayRecord: Attendance | null = null;
   employeeId = 0;

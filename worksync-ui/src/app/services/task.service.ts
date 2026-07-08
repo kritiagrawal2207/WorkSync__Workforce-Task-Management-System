@@ -3,11 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { TaskItem, TaskComment, TaskCreateRequest, TaskAssignRequest, TaskStatusUpdateRequest, TaskCommentCreateRequest } from '../models/task.model';
- 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
   private http = inject(HttpClient);
- 
   getAll(): Observable<TaskItem[]> {
     return this.http.get<TaskItem[]>(API_ENDPOINTS.tasks.root);
   }

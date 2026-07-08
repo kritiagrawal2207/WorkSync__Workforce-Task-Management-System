@@ -11,7 +11,6 @@ import { ToastService } from '../../../shared/toast/toastservice';
 import { TaskItem } from '../../../models/task.model';
 import { Employee } from '../../../models/employeemodel';
 import { constants } from '../../../constants/string';
- 
 @Component({
   selector: 'app-task-detail',
   standalone: true,
@@ -19,11 +18,10 @@ import { constants } from '../../../constants/string';
   templateUrl: './task-detail.html',
 })
 export class TaskDetailComponent implements OnInit {
-  readonly c = constants;
+  readonly constants = constants;
   task: TaskItem | null = null;
   notFound = false;
   role = '';
- 
   selectedStatus = '';
   selectedPriority = '';
   allEmployees: Employee[] = [];
@@ -31,10 +29,8 @@ export class TaskDetailComponent implements OnInit {
   showAssignMenu = false;
   newComment = '';
   isCommenting = false;
- 
   readonly statuses = ['Pending', 'In Progress', 'Completed'];
   readonly priorities = ['Low', 'Medium', 'High'];
- 
   constructor(
     private taskService: TaskService,
     private authService: AuthService,
@@ -44,12 +40,10 @@ export class TaskDetailComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
- 
   ngOnInit(): void {
     this.role = this.authService.getRole();
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) { this.notFound = true; return; }
- 
     forkJoin({
       task: this.taskService.getById(+id).pipe(catchError(() => of(null))),
       employees: this.employeeService.getAll().pipe(catchError(() => of([] as Employee[])))
@@ -64,28 +58,22 @@ export class TaskDetailComponent implements OnInit {
       this.cdr.detectChanges();
     });
   }
- 
   get isAdminOrManager(): boolean {
     return this.role === 'Admin' || this.role === 'Manager';
   }
- 
   get unassignedEmployees(): Employee[] {
     const assignedIds = this.task?.assignments?.map(a => a.employeeId) ?? [];
     return this.allEmployees.filter(e => !assignedIds.includes(e.id));
   }
- 
   saveChanges(): void {
     if (!this.task) return;
     this.isSaving = true;
     const statusChanged = this.selectedStatus !== this.task.status;
     const priorityChanged = this.selectedPriority !== this.task.priority;
- 
     if (!statusChanged && !priorityChanged) { this.isSaving = false; return; }
- 
     const calls: any[] = [];
     if (statusChanged) calls.push(this.taskService.updateStatus(this.task.id, { status: this.selectedStatus }));
     if (priorityChanged) calls.push(this.taskService.updatePriority(this.task.id, this.selectedPriority));
- 
     forkJoin(calls).subscribe({
       next: () => {
         this.task!.status = this.selectedStatus;
@@ -101,11 +89,9 @@ export class TaskDetailComponent implements OnInit {
       }
     });
   }
- 
   toggleAssignMenu(): void {
     this.showAssignMenu = !this.showAssignMenu;
   }
- 
   assignEmployee(empId: number): void {
     if (!this.task) return;
     this.taskService.assign({ taskId: this.task.id, employeeId: empId }).subscribe({
@@ -124,14 +110,12 @@ export class TaskDetailComponent implements OnInit {
       error: () => { this.toastService.show('Failed to assign', 'error'); }
     });
   }
- 
   postComment(): void {
     if (!this.task || !this.newComment.trim()) return;
     this.isCommenting = true;
     const userId = this.authService.getUserId();
     const userName = this.authService.getUser()?.name ?? 'You';
     const content = this.newComment.trim();
- 
     this.taskService.addComment({ taskId: this.task.id, userId, content }).subscribe({
       next: (comment) => {
         this.task!.comments = [...(this.task!.comments ?? []), {
@@ -150,7 +134,6 @@ export class TaskDetailComponent implements OnInit {
       }
     });
   }
- 
   removeAssignment(assignmentId: number, empName: string): void {
     this.taskService.unassign(assignmentId).subscribe({
       next: () => {
@@ -161,7 +144,6 @@ export class TaskDetailComponent implements OnInit {
       error: () => { this.toastService.show('Failed to remove', 'error'); }
     });
   }
- 
   deleteTask(): void {
     if (!this.task) return;
     this.taskService.delete(this.task.id).subscribe({
@@ -172,7 +154,6 @@ export class TaskDetailComponent implements OnInit {
       error: () => { this.toastService.show('Failed to delete', 'error'); }
     });
   }
- 
   priorityClass(p: string): string { return 'badge-priority-' + p.toLowerCase(); }
   statusClass(s: string): string { return 'badge-status-' + s.toLowerCase().replace(/\s+/g, '-'); }
 }

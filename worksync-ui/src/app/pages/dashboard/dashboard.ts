@@ -11,10 +11,9 @@ import { constants } from '../../constants/string';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css',
 })
-export class DashboardComponent implements OnInit {
-  readonly constants = constants;
+export class DashboardComponent {
+  protected readonly constants = constants;
   readonly user: AuthUser | null = inject(AuthService).getUser();
   private readonly dashboardService    = inject(DashboardService);
   private readonly notificationService = inject(NotificationService);

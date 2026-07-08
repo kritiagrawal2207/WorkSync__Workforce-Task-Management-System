@@ -15,13 +15,13 @@ import { constants } from '../../../constants/string';
   templateUrl: './employeeformcomponent.html',
 })
 export class EmployeeFormComponent implements OnInit {
-  readonly constants = constants;
   form!: FormGroup;
   departments: Department[] = [];
   employeeId: number | null = null;
   isEditMode = false;
   isSubmitting = false;
   isLoadingEmployee = false;
+  protected readonly constants = constants;
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
@@ -55,7 +55,7 @@ export class EmployeeFormComponent implements OnInit {
       this.departments = data;
       this.cdr.detectChanges();  
     },
-      error: () => this.toastService.show(this.constants.LOAD_DEPARTMENTS_ERROR, 'error')
+      error: () => this.toastService.show(constants.LOAD_DEPARTMENTS_ERROR, 'error')
     });
   }
   private loadEmployeeForEdit(id: number): void {
@@ -72,7 +72,7 @@ export class EmployeeFormComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: () => {
-        this.toastService.show(this.constants.LOAD_EMPLOYEE_ERROR, 'error');
+        this.toastService.show(constants.LOAD_EMPLOYEE_ERROR, 'error');
         this.isLoadingEmployee = false;
         this.cdr.detectChanges(); 
         this.router.navigate(['/employees']);
@@ -101,7 +101,7 @@ export class EmployeeFormComponent implements OnInit {
     request$.subscribe({
       next: () => {
         this.toastService.show(
-          this.isEditMode ? this.constants.EMPLOYEE_UPDATED_SUCCESS : this.constants.EMPLOYEE_ADDED_SUCCESS,
+          this.isEditMode ? constants.EMPLOYEE_UPDATED_SUCCESS : constants.EMPLOYEE_ADDED_SUCCESS,
           'success'
         );
         this.router.navigate(['/employees']);
@@ -109,9 +109,9 @@ export class EmployeeFormComponent implements OnInit {
       error: (err) => {
         this.isSubmitting = false;
         if (err.status === 409) {
-          this.toastService.show(err.error?.message ?? this.constants.EMAIL_IN_USE_ERROR, 'error');
+          this.toastService.show(err.error?.message ?? constants.EMAIL_IN_USE_ERROR, 'error');
         } else {
-          this.toastService.show(this.constants.GENERIC_ERROR, 'error');
+          this.toastService.show(constants.GENERIC_ERROR, 'error');
         }
       }
     });

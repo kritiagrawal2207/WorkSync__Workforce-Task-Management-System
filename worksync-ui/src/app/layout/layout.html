@@ -1,28 +1,28 @@
 <div class="app-shell">
   <aside class="sidebar">
     <div class="sidebar-brand">
-      <div class="brand-logo">{{ constants.BRAND_ABBR }}</div>
+      <div class="brand-logo">{{ constants.App_LOGO }}</div>
       <span class="brand-name">{{ constants.APP_NAME }}</span>
     </div>
     <nav class="sidebar-nav">
       <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
-        <span class="nav-icon">📊</span>{{ constants.NAV_DASHBOARD }}
+        {{ constants.NAV_DASHBOARD }}
       </a>
       @if (role === 'Admin' || role === 'Manager') {
         <a routerLink="/employees" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">👥</span>{{ constants.NAV_EMPLOYEES }}
+          {{ constants.NAV_EMPLOYEES }}
         </a>
       }
       <a routerLink="/attendance" routerLinkActive="active" class="nav-item">
-        <span class="nav-icon">🕐</span>{{ constants.NAV_ATTENDANCE }}
+        {{ constants.NAV_ATTENDANCE }}
       </a>
       <a routerLink="/tasks" routerLinkActive="active" class="nav-item">
-        <span class="nav-icon">✅</span>{{ constants.NAV_TASKS }}
+      {{ constants.NAV_TASKS }}
       </a>
     </nav>
     <div class="sidebar-footer">
       <button class="logout-btn" (click)="logout()">
-        <span>🚪</span> {{ constants.LOGOUT }}
+         {{ constants.LOGOUT }}
       </button>
     </div>
   </aside>

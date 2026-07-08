@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkSyncAPI.DTOs.Attendance;
 using WorkSyncAPI.Services.Interfaces;
-
 namespace WorkSyncAPI.Controllers
 {
     [Route("api/[controller]")]
