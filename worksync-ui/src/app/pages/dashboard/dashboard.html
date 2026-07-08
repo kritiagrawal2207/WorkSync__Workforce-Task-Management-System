@@ -107,7 +107,7 @@
           <div class="bar-track">
             <div
               class="bar-fill bar-fill--green"
-              [style.width.%]="getCompletedPercent()"
+              [style.width.%]="completedPercent"
             ></div>
           </div>
           <span class="bar-count">{{ summary.completedTasks }}</span>
@@ -117,7 +117,7 @@
           <div class="bar-track">
             <div
               class="bar-fill bar-fill--orange"
-              [style.width.%]="getPendingPercent()"
+              [style.width.%]="pendingPercent"
             ></div>
           </div>
           <span class="bar-count">{{ summary.pendingTasks }}</span>
@@ -137,7 +137,7 @@
           <circle
             class="donut-fill"
             cx="60" cy="60" r="48"
-            [style.stroke-dasharray]="getDonutDash()"
+            [style.stroke-dasharray]="donutDash"
           />
         </svg>
         <div class="donut-label">

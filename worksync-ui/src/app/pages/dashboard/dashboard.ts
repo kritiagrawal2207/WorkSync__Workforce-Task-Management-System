@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { DashboardService } from '../../shared/services/dashboard.service';
@@ -12,17 +12,23 @@ import { constants } from '../../constants/string';
   imports: [CommonModule],
   templateUrl: './dashboard.html',
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   protected readonly constants = constants;
   readonly user: AuthUser | null = inject(AuthService).getUser();
   private readonly dashboardService    = inject(DashboardService);
   private readonly notificationService = inject(NotificationService);
+  private readonly cdr = inject(ChangeDetectorRef);
   summary: DashboardSummary | null = null;
   notifications: Notification[]    = [];
   unreadCount    = 0;
   loading        = true;
   error          = false;
   showNotifPanel = false;
+  completedPercent = 0;
+  pendingPercent   = 0;
+  donutDash        = `0 301.59`;
+  maxWorkload      = 1;
+  readonly DONUT_CIRCUMFERENCE = 301.59;
   ngOnInit(): void {
     this.loadSummary();
     if (this.user?.userId) {
@@ -34,21 +40,27 @@ export class DashboardComponent {
     this.error   = false;
     this.dashboardService.getSummary().subscribe({
       next: (data) => {
-        this.summary = data;
-        this.loading = false;
-      },
+    this.summary          = data;
+    this.loading          = false;
+    this.completedPercent = data.totalTasks ? Math.round((data.completedTasks / data.totalTasks) * 100) : 0;
+    this.pendingPercent   = data.totalTasks ? Math.round((data.pendingTasks   / data.totalTasks) * 100) : 0;
+    this.maxWorkload      = data.employeeWorkloads?.length ? Math.max(...data.employeeWorkloads.map((w: any) => w.taskCount)) : 1;
+    const filled          = ((data.attendancePercentage ?? 0) / 100) * this.DONUT_CIRCUMFERENCE;
+    this.donutDash        = `${filled} ${this.DONUT_CIRCUMFERENCE}`;
+    this.cdr.detectChanges(); 
+    },
       error: () => {
         this.error   = true;
         this.loading = false;
       },
     });
   }
-
   private loadNotifications(userId: number): void {
     this.notificationService.getByUser(userId).subscribe({
       next: (data) => {
         this.notifications = data;
         this.unreadCount   = data.filter(n => !n.isRead).length;
+        this.cdr.detectChanges();
       },
     });
   }
@@ -78,25 +90,7 @@ export class DashboardComponent {
   retry(): void {
     this.loadSummary();
   }
-  getCompletedPercent(): number {
-    if (!this.summary?.totalTasks) return 0;
-    return Math.round((this.summary.completedTasks / this.summary.totalTasks) * 100);
-  }
-  getPendingPercent(): number {
-    if (!this.summary?.totalTasks) return 0;
-    return Math.round((this.summary.pendingTasks / this.summary.totalTasks) * 100);
-  }
-  getMaxWorkload(): number {
-    if (!this.summary?.employeeWorkloads?.length) return 1;
-    return Math.max(...this.summary.employeeWorkloads.map(w => w.taskCount));
-  }
   getWorkloadPercent(taskCount: number): number {
-    const max = this.getMaxWorkload();
-    return max === 0 ? 0 : Math.round((taskCount / max) * 100);
-  }
-  readonly DONUT_CIRCUMFERENCE = 301.59;
-  getDonutDash(): string {
-    const filled = ((this.summary?.attendancePercentage ?? 0) / 100) * this.DONUT_CIRCUMFERENCE;
-    return `${filled} ${this.DONUT_CIRCUMFERENCE}`;
+    return this.maxWorkload === 0 ? 0 : Math.round((taskCount / this.maxWorkload) * 100);
   }
 }
