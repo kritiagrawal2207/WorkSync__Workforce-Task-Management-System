@@ -11,9 +11,7 @@ import { constants } from '../../../constants/string';
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [
-    RouterLink,
-    ConfirmDialogComponent,
+  imports: [RouterLink,ConfirmDialogComponent,
     EmployeeTableComponent,
     EmptyStateComponent,
     LoadingSpinnerComponent
@@ -28,7 +26,7 @@ export class EmployeeListComponent implements OnInit {
   errorMessage = '';
   showDeleteConfirm = false;
   employeeToDelete: Employee | null = null;
-  constants: any;
+  protected readonly constants = constants;
   constructor(
     private employeeService: EmployeeService,
     private toastService: ToastService,

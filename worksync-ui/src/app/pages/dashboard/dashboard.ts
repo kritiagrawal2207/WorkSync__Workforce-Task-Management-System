@@ -11,6 +11,6 @@ import { constants } from '../../constants/string';
   styleUrl: './dashboard.css',
 })
 export class DashboardComponent {
-  constants: any;
+  protected readonly constants = constants;
   readonly user: AuthUser | null = inject(AuthService).getUser();
 }

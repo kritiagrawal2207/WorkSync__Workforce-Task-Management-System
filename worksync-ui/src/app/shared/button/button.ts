@@ -12,7 +12,6 @@ export class ButtonComponent {
   @Input() variant: ButtonVariant = 'primary';
   @Input() disabled = false;
   @Output() clicked = new EventEmitter<void>();
-
   onClick(): void {
     if (!this.disabled) this.clicked.emit();
   }

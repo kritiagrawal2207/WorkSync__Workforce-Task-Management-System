@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Employee } from '../../../models/employeemodel';
+import { constants } from '../../../constants/string';
 @Component({
-  selector: '[app-employeerow]',
+  selector: '[app-employee-row]',
   standalone: true,
   imports: [RouterLink],
   templateUrl: './employeerowcomponent.html',
@@ -10,5 +11,5 @@ import { Employee } from '../../../models/employeemodel';
 export class EmployeeRowComponent {
   @Input() employee!: Employee;
   @Output() delete = new EventEmitter<void>();
-  constants: any;
+  protected readonly constants = constants;
 }

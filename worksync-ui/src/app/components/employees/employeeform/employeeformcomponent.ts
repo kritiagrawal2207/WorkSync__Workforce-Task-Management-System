@@ -21,7 +21,7 @@ export class EmployeeFormComponent implements OnInit {
   isEditMode = false;
   isSubmitting = false;
   isLoadingEmployee = false;
-  constants: any;
+  protected readonly constants = constants;
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,

@@ -4,7 +4,7 @@ import { Employee } from '../../../models/employeemodel';
 import { EmployeeRowComponent } from '../employeerow/employeerowcomponent';
 import { constants } from '../../../constants/string';
 @Component({
-  selector: 'app-employeetable',
+  selector: 'app-employee-table',
   standalone: true,
   imports: [EmployeeRowComponent],
   templateUrl: './employeetablecomponent.html',
@@ -12,5 +12,5 @@ import { constants } from '../../../constants/string';
 export class EmployeeTableComponent {
   @Input() employees: Employee[] = [];
   @Output() delete = new EventEmitter<Employee>();
-  constants: any;
+  protected readonly constants = constants;
 }

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AttendanceService } from '../../services/attendance.service';
 import { constants } from '../../constants/string';
-
 @Component({
   selector: 'app-attendance',
   standalone: true,
@@ -11,7 +10,7 @@ import { constants } from '../../constants/string';
   styleUrl: './attendance.css'
 })
 export class AttendanceComponent implements OnInit {
-   constants: any;
+  protected readonly constants = constants;
   constructor(private attendanceService: AttendanceService) {}
   ngOnInit() {}
 }

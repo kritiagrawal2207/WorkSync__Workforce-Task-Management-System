@@ -12,7 +12,7 @@ import { constants } from '../../constants/string';
   styleUrl: './login.css',
 })
 export class LoginComponent {
-  constants: any;
+  protected readonly constants = constants;
   email        = '';
   password     = '';
   errorMessage = '';
