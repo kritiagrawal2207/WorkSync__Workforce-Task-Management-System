@@ -5,8 +5,8 @@ export const API_ENDPOINTS = {
     register: `${API_BASE_URL}/auth/register`
   },
   employees: {
-    root: `${API_BASE_URL}/Employees`,
-    byId: (id: number) => `${API_BASE_URL}/Employees/${id}`
+    root: `${API_BASE_URL}/Employee`,
+    byId: (id: number) => `${API_BASE_URL}/Employee/${id}`
   },
   departments: {
     root: `${API_BASE_URL}/departments`
