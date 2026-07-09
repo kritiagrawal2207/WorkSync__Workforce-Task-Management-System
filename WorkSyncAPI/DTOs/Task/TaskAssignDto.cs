@@ -4,5 +4,6 @@ namespace WorkSyncAPI.DTOs.Task
     {
         public int TaskId { get; set; }
         public int EmployeeId { get; set; }
+        public int? AssignedUserId { get; set; }
     }
 }

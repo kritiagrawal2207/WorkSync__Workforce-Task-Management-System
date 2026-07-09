@@ -30,6 +30,8 @@ export class DashboardComponent implements OnInit {
   maxWorkload      = 1;
   readonly DONUT_CIRCUMFERENCE = 301.59;
   ngOnInit(): void {
+    console.log('USER:', this.user);          
+  console.log('USER ID:', this.user?.userId); 
     this.loadSummary();
     if (this.user?.userId) {
       this.loadNotifications(this.user.userId);

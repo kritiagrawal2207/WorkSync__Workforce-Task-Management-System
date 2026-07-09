@@ -13,8 +13,10 @@ export interface AttendanceCreateRequest {
   checkIn: string;
   checkOut?: string | null;
   status: string;
+  userId?: number; 
 }
 export interface AttendanceCheckOutRequest {
   checkOut: string;
   status: string;
+  userId?: number;
 }

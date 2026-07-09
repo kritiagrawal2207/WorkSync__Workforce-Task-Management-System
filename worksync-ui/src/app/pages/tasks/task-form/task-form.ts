@@ -102,15 +102,20 @@ export class TaskFormComponent implements OnInit {
     }
   }
   private assignAndNavigate(taskId: number): void {
-    if (!this.selectedEmployeeIds.length) {
-      this.router.navigate(['/tasks', taskId]);
-      return;
-    }
-    const calls = this.selectedEmployeeIds.map((empId) =>
-      this.taskService.assign({ taskId, employeeId: empId }).pipe(catchError(() => of(null)))
-    );
-    forkJoin(calls).subscribe(() => this.router.navigate(['/tasks', taskId]));
+  if (!this.selectedEmployeeIds.length) {
+    this.router.navigate(['/tasks', taskId]);
+    return;
   }
+  const calls = this.selectedEmployeeIds.map((empId) => {
+    const emp = this.employees.find(e => e.id === empId);
+    return this.taskService.assign({
+      taskId,
+      employeeId: empId,
+      assignedUserId: emp?.userId ?? undefined
+    }).pipe(catchError(() => of(null)));
+  });
+  forkJoin(calls).subscribe(() => this.router.navigate(['/tasks', taskId]));
+}
   cancel(): void {
     this.router.navigate([this.isEdit ? '/tasks/' + this.taskId : '/tasks']);
   }

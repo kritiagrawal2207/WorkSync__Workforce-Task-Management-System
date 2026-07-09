@@ -39,6 +39,7 @@ export interface TaskCreateRequest {
 export interface TaskAssignRequest {
   taskId: number;
   employeeId: number;
+  assignedUserId?: number;
 }
 export interface TaskStatusUpdateRequest {
   status: string;

@@ -5,6 +5,7 @@ export interface Employee {
   phone?: string;
   departmentId: number;
   departmentName: string;
+  userId?: number; 
 }
 export interface EmployeeCreateDto {
   name: string;

@@ -51,10 +51,12 @@ export class AttendanceComponent implements OnInit {
   checkIn(): void {
     this.actionLoading = true;
     this.errorMessage = '';
+    const user = this.authService.getUser();
     this.attendanceService.checkIn({
       employeeId: this.employeeId,
       checkIn: new Date().toISOString(),
-      status: 'Present'
+      status: 'Present',
+      userId: user?.userId ? Number(user.userId) : undefined 
     }).subscribe({
       next: () => { this.actionLoading = false; this.loadToday(); },
       error: (err) => {
@@ -68,9 +70,11 @@ export class AttendanceComponent implements OnInit {
     if (!this.todayRecord) return;
     this.actionLoading = true;
     this.errorMessage = '';
+    const user = this.authService.getUser(); 
     this.attendanceService.checkOut(this.todayRecord.id, {
       checkOut: new Date().toISOString(),
-      status: 'Present'
+      status: 'Present',
+      userId: user?.userId ? Number(user.userId) : undefined
     }).subscribe({
       next: () => { this.actionLoading = false; this.loadToday(); },
       error: (err) => {
