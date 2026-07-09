@@ -1,10 +1,28 @@
 import { Routes } from '@angular/router';
-import { EmployeeListComponent } from './components/employees/employeelist/employeelistcomponent';
+import { LoginComponent }from './pages/login/login';
+import { LayoutComponent } from './layout/layout';
+import { DashboardComponent }from './pages/dashboard/dashboard';
+import { EmployeeListComponent }from './components/employees/employeelist/employeelistcomponent';
 import { EmployeeFormComponent } from './components/employees/employeeform/employeeformcomponent';
+import { AttendanceComponent }from './pages/attendance/attendance';
+import { TasksComponent }from './pages/tasks/tasks';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard }from './guards/roleguard';
 export const routes: Routes = [
-  { path: '', redirectTo: 'employees', pathMatch: 'full' },
-  { path: 'employees', component: EmployeeListComponent },
-  { path: 'employees/add', component: EmployeeFormComponent },
-  { path: 'employees/edit/:id', component: EmployeeFormComponent },
-  { path: '**', redirectTo: 'employees' },
+  { path: 'login', component: LoginComponent },
+  {path: '',component: LayoutComponent,canActivate: [authGuard],children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent },
+      {path: 'employees',canActivate: [roleGuard],data: { roles: ['Admin', 'Manager'] },children: [
+          { path: '', component: EmployeeListComponent },
+          { path: 'add', component: EmployeeFormComponent },
+          { path: 'edit/:id', component: EmployeeFormComponent },
+        ]
+      },
+      { path: 'attendance', component: AttendanceComponent },
+      { path: 'tasks', component: TasksComponent }
+       ,
+    ],
+  },
+  { path: '**', redirectTo: 'login' },
 ];

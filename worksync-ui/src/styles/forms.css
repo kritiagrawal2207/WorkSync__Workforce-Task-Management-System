@@ -62,3 +62,6 @@
   font-family: inherit;
   color: var(--color-text-primary);
 }
+.form-card .state-block {
+  padding: var(--spacing-4xl) var(--spacing-xl);
+}

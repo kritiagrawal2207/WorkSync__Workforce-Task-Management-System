@@ -1,0 +1,27 @@
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { AuthUser } from '../models/auth.model';
+import { constants } from '../constants/string';
+@Component({
+  selector: 'app-layout',
+  standalone: true,
+  imports: [RouterModule, CommonModule],
+  templateUrl: './layout.html',
+  styleUrl: './layout.css',
+})
+export class LayoutComponent {
+  user: AuthUser | null;
+  role: string;
+  protected readonly constants = constants;
+  constructor(private authService: AuthService, private router: Router) {
+    this.user = this.authService.getUser();
+    this.role = this.authService.getRole();
+  }
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+}

@@ -7,7 +7,6 @@ import { Toast, ToastService } from './toastservice';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './toast.html',
-  styleUrl: './toast.css'
 })
 export class ToastComponent implements OnInit, OnDestroy {
   toasts: Toast[] = [];

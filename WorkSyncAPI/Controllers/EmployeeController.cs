@@ -8,6 +8,7 @@ namespace WorkSyncAPI.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
+
         public EmployeesController(IEmployeeService employeeService)
         {
             _employeeService = employeeService;

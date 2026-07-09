@@ -1,9 +1,0 @@
-.content {
-  max-width: var(--content-max-width-full);
-  padding-left: var(--spacing-2xl);
-  padding-right: var(--spacing-2xl);
-}
-
-.state-block {
-  padding: var(--spacing-6xl) var(--spacing-xl);
-}
