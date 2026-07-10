@@ -12,6 +12,7 @@ import { ToastService } from '../../../shared/toast/toastservice';
 import { TaskItem, TaskFile } from '../../../models/task.model';
 import { Employee } from '../../../models/employeemodel';
 import { constants } from '../../../constants/string';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-task-detail',
   standalone: true,
@@ -48,7 +49,8 @@ export class TaskDetailComponent implements OnInit {
     private toastService:  ToastService,
     private route:ActivatedRoute,
     private router:Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private http: HttpClient
   ) {}
   ngOnInit(): void {
     this.role = this.authService.getRole();
@@ -189,9 +191,21 @@ export class TaskDetailComponent implements OnInit {
   }
   openPreview(file: TaskFile): void {
     this.previewFile = file;
-    this.previewUrl  = file.previewUrl;
+    this.previewUrl  = '';
+    const token = this.authService.getToken();
+    this.http.get('http://localhost:5180' + file.previewUrl, {
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'blob'
+    }).subscribe({
+      next: (blob) => {
+        this.previewUrl = URL.createObjectURL(blob);
+        this.cdr.detectChanges();
+      },
+      error: () => this.toastService.show('constant.FAILED_TO_LOAD', 'error')
+    });
   }
   closePreview(): void {
+    if (this.previewUrl) URL.revokeObjectURL(this.previewUrl);
     this.previewFile = null;
     this.previewUrl  = '';
   }

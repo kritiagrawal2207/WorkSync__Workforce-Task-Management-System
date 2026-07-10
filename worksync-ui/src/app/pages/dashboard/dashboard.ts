@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loading = true;
   error = false;
   showNotifPanel = false;
+  isEmployee = false;
   completedPercent = 0;
   pendingPercent = 0;
   donutDash = `0 301.59`;
@@ -34,6 +35,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('USER:', this.user);
     console.log('USER ID:', this.user?.userId);
+    this.isEmployee = this.user?.role?.toLowerCase() === 'employee';
     this.loadSummary();
     if (this.user?.userId) {
       this.loadNotifications(this.user.userId);

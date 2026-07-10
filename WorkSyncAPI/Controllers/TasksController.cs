@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WorkSyncAPI.Data;
+using WorkSyncAPI.DTOs.Notification;
 using WorkSyncAPI.DTOs.Task;
 using WorkSyncAPI.Services.Interfaces;
 namespace WorkSyncAPI.Controllers
@@ -14,11 +15,13 @@ namespace WorkSyncAPI.Controllers
         private readonly ITaskService         _taskService;
         private readonly IActivityLogService  _logService;
         private readonly ApplicationDbContext _context;
-        public TasksController(ITaskService taskService, IActivityLogService logService, ApplicationDbContext context)
+        private readonly INotificationService _notificationService;
+        public TasksController(ITaskService taskService, IActivityLogService logService, ApplicationDbContext context, INotificationService notificationService)
         {
-            _taskService = taskService;
-            _logService  = logService;
-            _context     = context;
+            _taskService         = taskService;
+            _logService          = logService;
+            _context             = context;
+            _notificationService = notificationService;
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -103,6 +106,22 @@ namespace WorkSyncAPI.Controllers
                 description: $"Task status updated to '{task!.Status}'",
                 userId:      userId
             );
+            var assignments = await _context.TaskAssignments
+                .Include(a => a.Employee)
+                .Where(a => a.TaskId == id)
+                .ToListAsync();
+            foreach (var assignment in assignments)
+            {
+                if (assignment.Employee?.UserId != null)
+                {
+                    await _notificationService.CreateAsync(new NotificationCreateDto
+                    {
+                        UserId  = assignment.Employee.UserId.Value,
+                        Type    = "Task Update",
+                        Message = $"Task '{task!.Title}' status changed to '{task.Status}'"
+                    });
+                }
+            }
             return Ok(new { message, status = task!.Status });
         }
         [HttpPost("assign")]

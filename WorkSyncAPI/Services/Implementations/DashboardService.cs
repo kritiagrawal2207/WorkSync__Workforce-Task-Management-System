@@ -18,11 +18,26 @@ public class DashboardService : IDashboardService
         var workloads  = await _repo.GetEmployeeWorkloadsAsync();
         return new DashboardSummaryDto
         {
-            TotalTasks = total,
-            CompletedTasks = completed,
-            PendingTasks  = pending,
+            TotalTasks           = total,
+            CompletedTasks       = completed,
+            PendingTasks         = pending,
             AttendancePercentage = attendance,
-            EmployeeWorkloads  = workloads
+            EmployeeWorkloads    = workloads
+        };
+    }
+    public async Task<DashboardSummaryDto> GetEmployeeSummaryAsync(int employeeId)
+    {
+        var total      = await _repo.GetTotalTasksByEmployeeAsync(employeeId);
+        var completed  = await _repo.GetCompletedTasksByEmployeeAsync(employeeId);
+        var pending    = await _repo.GetPendingTasksByEmployeeAsync(employeeId);
+        var attendance = await _repo.GetAttendancePercentageByEmployeeAsync(employeeId);
+        return new DashboardSummaryDto
+        {
+            TotalTasks           = total,
+            CompletedTasks       = completed,
+            PendingTasks         = pending,
+            AttendancePercentage = attendance,
+            EmployeeWorkloads    = new List<EmployeeWorkloadDto>()
         };
     }
 }

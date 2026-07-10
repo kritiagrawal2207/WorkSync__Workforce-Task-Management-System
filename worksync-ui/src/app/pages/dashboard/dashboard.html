@@ -89,7 +89,7 @@
       </div>
     </div>
     <div class="stat-card stat-card--purple">
-      <div class="stat-icon">👥</div>
+      <div class="stat-icon">{{ isEmployee ? '👤' : '👥' }}</div>
       <div class="stat-body">
         <div class="stat-label">{{ constants.DASHBOARD_ATTENDANCE }}</div>
         <div class="stat-value">
@@ -147,7 +147,7 @@
     </div>
 
   </div>
-  <div class="workload-card">
+  <div class="workload-card" *ngIf="!isEmployee"></div>
     <h3 class="chart-title">{{ constants.DASHBOARD_WORKLOAD_CHART_TITLE }}</h3>
     <div class="dashboard-state" *ngIf="summary.employeeWorkloads.length === 0">
       {{ constants.DASHBOARD_NO_WORKLOAD }}
@@ -176,4 +176,4 @@
       </tbody>
     </table>
   </div>
-</div>
+

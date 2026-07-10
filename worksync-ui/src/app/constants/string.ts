@@ -213,4 +213,5 @@ export const constants = {
   TASK_DELETED_OK: 'Task deleted.',
   TASK_DELETE_FAILED_DETAIL: 'Failed to delete.',
   TASK_NOT_LINKED: 'Your account is not linked to an employee profile. Please contact your Admin.',
+  FAILED_TO_LOAD : 'Failed to load preview'
 };

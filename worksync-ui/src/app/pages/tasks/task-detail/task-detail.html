@@ -32,18 +32,16 @@
           </div>
           <div class="field-group">
             <label class="field-label">{{ constants.TASK_PRIORITY_LABEL }}</label>
-            <select [(ngModel)]="selectedPriority" class="mini-select">
+            <select [(ngModel)]="selectedPriority" class="mini-select" [disabled]="!isAdminOrManager">
               @for (p of priorities; track p) { <option [value]="p">{{ p }}</option> }
             </select>
           </div>
         </div>
-        @if (isAdminOrManager) {
-          <div class="save-row">
-            <button class="btn btn-primary" (click)="saveChanges()" [disabled]="isSaving">
-              {{ isSaving ? constants.TASK_SAVING : constants.SAVE_BUTTON }}
-            </button>
-          </div>
-        }
+        <div class="save-row">
+          <button class="btn btn-primary" (click)="saveChanges()" [disabled]="isSaving">
+            {{ isSaving ? constants.TASK_SAVING : constants.SAVE_BUTTON }}
+          </button>
+        </div>
       </div>
       <div class="divider"></div>
       <div class="field-group">
@@ -137,14 +135,12 @@
                       <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
                     </svg>
                   </a>
-                  @if (isAdminOrManager) {
-                    <button class="file-btn delete-file-btn" (click)="deleteFile(f)" title="Delete">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
-                        <path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
-                      </svg>
-                    </button>
-                  }
+                  <button class="file-btn delete-file-btn" (click)="deleteFile(f)" title="Delete">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+                      <path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
+                    </svg>
+                  </button>
                 </div>
               </div>
             }

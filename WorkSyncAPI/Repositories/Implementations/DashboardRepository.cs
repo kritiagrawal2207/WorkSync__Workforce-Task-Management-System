@@ -26,10 +26,8 @@ public class DashboardRepository : IDashboardRepository
             .Select(a => a.EmployeeId)
             .Distinct()
             .CountAsync();
- 
         return Math.Round((double)presentToday / totalEmployees * 100, 1);
     }
- 
     public async Task<List<EmployeeWorkloadDto>> GetEmployeeWorkloadsAsync()
     {
         return await _context.TaskAssignments
@@ -44,5 +42,23 @@ public class DashboardRepository : IDashboardRepository
             .OrderByDescending(w => w.TaskCount)
             .Take(10)
             .ToListAsync();
+    }
+    public Task<int> GetTotalTasksByEmployeeAsync(int employeeId)
+        => _context.TaskAssignments.CountAsync(a => a.EmployeeId == employeeId);
+
+    public Task<int> GetCompletedTasksByEmployeeAsync(int employeeId)
+        => _context.TaskAssignments
+            .CountAsync(a => a.EmployeeId == employeeId && a.Task!.Status == "Completed");
+    public Task<int> GetPendingTasksByEmployeeAsync(int employeeId)
+        => _context.TaskAssignments
+            .CountAsync(a => a.EmployeeId == employeeId && a.Task!.Status != "Completed");
+    public async Task<double> GetAttendancePercentageByEmployeeAsync(int employeeId)
+    {
+        var today = DateTime.UtcNow.Date;
+        var isPresent = await _context.Attendances
+            .AnyAsync(a => a.EmployeeId == employeeId
+                        && a.CheckIn.Date == today
+                        && a.Status == "Present");
+        return isPresent ? 100.0 : 0.0;
     }
 }
