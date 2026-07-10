@@ -9,13 +9,17 @@ namespace WorkSyncAPI.Controllers
     [Authorize]
     public class AttendanceController : ControllerBase
     {
-        private readonly IAttendanceService _service;
-        public AttendanceController(IAttendanceService service)
-            => _service = service;
+        private readonly IAttendanceService  _service;
+        private readonly IActivityLogService _logService;
+        public AttendanceController(IAttendanceService service, IActivityLogService logService)
+        {
+            _service    = service;
+            _logService = logService;
+        }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var list = await _service.GetAllAsync();
+            var list   = await _service.GetAllAsync();
             var result = list.Select(a => new AttendanceResponseDto
             {
                 Id           = a.Id,
@@ -30,7 +34,7 @@ namespace WorkSyncAPI.Controllers
         [HttpGet("employee/{employeeId}")]
         public async Task<IActionResult> GetByEmployee(int employeeId)
         {
-            var list = await _service.GetByEmployeeIdAsync(employeeId);
+            var list   = await _service.GetByEmployeeIdAsync(employeeId);
             var result = list.Select(a => new AttendanceResponseDto
             {
                 Id           = a.Id,
@@ -66,6 +70,15 @@ namespace WorkSyncAPI.Controllers
             dto.CheckIn = DateTime.UtcNow;
             dto.Status  = "Present";
             var attendance = await _service.CreateAsync(dto);
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            int? userId     = userIdClaim != null ? int.Parse(userIdClaim) : null;
+            await _logService.LogAsync(
+                action:      "CheckIn",
+                entityType:  "Attendance",
+                entityId:    attendance.Id,
+                description: $"Employee {dto.EmployeeId} checked in at {attendance.CheckIn:HH:mm:ss} UTC",
+                userId:      userId
+            );
             return Ok(new { message = "Checked in successfully.", attendanceId = attendance.Id });
         }
         [HttpPut("{id}/checkout")]
@@ -74,13 +87,22 @@ namespace WorkSyncAPI.Controllers
             dto.CheckOut = DateTime.UtcNow;
             var (success, message, attendance) = await _service.CheckOutAsync(id, dto);
             if (!success) return NotFound(new { message });
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            int? userId     = userIdClaim != null ? int.Parse(userIdClaim) : null;
+            await _logService.LogAsync(
+                action:      "CheckOut",
+                entityType:  "Attendance",
+                entityId:    id,
+                description: $"Employee {attendance!.EmployeeId} checked out at {attendance.CheckOut:HH:mm:ss} UTC",
+                userId:      userId
+            );
             return Ok(new AttendanceResponseDto
             {
-                Id           = attendance!.Id,
-                EmployeeId   = attendance.EmployeeId,
-                CheckIn      = attendance.CheckIn,
-                CheckOut     = attendance.CheckOut,
-                Status       = attendance.Status
+                Id         = attendance!.Id,
+                EmployeeId = attendance.EmployeeId,
+                CheckIn    = attendance.CheckIn,
+                CheckOut   = attendance.CheckOut,
+                Status     = attendance.Status
             });
         }
     }

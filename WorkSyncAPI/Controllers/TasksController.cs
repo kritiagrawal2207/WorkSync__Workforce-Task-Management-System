@@ -11,12 +11,14 @@ namespace WorkSyncAPI.Controllers
     [Authorize]
     public class TasksController : ControllerBase
     {
-        private readonly ITaskService _taskService;
+        private readonly ITaskService         _taskService;
+        private readonly IActivityLogService  _logService;
         private readonly ApplicationDbContext _context;
-        public TasksController(ITaskService taskService, ApplicationDbContext context)
+        public TasksController(ITaskService taskService, IActivityLogService logService, ApplicationDbContext context)
         {
             _taskService = taskService;
-            _context = context;
+            _logService  = logService;
+            _context     = context;
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -37,11 +39,9 @@ namespace WorkSyncAPI.Controllers
             var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
             if (string.IsNullOrEmpty(email))
                 return Unauthorized(new { message = "Cannot identify current user." });
-
             var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Email == email);
             if (employee == null)
                 return NotFound(new { message = "No employee profile linked to this account." });
-
             var tasks = await _taskService.GetByEmployeeIdAsync(employee.Id);
             return Ok(tasks.Select(MapToResponse));
         }
@@ -55,6 +55,15 @@ namespace WorkSyncAPI.Controllers
         public async Task<IActionResult> Create(TaskCreateDto dto)
         {
             var task = await _taskService.CreateAsync(dto);
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            int? userId     = userIdClaim != null ? int.Parse(userIdClaim) : null;
+            await _logService.LogAsync(
+                action:      "TaskCreated",
+                entityType:  "Task",
+                entityId:    task.Id,
+                description: $"Task '{task.Title}' created with priority '{task.Priority}'",
+                userId:      userId
+            );
             return Ok(new { message = "Task created.", taskId = task.Id });
         }
         [HttpPut("{id}")]
@@ -62,6 +71,15 @@ namespace WorkSyncAPI.Controllers
         {
             var (success, message, task) = await _taskService.UpdateAsync(id, dto);
             if (!success) return NotFound(new { message });
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            int? userId     = userIdClaim != null ? int.Parse(userIdClaim) : null;
+            await _logService.LogAsync(
+                action:      "TaskUpdated",
+                entityType:  "Task",
+                entityId:    id,
+                description: $"Task '{task!.Title}' updated",
+                userId:      userId
+            );
             return Ok(MapToResponse(task!));
         }
         [HttpDelete("{id}")]
@@ -76,12 +94,30 @@ namespace WorkSyncAPI.Controllers
         {
             var (success, message, task) = await _taskService.UpdateStatusAsync(id, dto);
             if (!success) return NotFound(new { message });
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            int? userId     = userIdClaim != null ? int.Parse(userIdClaim) : null;
+            await _logService.LogAsync(
+                action:      "TaskStatusUpdated",
+                entityType:  "Task",
+                entityId:    id,
+                description: $"Task status updated to '{task!.Status}'",
+                userId:      userId
+            );
             return Ok(new { message, status = task!.Status });
         }
         [HttpPost("assign")]
         public async Task<IActionResult> Assign(TaskAssignDto dto)
         {
             var assignment = await _taskService.AssignAsync(dto);
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            int? userId     = userIdClaim != null ? int.Parse(userIdClaim) : null;
+            await _logService.LogAsync(
+                action:      "TaskAssigned",
+                entityType:  "Task",
+                entityId:    dto.TaskId,
+                description: $"Task {dto.TaskId} assigned to Employee {dto.EmployeeId}",
+                userId:      userId
+            );
             return Ok(new { message = "Task assigned successfully.", assignmentId = assignment.Id });
         }
         [HttpDelete("assignment/{assignmentId}")]
@@ -114,16 +150,16 @@ namespace WorkSyncAPI.Controllers
         }
         private static TaskResponseDto MapToResponse(WorkSyncAPI.Models.TaskItem t) => new()
         {
-            Id            = t.Id,
-            Title         = t.Title,
-            Description   = t.Description,
-            Priority      = t.Priority,
-            Status        = t.Status,
+            Id              = t.Id,
+            Title           = t.Title,
+            Description     = t.Description,
+            Priority        = t.Priority,
+            Status          = t.Status,
             CreatedByUserId = t.CreatedByUserId,
-            CreatedByName = t.CreatedBy?.Name ?? "",
-            DueDate       = t.DueDate,
-            CreatedAt     = t.CreatedAt,
-            Assignments   = t.Assignments?.Select(a => new TaskAssignmentResponseDto
+            CreatedByName   = t.CreatedBy?.Name ?? "",
+            DueDate         = t.DueDate,
+            CreatedAt       = t.CreatedAt,
+            Assignments     = t.Assignments?.Select(a => new TaskAssignmentResponseDto
             {
                 Id           = a.Id,
                 TaskId       = a.TaskId,

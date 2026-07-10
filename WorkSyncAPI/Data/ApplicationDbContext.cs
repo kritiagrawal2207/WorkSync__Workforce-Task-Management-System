@@ -17,6 +17,7 @@ namespace WorkSyncAPI.Data
         public DbSet<TaskAssignment> TaskAssignments { get; set; }
         public DbSet<TaskComment> TaskComments { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<ActivityLog> ActivityLogs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -132,6 +133,20 @@ namespace WorkSyncAPI.Data
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
+            modelBuilder.Entity<ActivityLog>(entity =>
+{
+    entity.ToTable("ActivityLogs");
+    entity.HasKey(e => e.Id);
+    entity.Property(e => e.Action).IsRequired().HasMaxLength(100);
+    entity.Property(e => e.EntityType).IsRequired().HasMaxLength(100);
+    entity.Property(e => e.Description).HasMaxLength(500);
+    entity.Property(e => e.CreatedAt).IsRequired();
+
+    entity.HasOne(e => e.User)
+          .WithMany()
+          .HasForeignKey(e => e.UserId)
+          .OnDelete(DeleteBehavior.SetNull);
+});
         }
     }
 }
