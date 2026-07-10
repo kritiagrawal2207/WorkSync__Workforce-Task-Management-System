@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { DashboardService } from '../../shared/services/dashboard.service';
@@ -12,7 +12,7 @@ import { constants } from '../../constants/string';
   imports: [CommonModule],
   templateUrl: './dashboard.html',
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   protected readonly constants = constants;
   readonly user: AuthUser | null = inject(AuthService).getUser();
   private readonly dashboardService    = inject(DashboardService);
@@ -20,21 +20,31 @@ export class DashboardComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   summary: DashboardSummary | null = null;
   notifications: Notification[]    = [];
-  unreadCount    = 0;
-  loading        = true;
-  error          = false;
+  unreadCount = 0;
+  loading = true;
+  error = false;
   showNotifPanel = false;
   completedPercent = 0;
-  pendingPercent   = 0;
-  donutDash        = `0 301.59`;
-  maxWorkload      = 1;
+  pendingPercent = 0;
+  donutDash = `0 301.59`;
+  maxWorkload = 1;
   readonly DONUT_CIRCUMFERENCE = 301.59;
+  private notifPollingInterval: ReturnType<typeof setInterval> | null = null;
+  private readonly POLLING_INTERVAL_MS = 30_000;
   ngOnInit(): void {
-    console.log('USER:', this.user);          
-  console.log('USER ID:', this.user?.userId); 
+    console.log('USER:', this.user);
+    console.log('USER ID:', this.user?.userId);
     this.loadSummary();
     if (this.user?.userId) {
       this.loadNotifications(this.user.userId);
+      this.notifPollingInterval = setInterval(() => {
+        this.loadNotifications(this.user!.userId);
+      }, this.POLLING_INTERVAL_MS);
+    }
+  }
+  ngOnDestroy(): void {
+    if (this.notifPollingInterval !== null) {
+      clearInterval(this.notifPollingInterval);
     }
   }
   private loadSummary(): void {
@@ -42,15 +52,15 @@ export class DashboardComponent implements OnInit {
     this.error   = false;
     this.dashboardService.getSummary().subscribe({
       next: (data) => {
-    this.summary          = data;
-    this.loading          = false;
-    this.completedPercent = data.totalTasks ? Math.round((data.completedTasks / data.totalTasks) * 100) : 0;
-    this.pendingPercent   = data.totalTasks ? Math.round((data.pendingTasks   / data.totalTasks) * 100) : 0;
-    this.maxWorkload      = data.employeeWorkloads?.length ? Math.max(...data.employeeWorkloads.map((w: any) => w.taskCount)) : 1;
-    const filled          = ((data.attendancePercentage ?? 0) / 100) * this.DONUT_CIRCUMFERENCE;
-    this.donutDash        = `${filled} ${this.DONUT_CIRCUMFERENCE}`;
-    this.cdr.detectChanges(); 
-    },
+        this.summary = data;
+        this.loading = false;
+        this.completedPercent = data.totalTasks ? Math.round((data.completedTasks / data.totalTasks) * 100) : 0;
+        this.pendingPercent   = data.totalTasks ? Math.round((data.pendingTasks   / data.totalTasks) * 100) : 0;
+        this.maxWorkload  = data.employeeWorkloads?.length ? Math.max(...data.employeeWorkloads.map((w: any) => w.taskCount)) : 1;
+        const filled = ((data.attendancePercentage ?? 0) / 100) * this.DONUT_CIRCUMFERENCE;
+        this.donutDash  = `${filled} ${this.DONUT_CIRCUMFERENCE}`;
+        this.cdr.detectChanges();
+      },
       error: () => {
         this.error   = true;
         this.loading = false;

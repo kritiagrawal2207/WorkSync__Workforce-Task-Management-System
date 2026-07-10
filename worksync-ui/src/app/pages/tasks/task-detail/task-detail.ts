@@ -94,7 +94,8 @@ export class TaskDetailComponent implements OnInit {
   }
   assignEmployee(empId: number): void {
     if (!this.task) return;
-    this.taskService.assign({ taskId: this.task.id, employeeId: empId, assignedUserId: this.authService.getUserId() }).subscribe({
+    const emp = this.allEmployees.find(e => e.id === empId);
+    this.taskService.assign({ taskId: this.task.id, employeeId: empId, assignedUserId: emp?.userId  }).subscribe({
       next: (res) => {
         const emp = this.allEmployees.find(e => e.id === empId);
         if (emp) {

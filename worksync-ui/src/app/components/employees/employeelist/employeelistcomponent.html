@@ -34,9 +34,38 @@
     ></app-empty-state>
   } @else {
     <app-employee-table
-      [employees]="filteredEmployees"
+      [employees]="pagedEmployees"
       (delete)="askDelete($event)"
     ></app-employee-table>
+    @if (totalPages > 1) {
+      <div class="pagination">
+        <span class="pagination-info">
+          Showing {{ (currentPage - 1) * pageSize + 1 }}–{{ currentPage * pageSize > filteredEmployees.length ? filteredEmployees.length : currentPage * pageSize }} of {{ filteredEmployees.length }} employees
+        </span>
+        <div class="pagination-controls">
+          <button
+            class="pagination-btn"
+            [disabled]="currentPage === 1"
+            (click)="goToPage(currentPage - 1)">
+            ‹
+          </button>
+          @for (page of pages; track page) {
+            <button
+              class="pagination-btn"
+              [class.pagination-btn--active]="page === currentPage"
+              (click)="goToPage(page)">
+              {{ page }}
+            </button>
+          }
+          <button
+            class="pagination-btn"
+            [disabled]="currentPage === totalPages"
+            (click)="goToPage(currentPage + 1)">
+            ›
+          </button>
+        </div>
+      </div>
+    }
   }
 </div>
 @if (showDeleteConfirm && employeeToDelete) {

@@ -8,5 +8,6 @@ namespace WorkSyncAPI.DTOs
         public string? Phone { get; set; }
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; } = string.Empty;
+        public int? UserId { get; set; } 
     }
 }

@@ -66,7 +66,8 @@ namespace WorkSyncAPI.Services.Implementations
                 Email = employee.Email,
                 Phone = employee.Phone,
                 DepartmentId = employee.DepartmentId,
-                DepartmentName = employee.Department?.Name ?? "Unknown"
+                DepartmentName = employee.Department?.Name ?? "Unknown",
+                UserId = employee.UserId
             };
         }
     }

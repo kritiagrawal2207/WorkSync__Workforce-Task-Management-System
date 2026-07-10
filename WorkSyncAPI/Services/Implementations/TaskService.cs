@@ -22,27 +22,34 @@ namespace WorkSyncAPI.Services.Implementations
         {
             var task = new TaskItem
             {
-                Title           = dto.Title,
-                Description     = dto.Description,
-                Priority        = dto.Priority,
-                Status          = dto.Status,
+                Title = dto.Title,
+                Description = dto.Description,
+                Priority = dto.Priority,
+                Status = dto.Status,
                 CreatedByUserId = dto.CreatedByUserId,
-                DueDate         = dto.DueDate,
-                CreatedAt       = DateTime.UtcNow
+                DueDate  = dto.DueDate,
+                CreatedAt = DateTime.UtcNow
             };
             await _repo.AddAsync(task);
             await _repo.SaveAsync();
+            await _notificationService.CreateAsync(new NotificationCreateDto
+            {
+                UserId  = dto.CreatedByUserId,
+                Type    = "Task Created",
+                Message = $"Task \"{dto.Title}\" has been created successfully."
+            });
             return task;
         }
+
         public async Task<(bool Success, string Message, TaskItem? Task)> UpdateAsync(int id, TaskCreateDto dto)
         {
             var task = await _repo.GetByIdAsync(id);
             if (task == null) return (false, "Task not found", null);
-            task.Title       = dto.Title;
+            task.Title = dto.Title;
             task.Description = dto.Description;
-            task.Priority    = dto.Priority;
-            task.Status      = dto.Status;
-            task.DueDate     = dto.DueDate;
+            task.Priority  = dto.Priority;
+            task.Status = dto.Status;
+            task.DueDate = dto.DueDate;
             await _repo.SaveAsync();
             return (true, "Task updated", task);
         }
@@ -58,10 +65,12 @@ namespace WorkSyncAPI.Services.Implementations
             await _repo.SaveAsync();
             return (true, "Task deleted");
         }
+
         public async Task<(bool Success, string Message, TaskItem? Task)> UpdateStatusAsync(int id, TaskStatusUpdateDto dto)
         {
-            var task = await _repo.GetByIdAsync(id);
+            var task = await _repo.GetByIdWithDetailsAsync(id);
             if (task == null) return (false, "Task not found", null);
+
             task.Status = dto.Status;
             await _repo.SaveAsync();
             await _notificationService.CreateAsync(new NotificationCreateDto
@@ -70,8 +79,26 @@ namespace WorkSyncAPI.Services.Implementations
                 Type    = "Task Status Changed",
                 Message = $"Task \"{task.Title}\" has been updated to {dto.Status}."
             });
+            if (task.Assignments != null)
+            {
+                foreach (var assignment in task.Assignments)
+                {
+                    var empUserId = assignment.Employee?.UserId;
+                    if (empUserId.HasValue && empUserId.Value != task.CreatedByUserId)
+                    {
+                        await _notificationService.CreateAsync(new NotificationCreateDto
+                        {
+                            UserId  = empUserId.Value,
+                            Type    = "Task Status Changed",
+                            Message = $"Task \"{task.Title}\" assigned to you has been updated to {dto.Status}."
+                        });
+                    }
+                }
+            }
+
             return (true, "Status updated", task);
         }
+
         public async Task<TaskAssignment> AssignAsync(TaskAssignDto dto)
         {
             var assignment = new TaskAssignment
@@ -94,6 +121,7 @@ namespace WorkSyncAPI.Services.Implementations
             }
             return assignment;
         }
+
         public async Task<(bool Success, string Message)> UnassignAsync(int assignmentId)
         {
             var assignment = await _repo.GetAssignmentAsync(assignmentId);
@@ -102,6 +130,7 @@ namespace WorkSyncAPI.Services.Implementations
             await _repo.SaveAsync();
             return (true, "Assignment removed");
         }
+
         public async Task<TaskComment> AddCommentAsync(TaskCommentCreateDto dto)
         {
             var comment = new TaskComment
