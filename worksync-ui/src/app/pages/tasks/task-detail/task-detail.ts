@@ -7,8 +7,9 @@ import { catchError } from 'rxjs/operators';
 import { TaskService } from '../../../services/task.service';
 import { AuthService } from '../../../services/auth.service';
 import { EmployeeService } from '../../../services/employeeservice';
+import { FileUploadService } from '../../../services/file-upload.service';
 import { ToastService } from '../../../shared/toast/toastservice';
-import { TaskItem } from '../../../models/task.model';
+import { TaskItem, TaskFile } from '../../../models/task.model';
 import { Employee } from '../../../models/employeemodel';
 import { constants } from '../../../constants/string';
 @Component({
@@ -29,15 +30,24 @@ export class TaskDetailComponent implements OnInit {
   showAssignMenu = false;
   newComment = '';
   isCommenting = false;
-  readonly statuses = ['Pending', 'In Progress', 'Completed'];
+  taskFiles: TaskFile[] = [];
+  isUploadingFile = false;
+  previewFile: TaskFile | null = null;
+  previewUrl = '';
+
+  readonly statuses   = ['Pending', 'In Progress', 'Completed'];
   readonly priorities = ['Low', 'Medium', 'High'];
+  readonly imageExts  = ['.jpg', '.jpeg', '.png', '.gif'];
+  readonly pdfExt     = '.pdf';
+
   constructor(
-    private taskService: TaskService,
-    private authService: AuthService,
+    private taskService:   TaskService,
+    private authService:   AuthService,
     private employeeService: EmployeeService,
-    private toastService: ToastService,
-    private route: ActivatedRoute,
-    private router: Router,
+    private fileService:   FileUploadService,
+    private toastService:  ToastService,
+    private route:ActivatedRoute,
+    private router:Router,
     private cdr: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
@@ -45,16 +55,18 @@ export class TaskDetailComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) { this.notFound = true; return; }
     forkJoin({
-      task: this.taskService.getById(+id).pipe(catchError(() => of(null))),
-      employees: this.employeeService.getAll().pipe(catchError(() => of([] as Employee[])))
-    }).subscribe(({ task, employees }) => {
+      task:      this.taskService.getById(+id).pipe(catchError(() => of(null))),
+      employees: this.employeeService.getAll().pipe(catchError(() => of([] as Employee[]))),
+      files:     this.fileService.getTaskFiles(+id).pipe(catchError(() => of([] as TaskFile[])))
+    }).subscribe(({ task, employees, files }) => {
       if (!task) { this.notFound = true; }
       else {
         this.task = task;
-        this.selectedStatus = task.status;
+        this.selectedStatus   = task.status;
         this.selectedPriority = task.priority;
       }
       this.allEmployees = employees;
+      this.taskFiles    = files;
       this.cdr.detectChanges();
     });
   }
@@ -66,38 +78,37 @@ export class TaskDetailComponent implements OnInit {
     return this.allEmployees.filter(e => !assignedIds.includes(e.id));
   }
   saveChanges(): void {
-    if (!this.task) return;
-    this.isSaving = true;
-    const statusChanged = this.selectedStatus !== this.task.status;
-    const priorityChanged = this.selectedPriority !== this.task.priority;
-    if (!statusChanged && !priorityChanged) { this.isSaving = false; return; }
-    const calls: any[] = [];
-    if (statusChanged) calls.push(this.taskService.updateStatus(this.task.id, { status: this.selectedStatus }));
-    if (priorityChanged) calls.push(this.taskService.updatePriority(this.task.id, this.selectedPriority));
-    forkJoin(calls).subscribe({
-      next: () => {
-        this.task!.status = this.selectedStatus;
-        this.task!.priority = this.selectedPriority;
-        this.isSaving = false;
-        this.toastService.show('Task updated successfully');
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.isSaving = false;
-        this.toastService.show('Failed to update task', 'error');
-        this.cdr.detectChanges();
-      }
-    });
+  if (!this.task) return;
+  this.isSaving = true;
+  const statusChanged   = this.selectedStatus   !== this.task.status;
+  const priorityChanged = this.selectedPriority !== this.task.priority;
+  if (!statusChanged && !priorityChanged) { 
+    this.isSaving = false; 
+    this.toastService.show('No changes to save');
+    return; 
   }
-  toggleAssignMenu(): void {
-    this.showAssignMenu = !this.showAssignMenu;
-  }
+  const calls: any[] = [];
+  if (statusChanged)   calls.push(this.taskService.updateStatus(this.task.id, { status: this.selectedStatus }));
+  if (priorityChanged) calls.push(this.taskService.updatePriority(this.task.id, this.selectedPriority));
+  forkJoin(calls).subscribe({
+    next: () => {
+      this.isSaving = false;
+      this.toastService.show('Task updated successfully', 'success');
+      this.router.navigate(['/tasks']);   
+    },
+    error: () => {
+      this.isSaving = false;
+      this.toastService.show('Failed to update task', 'error');
+      this.cdr.detectChanges();
+    }
+  });
+}
+  toggleAssignMenu(): void { this.showAssignMenu = !this.showAssignMenu; }
   assignEmployee(empId: number): void {
     if (!this.task) return;
     const emp = this.allEmployees.find(e => e.id === empId);
-    this.taskService.assign({ taskId: this.task.id, employeeId: empId, assignedUserId: emp?.userId  }).subscribe({
+    this.taskService.assign({ taskId: this.task.id, employeeId: empId, assignedUserId: emp?.userId }).subscribe({
       next: (res) => {
-        const emp = this.allEmployees.find(e => e.id === empId);
         if (emp) {
           this.task!.assignments = [...(this.task!.assignments ?? []), {
             id: res.assignmentId, taskId: this.task!.id,
@@ -108,21 +119,28 @@ export class TaskDetailComponent implements OnInit {
         this.toastService.show(emp?.name + ' assigned');
         this.cdr.detectChanges();
       },
-      error: () => { this.toastService.show('Failed to assign', 'error'); }
+      error: () => this.toastService.show('Failed to assign', 'error')
+    });
+  }
+  removeAssignment(assignmentId: number, empName: string): void {
+    this.taskService.unassign(assignmentId).subscribe({
+      next: () => {
+        this.task!.assignments = this.task!.assignments?.filter(a => a.id !== assignmentId) ?? [];
+        this.toastService.show(empName + ' removed');
+        this.cdr.detectChanges();
+      },
+      error: () => this.toastService.show('Failed to remove', 'error')
     });
   }
   postComment(): void {
     if (!this.task || !this.newComment.trim()) return;
     this.isCommenting = true;
-    const userId = this.authService.getUserId();
+    const userId   = this.authService.getUserId();
     const userName = this.authService.getUser()?.name ?? 'You';
-    const content = this.newComment.trim();
+    const content  = this.newComment.trim();
     this.taskService.addComment({ taskId: this.task.id, userId, content }).subscribe({
       next: (comment) => {
-        this.task!.comments = [...(this.task!.comments ?? []), {
-          ...comment,
-          userName: comment.userName || userName
-        }];
+        this.task!.comments = [...(this.task!.comments ?? []), { ...comment, userName: comment.userName || userName }];
         this.newComment = '';
         this.isCommenting = false;
         this.toastService.show('Comment added');
@@ -135,26 +153,79 @@ export class TaskDetailComponent implements OnInit {
       }
     });
   }
-  removeAssignment(assignmentId: number, empName: string): void {
-    this.taskService.unassign(assignmentId).subscribe({
-      next: () => {
-        this.task!.assignments = this.task!.assignments?.filter(a => a.id !== assignmentId) ?? [];
-        this.toastService.show(empName + ' removed');
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length || !this.task) return;
+    const file = input.files[0];
+    this.isUploadingFile = true;
+
+    this.fileService.uploadForTask(this.task.id, file).subscribe({
+      next: (uploaded) => {
+        this.taskFiles = [uploaded, ...this.taskFiles];
+        this.isUploadingFile = false;
+        this.toastService.show(`${file.name} uploaded`);
+        input.value = '';
         this.cdr.detectChanges();
       },
-      error: () => { this.toastService.show('Failed to remove', 'error'); }
+      error: () => {
+        this.isUploadingFile = false;
+        this.toastService.show('Failed to upload file', 'error');
+        input.value = '';
+        this.cdr.detectChanges();
+      }
     });
+  }
+  deleteFile(file: TaskFile): void {
+    if (!this.task) return;
+    this.fileService.deleteFile(this.task.id, file.id).subscribe({
+      next: () => {
+        this.taskFiles = this.taskFiles.filter(f => f.id !== file.id);
+        if (this.previewFile?.id === file.id) this.closePreview();
+        this.toastService.show('File deleted');
+        this.cdr.detectChanges();
+      },
+      error: () => this.toastService.show('Failed to delete file', 'error')
+    });
+  }
+  openPreview(file: TaskFile): void {
+    this.previewFile = file;
+    this.previewUrl  = file.previewUrl;
+  }
+  closePreview(): void {
+    this.previewFile = null;
+    this.previewUrl  = '';
+  }
+  isImage(file: TaskFile): boolean {
+    const ext = '.' + file.originalName.split('.').pop()?.toLowerCase();
+    return this.imageExts.includes(ext);
+  }
+  isPdf(file: TaskFile): boolean {
+    return file.originalName.toLowerCase().endsWith('.pdf');
+  }
+  isPreviewable(file: TaskFile): boolean {
+    return this.isImage(file) || this.isPdf(file);
+  }
+  getFileIcon(file: TaskFile): string {
+    const ext = file.originalName.split('.').pop()?.toLowerCase();
+    if (['jpg','jpeg','png','gif'].includes(ext!)) return '🖼️';
+    if (ext === 'pdf') return '📄';
+    if (['doc','docx'].includes(ext!)) return '📝';
+    if (['xls','xlsx'].includes(ext!)) return '📊';
+    if (['txt','csv'].includes(ext!)) return '📃';
+    return '📎';
+  }
+  formatSize(bytes: number): string {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   }
   deleteTask(): void {
     if (!this.task) return;
     this.taskService.delete(this.task.id).subscribe({
-      next: () => {
-        this.toastService.show('Task deleted');
-        this.router.navigate(['/tasks']);
-      },
-      error: () => { this.toastService.show('Failed to delete', 'error'); }
+      next: () => { this.toastService.show('Task deleted'); this.router.navigate(['/tasks']); },
+      error: () => this.toastService.show('Failed to delete', 'error')
     });
   }
   priorityClass(p: string): string { return 'badge-priority-' + p.toLowerCase(); }
-  statusClass(s: string): string { return 'badge-status-' + s.toLowerCase().replace(/\s+/g, '-'); }
+  statusClass(s: string):   string { return 'badge-status-' + s.toLowerCase().replace(/\s+/g, '-'); }
 }

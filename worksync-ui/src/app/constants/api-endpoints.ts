@@ -6,7 +6,9 @@ export const API_ENDPOINTS = {
   },
   employees: {
     root: `${API_BASE_URL}/Employee`,
-    byId: (id: number) => `${API_BASE_URL}/Employee/${id}`
+    byId: (id: number) => `${API_BASE_URL}/Employee/${id}`,
+    activate:   (id: number) => `${API_BASE_URL}/Employee/${id}/activate`, 
+    deactivate: (id: number) => `${API_BASE_URL}/Employee/${id}/deactivate`
   },
   departments: {
     root: `${API_BASE_URL}/departments`
@@ -25,6 +27,16 @@ export const API_ENDPOINTS = {
     updateStatus: (taskId: number) => `${API_BASE_URL}/tasks/${taskId}/status`,
     assign: `${API_BASE_URL}/tasks/assign`,
     comment: `${API_BASE_URL}/tasks/comment`
+  },
+  files: {
+    upload:    (taskId: number) => `${API_BASE_URL}/fileupload/task/${taskId}`,        
+    list:      (taskId: number) => `${API_BASE_URL}/fileupload/task/${taskId}/files`,   
+    delete:    (taskId: number, fileId: number) =>
+                 `${API_BASE_URL}/fileupload/task/${taskId}/file/${fileId}`,      
+    preview:   (taskId: number, fileName: string) =>
+                 `${API_BASE_URL}/fileupload/task/${taskId}/preview/${fileName}`,     
+    download:  (taskId: number, fileName: string) =>
+                 `${API_BASE_URL}/fileupload/task/${taskId}/download/${fileName}`    
   },
   dashboard: {
     summary: `${API_BASE_URL}/dashboard/summary`

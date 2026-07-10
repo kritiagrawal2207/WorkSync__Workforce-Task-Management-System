@@ -1,18 +1,22 @@
-<table class="employee-table">
+<table class="emp-table">
   <thead>
     <tr>
       <th>{{ constants.TABLE_NAME_HEADER }}</th>
       <th>{{ constants.TABLE_EMAIL_HEADER }}</th>
       <th>{{ constants.TABLE_DEPARTMENT_HEADER }}</th>
       <th>{{ constants.TABLE_PHONE_HEADER }}</th>
-      <th class="actions-col">{{ constants.TABLE_ACTIONS_HEADER }}</th>
+      <th>Status</th>
+      <th>{{ constants.TABLE_ACTIONS_HEADER }}</th>
     </tr>
   </thead>
   <tbody>
     @for (emp of employees; track emp.id) {
       <tr app-employee-row
         [employee]="emp"
+        [canToggleStatus]="canToggleStatus"
         (delete)="delete.emit(emp)"
+        (activate)="activate.emit(emp)"
+        (deactivate)="deactivate.emit(emp)"
       ></tr>
     }
   </tbody>

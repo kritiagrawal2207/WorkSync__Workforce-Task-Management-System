@@ -18,6 +18,7 @@ namespace WorkSyncAPI.Data
         public DbSet<TaskComment> TaskComments { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<ActivityLog> ActivityLogs { get; set; }
+        public DbSet<TaskFile> TaskFiles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -145,6 +146,24 @@ namespace WorkSyncAPI.Data
     entity.HasOne(e => e.User)
           .WithMany()
           .HasForeignKey(e => e.UserId)
+          .OnDelete(DeleteBehavior.SetNull);
+});
+modelBuilder.Entity<TaskFile>(entity =>
+{
+    entity.ToTable("TaskFiles");
+    entity.HasKey(e => e.Id);
+    entity.Property(e => e.FileName).IsRequired().HasMaxLength(300);
+    entity.Property(e => e.OriginalName).IsRequired().HasMaxLength(300);
+    entity.Property(e => e.UploadedAt).IsRequired();
+
+    entity.HasOne(e => e.Task)
+          .WithMany()
+          .HasForeignKey(e => e.TaskId)
+          .OnDelete(DeleteBehavior.Cascade);
+
+    entity.HasOne(e => e.UploadedByUser)
+          .WithMany()
+          .HasForeignKey(e => e.UploadedBy)
           .OnDelete(DeleteBehavior.SetNull);
 });
         }

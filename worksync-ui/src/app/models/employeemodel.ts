@@ -6,6 +6,7 @@ export interface Employee {
   departmentId: number;
   departmentName: string;
   userId?: number; 
+  isActive?: boolean;
 }
 export interface EmployeeCreateDto {
   name: string;

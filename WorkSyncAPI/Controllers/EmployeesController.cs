@@ -42,14 +42,9 @@ namespace WorkSyncAPI.Controllers
             {
                 var employee = await _employeeService.CreateEmployeeAsync(dto);
                 var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-                int? userId     = userIdClaim != null ? int.Parse(userIdClaim) : null;
-                await _logService.LogAsync(
-                    action:      "EmployeeCreated",
-                    entityType:  "Employee",
-                    entityId:    employee.Id,
-                    description: $"Employee '{employee.Name}' created",
-                    userId:      userId
-                );
+                int? userId = userIdClaim != null ? int.Parse(userIdClaim) : null;
+                await _logService.LogAsync("EmployeeCreated", "Employee", employee.Id,
+                    $"Employee '{employee.Name}' created", userId);
                 return Ok(employee);
             }
             catch (InvalidOperationException ex)
@@ -57,7 +52,6 @@ namespace WorkSyncAPI.Controllers
                 return Conflict(new { message = ex.Message });
             }
         }
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] EmployeeCreateDto dto)
         {
@@ -67,14 +61,9 @@ namespace WorkSyncAPI.Controllers
                 if (employee == null)
                     return NotFound(new { message = $"Employee {id} not found." });
                 var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-                int? userId     = userIdClaim != null ? int.Parse(userIdClaim) : null;
-                await _logService.LogAsync(
-                    action:      "EmployeeUpdated",
-                    entityType:  "Employee",
-                    entityId:    id,
-                    description: $"Employee '{employee.Name}' updated",
-                    userId:      userId
-                );
+                int? userId = userIdClaim != null ? int.Parse(userIdClaim) : null;
+                await _logService.LogAsync("EmployeeUpdated", "Employee", id,
+                    $"Employee '{employee.Name}' updated", userId);
                 return Ok(employee);
             }
             catch (InvalidOperationException ex)
@@ -91,11 +80,10 @@ namespace WorkSyncAPI.Controllers
             return Ok(new { message = "Employee deleted successfully." });
         }
         [HttpPut("{id}/activate")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> Activate(int id)
         {
-            var employee = await _context.Employees
-                .FirstOrDefaultAsync(e => e.Id == id);
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
             if (employee == null)
                 return NotFound(new { message = $"Employee {id} not found." });
             if (employee.UserId == null)
@@ -106,22 +94,16 @@ namespace WorkSyncAPI.Controllers
             user.IsActive = true;
             await _context.SaveChangesAsync();
             var adminIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            int? adminId     = adminIdClaim != null ? int.Parse(adminIdClaim) : null;
-            await _logService.LogAsync(
-                action:      "EmployeeActivated",
-                entityType:  "Employee",
-                entityId:    id,
-                description: $"Employee '{employee.Name}' activated by admin",
-                userId:      adminId
-            );
-            return Ok(new { message = $"Employee '{employee.Name}' activated successfully.", isActive = true });
+            int? adminId = adminIdClaim != null ? int.Parse(adminIdClaim) : null;
+            await _logService.LogAsync("EmployeeActivated", "Employee", id,
+                $"Employee '{employee.Name}' activated", adminId);
+            return Ok(new { message = $"Employee '{employee.Name}' activated.", isActive = true });
         }
         [HttpPut("{id}/deactivate")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> Deactivate(int id)
         {
-            var employee = await _context.Employees
-                .FirstOrDefaultAsync(e => e.Id == id);
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
             if (employee == null)
                 return NotFound(new { message = $"Employee {id} not found." });
             if (employee.UserId == null)
@@ -132,15 +114,10 @@ namespace WorkSyncAPI.Controllers
             user.IsActive = false;
             await _context.SaveChangesAsync();
             var adminIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            int? adminId     = adminIdClaim != null ? int.Parse(adminIdClaim) : null;
-            await _logService.LogAsync(
-                action:      "EmployeeDeactivated",
-                entityType:  "Employee",
-                entityId:    id,
-                description: $"Employee '{employee.Name}' deactivated by admin",
-                userId:      adminId
-            );
-            return Ok(new { message = $"Employee '{employee.Name}' deactivated successfully.", isActive = false });
+            int? adminId = adminIdClaim != null ? int.Parse(adminIdClaim) : null;
+            await _logService.LogAsync("EmployeeDeactivated", "Employee", id,
+                $"Employee '{employee.Name}' deactivated", adminId);
+            return Ok(new { message = $"Employee '{employee.Name}' deactivated.", isActive = false });
         }
     }
 }

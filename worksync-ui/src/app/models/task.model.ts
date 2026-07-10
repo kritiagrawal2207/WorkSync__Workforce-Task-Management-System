@@ -1,5 +1,15 @@
 export type TaskPriority = 'Low' | 'Medium' | 'High';
 export type TaskStatus = 'Pending' | 'In Progress' | 'Completed';
+export interface TaskFile {
+  id: number;
+  taskId: number;
+  fileName: string;
+  originalName: string;
+  fileSize: number;
+  uploadedAt: string;
+  previewUrl: string;
+  downloadUrl: string;
+}
 export interface TaskAssignment {
   id: number;
   taskId: number;

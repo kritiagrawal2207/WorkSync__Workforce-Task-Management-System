@@ -9,15 +9,10 @@
 </div>
 <div class="search-box">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <circle cx="11" cy="11" r="7" />
-    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    <circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
   </svg>
-  <input
-    type="text"
-    [placeholder]="constants.SEARCH_EMPLOYEES_PLACEHOLDER"
-    [value]="searchTerm"
-    (input)="onSearchChange($any($event.target).value)"
-  />
+  <input type="text" [placeholder]="constants.SEARCH_EMPLOYEES_PLACEHOLDER"
+    [value]="searchTerm" (input)="onSearchChange($any($event.target).value)" />
 </div>
 <div class="table-card">
   @if (isLoading) {
@@ -35,7 +30,10 @@
   } @else {
     <app-employee-table
       [employees]="pagedEmployees"
+      [canToggleStatus]="canToggleStatus"
       (delete)="askDelete($event)"
+      (activate)="onActivate($event)"
+      (deactivate)="onDeactivate($event)"
     ></app-employee-table>
     @if (totalPages > 1) {
       <div class="pagination">
@@ -43,26 +41,11 @@
           Showing {{ (currentPage - 1) * pageSize + 1 }}–{{ currentPage * pageSize > filteredEmployees.length ? filteredEmployees.length : currentPage * pageSize }} of {{ filteredEmployees.length }} employees
         </span>
         <div class="pagination-controls">
-          <button
-            class="pagination-btn"
-            [disabled]="currentPage === 1"
-            (click)="goToPage(currentPage - 1)">
-            ‹
-          </button>
+          <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">‹</button>
           @for (page of pages; track page) {
-            <button
-              class="pagination-btn"
-              [class.pagination-btn--active]="page === currentPage"
-              (click)="goToPage(page)">
-              {{ page }}
-            </button>
+            <button class="pagination-btn" [class.pagination-btn--active]="page === currentPage" (click)="goToPage(page)">{{ page }}</button>
           }
-          <button
-            class="pagination-btn"
-            [disabled]="currentPage === totalPages"
-            (click)="goToPage(currentPage + 1)">
-            ›
-          </button>
+          <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">›</button>
         </div>
       </div>
     }
