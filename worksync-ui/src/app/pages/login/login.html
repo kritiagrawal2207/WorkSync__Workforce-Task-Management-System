@@ -17,7 +17,6 @@
         <h2 class="form-title">{{ constants.LOGIN_TITLE }}</h2>
         <p class="form-subtitle">{{ constants.LOGIN_SUBTITLE }}</p>
       </div>
-
       <div class="input-group">
         <label for="email">{{ constants.EMAIL_LABEL }}</label>
         <div class="input-wrapper">
@@ -28,7 +27,6 @@
             autocomplete="username" />
         </div>
       </div>
-
       <div class="input-group">
         <label for="password">{{ constants.PASSWORD_LABEL }}</label>
         <div class="input-wrapper">
@@ -38,48 +36,33 @@
             [(ngModel)]="password"
             autocomplete="current-password" />
         </div>
-        <span class="forgot-link" (click)="showForgotModal = true">
+        <span class="forgot-link" (click)="showForgotToast()">
           {{ constants.FORGOT_PASSWORD }}
         </span>
       </div>
-
       @if (errorMessage) {
         <div class="error-box">
           <span>{{ constants.LOGIN_ERROR_ICON }}</span> {{ errorMessage }}
         </div>
       }
       <button class="sign-btn" (click)="login()" [disabled]="isLoading">
-        @if (isLoading) {
-          <span class="spinner"></span>
-          <span>{{ constants.LOADING }}</span>
-        } @else {
-          <span>{{ constants.SIGN_IN }}</span>
-        }
+        <span>{{ constants.SIGN_IN }}</span>
       </button>
     </div>
   </div>
-</div>
-@if (showForgotModal) {
-  <div class="modal-overlay" (click)="showForgotModal = false">
-    <div class="modal" (click)="$event.stopPropagation()">
-      <h3>{{ constants.LOGIN_FORGOT_TITLE }}</h3>
-      <p>{{ constants.LOGIN_FORGOT_SUBTITLE }}</p>
-      <div class="input-group">
-        <label>{{ constants.EMAIL_LABEL }}</label>
-        <div class="input-wrapper">
-          <span class="input-icon">✉</span>
-          <input type="email"
-            [placeholder]="constants.EMAIL_PLACEHOLDER"
-            [(ngModel)]="forgotEmail" />
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button class="sign-btn" (click)="submitForgot()">{{ constants.LOGIN_SUBMIT }}</button>
-        <button class="cancel-btn" (click)="showForgotModal = false">{{ constants.LOGIN_CANCEL }}</button>
+
+  @if (showToast) {
+    <div class="toast">{{ constants.LOGIN_TOAST }}</div>
+  }
+
+  @if (isLoading) {
+    <div class="login-overlay">
+      <div class="loader">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
       </div>
     </div>
-  </div>
-}
-@if (showToast) {
-  <div class="toast">{{ constants.LOGIN_TOAST }}</div>
-}
+  }
+</div>

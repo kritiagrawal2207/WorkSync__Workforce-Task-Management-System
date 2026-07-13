@@ -24,7 +24,7 @@ export const constants = {
   LOGIN_FORGOT_SUBTITLE: 'Enter your email and we will send you reset instructions.',
   LOGIN_SUBMIT: 'Send Reset Link',
   LOGIN_CANCEL: 'Cancel',
-  LOGIN_TOAST: '✅ Reset link sent! Check your inbox.',
+  LOGIN_TOAST: 'Please contact your IT team to reset your password.',
   NAV_DASHBOARD: '📊 Dashboard',
   NAV_EMPLOYEES: '👥 Employees',
   NAV_ATTENDANCE: '🕐 Attendance',
