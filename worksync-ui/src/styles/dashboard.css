@@ -82,6 +82,7 @@
   grid-template-columns: 1fr 280px;
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-2xl);
+  align-items: start;
 }
  
 @media (max-width: 780px) {
