@@ -89,7 +89,8 @@ export class AttendanceComponent implements OnInit {
   }
   formatTime(dateStr: string | null | undefined): string {
     if (!dateStr) return '--:--';
-    return new Date(dateStr).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const utcStr = dateStr.endsWith('Z') || dateStr.includes('+') ? dateStr : dateStr + 'Z';
+    return new Date(utcStr).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   }
   getDuration(): string {
     if (!this.todayRecord?.checkIn || !this.todayRecord?.checkOut) return '--';

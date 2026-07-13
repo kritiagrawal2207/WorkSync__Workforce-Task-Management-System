@@ -1,23 +1,23 @@
-<div class="app-shell">
+<div class="app-shell" [class.sidebar-collapsed]="sidebarCollapsed">
   <aside class="sidebar">
     <div class="sidebar-brand">
       <div class="brand-logo">{{ constants.App_LOGO }}</div>
       <span class="brand-name">{{ constants.APP_NAME }}</span>
     </div>
     <nav class="sidebar-nav">
-      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" (click)="autoCollapse()">
         {{ constants.NAV_DASHBOARD }}
       </a>
       @if (role === 'Admin' || role === 'Manager') {
-        <a routerLink="/employees" routerLinkActive="active" class="nav-item">
+        <a routerLink="/employees" routerLinkActive="active" class="nav-item" (click)="autoCollapse()">
           {{ constants.NAV_EMPLOYEES }}
         </a>
       }
-      <a routerLink="/attendance" routerLinkActive="active" class="nav-item">
+      <a routerLink="/attendance" routerLinkActive="active" class="nav-item" (click)="autoCollapse()">
         {{ constants.NAV_ATTENDANCE }}
       </a>
-      <a routerLink="/tasks" routerLinkActive="active" class="nav-item">
-      {{ constants.NAV_TASKS }}
+      <a routerLink="/tasks" routerLinkActive="active" class="nav-item" (click)="autoCollapse()">
+        {{ constants.NAV_TASKS }}
       </a>
     </nav>
     <div class="sidebar-footer">
@@ -27,14 +27,18 @@
     </div>
   </aside>
   <div class="main-area">
-    @if (isDashboard) {
-  <header class="topbar">
-    <div class="topbar-left"></div>
-    <div class="topbar-right">
-      <span class="user-name">{{ constants.WELCOME_PREFIX }}{{ user?.name }}</span>
-    </div>
-  </header>
-}
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" (click)="toggleSidebar()" [attr.aria-label]="'Toggle sidebar'">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+      <div class="topbar-right">
+        <span class="user-name">{{ constants.WELCOME_PREFIX }}{{ user?.name }}</span>
+      </div>
+    </header>
     <main class="page-content">
       <router-outlet></router-outlet>
     </main>

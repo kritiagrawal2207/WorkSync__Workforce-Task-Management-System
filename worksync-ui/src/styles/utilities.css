@@ -152,6 +152,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
+  margin-top: var(--spacing-2xl);
 }
 .att-timeline {
   display: flex;
@@ -203,6 +204,7 @@
   gap: var(--spacing-lg);
   cursor: pointer;
   transition: background 0.15s;
+  margin-top: var(--spacing-2xl);
 }
 .att-history-section:hover { background: var(--color-surface-alt); }
 .att-history-section-icon {
@@ -287,11 +289,13 @@
   overflow: hidden; font-family: var(--font-family-base);
 }
 .sidebar {
-  width: var(--sidebar-width); flex-shrink: 0;
+ width: var(--sidebar-width); flex-shrink: 0;
   background: linear-gradient(180deg,
     var(--color-sidebar-bg-start) 0%,
     var(--color-sidebar-bg-end) 100%);
-  display: flex; flex-direction: column; overflow-y: auto;
+  display: flex; flex-direction: column;
+  transition: width 0.25s ease, min-width 0.25s ease;
+  overflow: hidden;
 }
 .sidebar-brand {
   display: flex; align-items: center; gap: var(--spacing-md);
@@ -340,6 +344,25 @@
 .main-area {
   flex: 1; display: flex; flex-direction: column;
   overflow: auto; background: var(--color-page-bg);
+}
+.sidebar-collapsed .sidebar {
+  width: 0 !important;
+  min-width: 0 !important;
+  flex-shrink: 1;
+}
+.sidebar-collapsed .sidebar > * {
+  opacity: 0;
+  pointer-events: none;
+}
+.sidebar-toggle-btn {
+  display: flex; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer;
+  padding: 6px 8px; border-radius: var(--radius-sm);
+}
+.sidebar-toggle-btn:hover { background: rgba(255,255,255,0.1); }
+.hamburger-line {
+  display: block; width: 20px; height: 2px;
+  background: var(--color-surface); border-radius: 2px;
 }
 .topbar {
   height: var(--topbar-height); background: var(--color-topbar);
@@ -541,7 +564,7 @@
 .form-header { margin-bottom: 24px; }
 .form-title {
   font-size: 22px; font-weight: var(--font-weight-bold);
-  color: #e8f4f8; margin: 0 0 var(--spacing-xs) 0;
+  color: --color-surface; margin: 0 0 var(--spacing-xs) 0;
 }
 .form-subtitle { font-size: var(--font-size-sm); color: #6b8fa3; margin: 0; }
 

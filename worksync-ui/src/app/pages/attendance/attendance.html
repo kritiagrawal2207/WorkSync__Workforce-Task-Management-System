@@ -11,11 +11,12 @@
     </div>
   }
   @if (state !== 'loading' && state !== 'no-employee') {
+    @if (!isCheckedOut) {
     <div class="form-card att-card">
       @if (errorMessage) {
         <p class="att-error">{{ errorMessage }}</p>
       }
-      @if (!isCheckedOut) {
+      @if (true) {
         <div class="att-card-body">
           <div class="att-card-left">
             <p class="att-label">{{ constants.ATTENDANCE_TODAY_STATUS }}</p>
@@ -61,6 +62,7 @@
         </div>
       }
     </div>
+    }
     @if (isCheckedOut) {
       <div class="form-card att-timeline-card">
         <p class="att-label">{{ constants.ATTENDANCE_TODAY_TIMELINE }}</p>

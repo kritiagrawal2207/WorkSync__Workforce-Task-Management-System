@@ -30,14 +30,12 @@ public class DashboardRepository : IDashboardRepository
     }
     public async Task<List<EmployeeWorkloadDto>> GetEmployeeWorkloadsAsync()
     {
-        return await _context.TaskAssignments
-            .Include(a => a.Employee)
-            .GroupBy(a => new { a.EmployeeId, a.Employee!.Name })
-            .Select(g => new EmployeeWorkloadDto
+        return await _context.Employees
+            .Select(e => new EmployeeWorkloadDto
             {
-                EmployeeId   = g.Key.EmployeeId,
-                EmployeeName = g.Key.Name,
-                TaskCount    = g.Count()
+                EmployeeId   = e.Id,
+                EmployeeName = e.Name,
+                TaskCount    = _context.TaskAssignments.Count(a => a.EmployeeId == e.Id)
             })
             .OrderByDescending(w => w.TaskCount)
             .Take(10)

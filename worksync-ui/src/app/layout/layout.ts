@@ -14,7 +14,8 @@ import { constants } from '../constants/string';
 export class LayoutComponent {
   user: AuthUser | null;
   role: string;
-  isDashboard = false; 
+  isDashboard = false;
+  sidebarCollapsed = false;
   protected readonly constants = constants;
   constructor(private authService: AuthService, private router: Router) {
     this.user = this.authService.getUser();
@@ -24,6 +25,14 @@ export class LayoutComponent {
         this.isDashboard = event.urlAfterRedirects === '/dashboard';
       }
     });
+  }
+  toggleSidebar(): void {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+  autoCollapse(): void {
+    if (window.innerWidth < 900) {
+      this.sidebarCollapsed = true;
+    }
   }
   logout(): void {
     this.authService.logout();

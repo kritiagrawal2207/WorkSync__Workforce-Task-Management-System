@@ -37,7 +37,7 @@
     ></app-employee-table>
     @if (totalPages > 1) {
       <div class="pagination">
-        <span class="pagination-info">
+        <span class="pagination-info" style="text-align:center;flex:1;">
           Showing {{ (currentPage - 1) * pageSize + 1 }}–{{ currentPage * pageSize > filteredEmployees.length ? filteredEmployees.length : currentPage * pageSize }} of {{ filteredEmployees.length }} employees
         </span>
         <div class="pagination-controls">

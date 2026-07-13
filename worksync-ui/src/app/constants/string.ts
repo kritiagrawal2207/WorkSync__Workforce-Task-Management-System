@@ -31,7 +31,7 @@ export const constants = {
   NAV_TASKS: '✅ Tasks',
   NAV_ADMIN: 'Admin',
   WELCOME_PREFIX: 'Hello, ',
-  LOGOUT: '🚪 Logout',
+  LOGOUT: 'Logout',
   DASHBOARD_TITLE: 'Dashboard',
   DASHBOARD_WELCOME: 'Welcome to WorkSync',
   ADMIN_TITLE: 'Admin',
