@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';  
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { constants } from '../../constants/string';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -17,11 +17,13 @@ export class LoginComponent {
   password     = '';
   errorMessage = '';
   isLoading    = false;
-  showForgotModal = false;
-  forgotEmail  = '';
   showToast    = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef   
+  ) {}
 
   login(): void {
     if (!this.email || !this.password) {
@@ -30,15 +32,19 @@ export class LoginComponent {
     }
     this.isLoading = true;
     this.errorMessage = '';
-    this.authService.login(this.email, this.password).pipe(
-      finalize(() => { this.isLoading = false; })
-    ).subscribe({
+
+    this.authService.login(this.email, this.password).subscribe({
       next: (res) => {
+        this.isLoading = false;
+        this.cdr.detectChanges();     
         this.authService.saveSession(res);
         const dest = (res.role === 'Employee') ? '/tasks' : '/dashboard';
         this.router.navigate([dest]);
       },
       error: (err) => {
+        this.isLoading = false;
+        this.email = '';
+        this.password = '';
         if (err.status === 0) {
           this.errorMessage = 'Cannot reach server. Please check if the backend is running.';
         } else {
@@ -47,12 +53,12 @@ export class LoginComponent {
               ? err.error
               : err.error?.message || constants.LOGIN_ERROR_INVALID;
         }
+        this.cdr.detectChanges();  
       },
     });
   }
 
-  submitForgot(): void {
-    this.showForgotModal = false;
+  showForgotToast(): void {
     this.showToast = true;
     setTimeout(() => (this.showToast = false), 4000);
   }
