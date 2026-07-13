@@ -687,9 +687,9 @@
   width: 100%;
   min-width: unset;
   padding: 13px;
-  background: linear-gradient(135deg, #1a3a4a, #224455);
+  background: linear-gradient(135deg, #b6bbbd);
   border: 1px solid rgba(100,220,190,0.3);
-  color: #e8f4f8;
+  color: #f33d06;
   border-radius: var(--radius-md);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);

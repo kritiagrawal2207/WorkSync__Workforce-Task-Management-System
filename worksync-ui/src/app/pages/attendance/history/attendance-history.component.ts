@@ -44,16 +44,18 @@ export class AttendanceHistoryComponent implements OnInit {
     this.router.navigate(['/attendance']);
   }
   formatDate(dateStr: string): string {
-    return new Date(dateStr).toLocaleDateString('en-US', {
-      weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
-    });
-  }
+  const utcStr = dateStr.endsWith('Z') || dateStr.includes('+') ? dateStr : dateStr + 'Z';
+  return new Date(utcStr).toLocaleDateString('en-US', {
+    weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
+  });
+}
   formatTime(dateStr: string | null | undefined): string {
-    if (!dateStr) return '—';
-    return new Date(dateStr).toLocaleTimeString('en-US', {
-      hour: '2-digit', minute: '2-digit'
-    });
-  }
+  if (!dateStr) return '—';
+  const utcStr = dateStr.endsWith('Z') || dateStr.includes('+') ? dateStr : dateStr + 'Z';
+  return new Date(utcStr).toLocaleTimeString('en-US', {
+    hour: '2-digit', minute: '2-digit'
+  });
+}
   getDuration(record: Attendance): string {
     if (!record.checkIn || !record.checkOut) return '—';
     const diff = new Date(record.checkOut).getTime()
