@@ -17,35 +17,32 @@
         <h2 class="form-title">{{ constants.LOGIN_TITLE }}</h2>
         <p class="form-subtitle">{{ constants.LOGIN_SUBTITLE }}</p>
       </div>
-      <div class="field-section">
-        <div class="section-label">{{ constants.ACCOUNT_LABEL }}</div>
-        <div class="input-group">
-          <label for="email">{{ constants.EMAIL_LABEL }}</label>
-          <div class="input-wrapper">
-            <span class="input-icon">{{ constants.LOGIN_EMAIL_ICON }}</span>
-            <input id="email" type="email"
-              [placeholder]="constants.EMAIL_PLACEHOLDER"
-              [(ngModel)]="email"
-              autocomplete="username" />
-          </div>
+
+      <div class="input-group">
+        <label for="email">{{ constants.EMAIL_LABEL }}</label>
+        <div class="input-wrapper">
+          <span class="input-icon">{{ constants.LOGIN_EMAIL_ICON }}</span>
+          <input id="email" type="email"
+            [placeholder]="constants.EMAIL_PLACEHOLDER"
+            [(ngModel)]="email"
+            autocomplete="username" />
         </div>
       </div>
-      <div class="field-section">
-        <div class="section-label">{{ constants.SECURITY_LABEL }}</div>
-        <div class="input-group">
-          <label for="password">{{ constants.PASSWORD_LABEL }}</label>
-          <div class="input-wrapper">
-            <span class="input-icon">{{ constants.LOGIN_PASSWORD_ICON }}</span>
-            <input id="password" type="password"
-              [placeholder]="constants.PASSWORD_PLACEHOLDER"
-              [(ngModel)]="password"
-              autocomplete="current-password" />
-          </div>
+
+      <div class="input-group">
+        <label for="password">{{ constants.PASSWORD_LABEL }}</label>
+        <div class="input-wrapper">
+          <span class="input-icon">{{ constants.LOGIN_PASSWORD_ICON }}</span>
+          <input id="password" type="password"
+            [placeholder]="constants.PASSWORD_PLACEHOLDER"
+            [(ngModel)]="password"
+            autocomplete="current-password" />
         </div>
         <span class="forgot-link" (click)="showForgotModal = true">
           {{ constants.FORGOT_PASSWORD }}
         </span>
       </div>
+
       @if (errorMessage) {
         <div class="error-box">
           <span>{{ constants.LOGIN_ERROR_ICON }}</span> {{ errorMessage }}
