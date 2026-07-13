@@ -48,6 +48,7 @@
   margin: 0 0 var(--spacing-xs);
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
 }
 .form-subtitle {
   margin: 0 0 var(--spacing-2xl);

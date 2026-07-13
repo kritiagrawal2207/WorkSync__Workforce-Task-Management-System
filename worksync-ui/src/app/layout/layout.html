@@ -43,4 +43,11 @@
       <router-outlet></router-outlet>
     </main>
   </div>
+  @if (showLogoutToast) {
+    <div class="toast-stack">
+      <div class="toast toast-success">
+        {{ constants.LOGOUT_TOAST }}
+      </div>
+    </div>
+  }
 </div>

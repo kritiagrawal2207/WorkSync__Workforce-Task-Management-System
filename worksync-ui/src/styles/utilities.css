@@ -382,7 +382,7 @@
   background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
   overflow: hidden;
 }
-.stars-s, .stars-m, .stars-l {
+.stars, .stars-s, .stars-m, .stars-l {
   position: fixed; inset: 0;
   pointer-events: none;
   width: 1px; height: 1px;
@@ -391,17 +391,38 @@
 }
 
 .stars-s {
+  width: 1px; height: 1px;
   box-shadow:
-    150px 220px rgba(255,255,255,0.4),
-    480px 90px rgba(255,255,255,0.35),
-    820px 310px rgba(255,255,255,0.4),
-    260px 540px rgba(255,255,255,0.35),
-    1050px 180px rgba(255,255,255,0.4),
-    640px 670px rgba(255,255,255,0.35),
-    390px 430px rgba(255,255,255,0.4),
-    920px 580px rgba(255,255,255,0.3),
-    75px 750px rgba(255,255,255,0.35),
-    1180px 410px rgba(255,255,255,0.4);
+    45px 120px rgba(255,255,255,0.5), 150px 220px rgba(255,255,255,0.45),
+    240px 80px rgba(255,255,255,0.5), 330px 310px rgba(255,255,255,0.4),
+    480px 90px rgba(255,255,255,0.5), 560px 450px rgba(255,255,255,0.45),
+    620px 180px rgba(255,255,255,0.5), 700px 640px rgba(255,255,255,0.4),
+    820px 310px rgba(255,255,255,0.5), 890px 55px rgba(255,255,255,0.45),
+    960px 720px rgba(255,255,255,0.5), 1050px 180px rgba(255,255,255,0.45),
+    1120px 500px rgba(255,255,255,0.5), 1200px 380px rgba(255,255,255,0.4),
+    1280px 660px rgba(255,255,255,0.45), 1350px 130px rgba(255,255,255,0.5),
+    30px 400px rgba(255,255,255,0.4), 110px 550px rgba(255,255,255,0.45),
+    190px 700px rgba(255,255,255,0.5), 260px 540px rgba(255,255,255,0.4),
+    350px 780px rgba(255,255,255,0.45), 420px 330px rgba(255,255,255,0.5),
+    510px 600px rgba(255,255,255,0.4), 590px 240px rgba(255,255,255,0.45),
+    640px 670px rgba(255,255,255,0.5), 730px 390px rgba(255,255,255,0.4),
+    800px 820px rgba(255,255,255,0.45), 870px 160px rgba(255,255,255,0.5),
+    940px 480px rgba(255,255,255,0.4), 1010px 730px rgba(255,255,255,0.45),
+    1080px 290px rgba(255,255,255,0.5), 1160px 590px rgba(255,255,255,0.4),
+    1230px 70px rgba(255,255,255,0.45), 1300px 430px rgba(255,255,255,0.5),
+    1370px 760px rgba(255,255,255,0.4), 55px 850px rgba(255,255,255,0.45),
+    145px 30px rgba(255,255,255,0.5), 225px 620px rgba(255,255,255,0.4),
+    305px 170px rgba(255,255,255,0.45), 390px 430px rgba(255,255,255,0.5),
+    465px 740px rgba(255,255,255,0.4), 550px 350px rgba(255,255,255,0.45),
+    635px 890px rgba(255,255,255,0.5), 715px 110px rgba(255,255,255,0.4),
+    790px 560px rgba(255,255,255,0.45), 855px 280px rgba(255,255,255,0.5),
+    920px 580px rgba(255,255,255,0.4), 990px 40px rgba(255,255,255,0.45),
+    1060px 830px rgba(255,255,255,0.5), 1140px 210px rgba(255,255,255,0.4),
+    1215px 670px rgba(255,255,255,0.45), 1290px 920px rgba(255,255,255,0.5),
+    1360px 340px rgba(255,255,255,0.4), 75px 750px rgba(255,255,255,0.45),
+    170px 480px rgba(255,255,255,0.5), 270px 900px rgba(255,255,255,0.4),
+    1180px 410px rgba(255,255,255,0.45), 400px 60px rgba(255,255,255,0.5),
+    1100px 770px rgba(255,255,255,0.4), 670px 520px rgba(255,255,255,0.45);
   animation: moveStars 25s linear infinite;
   z-index: 0;
 }
@@ -409,28 +430,52 @@
 .stars-m {
   width: 2px; height: 2px;
   box-shadow:
-    320px 160px rgba(255,255,255,0.3),
-    710px 480px rgba(255,255,255,0.25),
-    140px 390px rgba(255,255,255,0.3),
-    870px 250px rgba(255,255,255,0.25),
-    520px 620px rgba(255,255,255,0.3),
-    1100px 70px rgba(255,255,255,0.25),
-    240px 700px rgba(255,255,255,0.3),
-    680px 130px rgba(255,255,255,0.25);
+    90px 200px rgba(255,255,255,0.4), 220px 460px rgba(255,255,255,0.35),
+    320px 160px rgba(255,255,255,0.4), 450px 700px rgba(255,255,255,0.35),
+    570px 95px rgba(255,255,255,0.4), 680px 380px rgba(255,255,255,0.35),
+    710px 480px rgba(255,255,255,0.4), 800px 750px rgba(255,255,255,0.35),
+    870px 250px rgba(255,255,255,0.4), 140px 390px rgba(255,255,255,0.35),
+    960px 550px rgba(255,255,255,0.4), 1040px 120px rgba(255,255,255,0.35),
+    1100px 70px rgba(255,255,255,0.4), 1170px 640px rgba(255,255,255,0.35),
+    1240px 290px rgba(255,255,255,0.4), 1310px 810px rgba(255,255,255,0.35),
+    50px 680px rgba(255,255,255,0.4), 175px 30px rgba(255,255,255,0.35),
+    295px 840px rgba(255,255,255,0.4), 405px 195px rgba(255,255,255,0.35),
+    520px 620px rgba(255,255,255,0.4), 640px 440px rgba(255,255,255,0.35),
+    240px 700px rgba(255,255,255,0.4), 750px 65px rgba(255,255,255,0.35),
+    850px 400px rgba(255,255,255,0.4), 930px 900px rgba(255,255,255,0.35),
+    1005px 310px rgba(255,255,255,0.4), 1085px 730px rgba(255,255,255,0.35),
+    680px 130px rgba(255,255,255,0.4), 1260px 520px rgba(255,255,255,0.35);
   animation: moveStars 40s linear infinite;
   z-index: 0;
 }
 
 .stars-l {
-  width: 2px; height: 2px;
+  width: 3px; height: 3px;
   box-shadow:
-    580px 350px rgba(255,255,255,0.2),
-    950px 640px rgba(255,255,255,0.18),
-    310px 490px rgba(255,255,255,0.2),
-    1140px 300px rgba(255,255,255,0.18),
-    430px 760px rgba(255,255,255,0.2),
-    80px 170px rgba(255,255,255,0.18);
+    120px 300px rgba(255,255,255,0.35), 310px 490px rgba(255,255,255,0.3),
+    490px 150px rgba(255,255,255,0.35), 580px 350px rgba(255,255,255,0.3),
+    720px 680px rgba(255,255,255,0.35), 840px 90px rgba(255,255,255,0.3),
+    950px 640px rgba(255,255,255,0.35), 1060px 440px rgba(255,255,255,0.3),
+    1140px 300px rgba(255,255,255,0.35), 1250px 780px rgba(255,255,255,0.3),
+    80px 170px rgba(255,255,255,0.35), 430px 760px rgba(255,255,255,0.3),
+    660px 520px rgba(255,255,255,0.35), 900px 830px rgba(255,255,255,0.3),
+    1330px 200px rgba(255,255,255,0.35);
   animation: moveStars 60s linear infinite;
+  z-index: 0;
+}
+
+.stars {
+  width: 4px; height: 4px;
+  box-shadow:
+    180px 250px 3px 1px rgba(255,255,255,0.9),
+    450px 480px 4px 2px rgba(200,230,255,0.85),
+    730px 140px 3px 1px rgba(255,255,255,0.9),
+    980px 560px 5px 2px rgba(200,220,255,0.85),
+    1200px 320px 3px 1px rgba(255,255,255,0.9),
+    320px 700px 4px 2px rgba(200,230,255,0.85),
+    850px 820px 3px 1px rgba(255,255,255,0.9),
+    1300px 650px 5px 2px rgba(200,220,255,0.85);
+  animation: moveStars 80s linear infinite, twinkleBig 4s ease-in-out infinite alternate;
   z-index: 0;
 }
 
@@ -438,10 +483,14 @@
   from { transform: translateY(0); }
   to   { transform: translateY(-100vh); }
 }
-
 @keyframes twinkle {
   from { opacity: 0.2; }
   to   { opacity: 0.45; }
+}
+@keyframes twinkleBig {
+  0%   { opacity: 0.7; filter: blur(0px); }
+  50%  { opacity: 1;   filter: blur(0.5px); }
+  100% { opacity: 0.75; filter: blur(0px); }
 }
 .left-panel {
   display: flex;
@@ -692,9 +741,11 @@
   cursor: pointer; font-family: inherit; transition: background var(--transition-fast);
 }
 .cancel-btn:hover { background: rgba(255,255,255,0.1); }
- 
+ .login-page .form-title {
+  color: var(--color-surface);
+}
 .login-page .toast {
-  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+  position: fixed; top: 28px; left: 50%; transform: translateX(-50%);
   background: #0f2030; border: 1px solid rgba(100,220,190,0.3);
   color: #64dcbe; padding: 12px 24px;
   border-radius: var(--radius-pill);

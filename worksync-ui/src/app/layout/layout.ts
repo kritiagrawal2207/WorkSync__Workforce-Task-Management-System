@@ -16,6 +16,7 @@ export class LayoutComponent {
   role: string;
   isDashboard = false;
   sidebarCollapsed = false;
+  showLogoutToast = false;
   protected readonly constants = constants;
   constructor(private authService: AuthService, private router: Router) {
     this.user = this.authService.getUser();
@@ -34,8 +35,11 @@ export class LayoutComponent {
       this.sidebarCollapsed = true;
     }
   }
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+   logout(): void {
+    this.showLogoutToast = true;    
+    setTimeout(() => {
+      this.authService.logout();
+      this.router.navigate(['/login']);
+    }, 1500);                       
   }
 }
