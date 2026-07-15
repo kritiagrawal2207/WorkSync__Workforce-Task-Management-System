@@ -1,5 +1,6 @@
 export type TaskPriority = 'Low' | 'Medium' | 'High';
 export type TaskStatus = 'Pending' | 'In Progress' | 'Completed';
+
 export interface TaskAssignment {
   id: number;
   taskId: number;
@@ -7,6 +8,7 @@ export interface TaskAssignment {
   employeeName: string;
   assignedAt: string;
 }
+
 export interface TaskComment {
   id: number;
   taskId: number;
@@ -15,6 +17,7 @@ export interface TaskComment {
   content: string;
   createdAt: string;
 }
+
 export interface TaskItem {
   id: number;
   title: string;
@@ -28,6 +31,7 @@ export interface TaskItem {
   assignments: TaskAssignment[];
   comments: TaskComment[];
 }
+
 export interface TaskCreateRequest {
   title: string;
   description: string;
@@ -36,14 +40,17 @@ export interface TaskCreateRequest {
   createdByUserId: number;
   dueDate: string;
 }
+
 export interface TaskAssignRequest {
   taskId: number;
   employeeId: number;
-  assignedUserId?: number;
+  assignedUserId?: number;  
 }
+
 export interface TaskStatusUpdateRequest {
   status: string;
 }
+
 export interface TaskCommentCreateRequest {
   taskId: number;
   userId: number;
