@@ -7,6 +7,7 @@ namespace WorkSyncAPI.Models
         public string Email { get; set; } = string.Empty;
         public string? Phone { get; set; }
         public int DepartmentId { get; set; }
+        public int? UserId { get; set; }
         public Department? Department { get; set; }
     }
 }

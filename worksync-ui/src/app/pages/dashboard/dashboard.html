@@ -1,6 +1,179 @@
-<div>
-  <h2 class="page-title">{{ constants.DASHBOARD_TITLE }}</h2>
-  <p class="page-subtitle">
-    {{ constants.DASHBOARD_WELCOME }}, <strong>{{ user?.name }}</strong>!
-  </p>
+<div
+  class="notif-overlay"
+  *ngIf="showNotifPanel"
+  (click)="closeNotifPanel()"
+></div>
+<div class="dashboard-header page-header">
+  <div>
+    <h2 class="page-title">{{ constants.DASHBOARD_TITLE }}</h2>
+    <p class="page-subtitle">
+      {{ constants.WELCOME_PREFIX }}<strong>{{ user?.name }}</strong> —
+      {{ constants.DASHBOARD_SUBTITLE }}
+    </p>
+  </div>
+  <div class="notif-wrapper">
+    <button
+      class="notif-bell-btn"
+      (click)="toggleNotifPanel()"
+      [attr.aria-label]="constants.NOTIF_BADGE_ARIA"
+    >
+      <svg class="notif-bell-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+      <span class="notif-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+    </button>
+    <div class="notif-panel" *ngIf="showNotifPanel">
+      <div class="notif-panel-header">
+        <span class="notif-panel-title">{{ constants.NOTIF_TITLE }}</span>
+        <button
+          class="notif-mark-all btn btn-secondary"
+          (click)="markAllRead()"
+          *ngIf="unreadCount > 0"
+        >
+          {{ constants.NOTIF_MARK_ALL_READ }}
+        </button>
+      </div>
+      <div class="notif-empty" *ngIf="notifications.length === 0">
+        {{ constants.NOTIF_EMPTY }}
+      </div>
+      <ul class="notif-list" *ngIf="notifications.length > 0">
+        <li
+          class="notif-item"
+          [class.notif-item--unread]="!notification.isRead"
+          *ngFor="let notification of notifications"
+          (click)="markRead(notification)"
+        >
+          <div class="notif-dot" *ngIf="!notification.isRead"></div>
+          <div class="notif-item-body">
+            <div class="notif-item-title">{{ notification.type }}</div>
+            <div class="notif-item-message">{{ notification.message }}</div>
+            <div class="notif-item-time">{{ notification.createdAt | date:'MMM d, h:mm a' }}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="dashboard-state" *ngIf="loading">
+  <span class="spinner"></span>
+  <span>{{ constants.DASHBOARD_LOADING }}</span>
+</div>
+<div class="dashboard-state dashboard-state--error" *ngIf="error && !loading">
+  <p>{{ constants.DASHBOARD_ERROR }}</p>
+  <button class="btn btn-primary" (click)="retry()">
+    {{ constants.DASHBOARD_RETRY }}
+  </button>
+</div>
+<div class="dashboard-content" *ngIf="!loading && !error && summary">
+  <div class="stats-grid">
+    <div class="stat-card stat-card--blue">
+      <div class="stat-icon">📋</div>
+      <div class="stat-body">
+        <div class="stat-label">{{ constants.DASHBOARD_TOTAL_TASKS }}</div>
+        <div class="stat-value">{{ summary.totalTasks }}</div>
+      </div>
+    </div>
+    <div class="stat-card stat-card--green">
+      <div class="stat-icon">✅</div>
+      <div class="stat-body">
+        <div class="stat-label">{{ constants.DASHBOARD_COMPLETED_TASKS }}</div>
+        <div class="stat-value">{{ summary.completedTasks }}</div>
+      </div>
+    </div>
+    <div class="stat-card stat-card--orange">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-body">
+        <div class="stat-label">{{ constants.DASHBOARD_PENDING_TASKS }}</div>
+        <div class="stat-value">{{ summary.pendingTasks }}</div>
+      </div>
+    </div>
+    <div class="stat-card stat-card--purple">
+      <div class="stat-icon">👥</div>
+      <div class="stat-body">
+        <div class="stat-label">{{ constants.DASHBOARD_ATTENDANCE }}</div>
+        <div class="stat-value">
+          {{ summary.attendancePercentage }}{{ constants.DASHBOARD_ATTENDANCE_SUFFIX }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3 class="chart-title">{{ constants.DASHBOARD_TASKS_CHART_TITLE }}</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <span class="bar-label">{{ constants.DASHBOARD_COMPLETED_TASKS }}</span>
+          <div class="bar-track">
+            <div
+              class="bar-fill bar-fill--green"
+              [style.width.%]="completedPercent"
+            ></div>
+          </div>
+          <span class="bar-count">{{ summary.completedTasks }}</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">{{ constants.DASHBOARD_PENDING_TASKS }}</span>
+          <div class="bar-track">
+            <div
+              class="bar-fill bar-fill--orange"
+              [style.width.%]="pendingPercent"
+            ></div>
+          </div>
+          <span class="bar-count">{{ summary.pendingTasks }}</span>
+        </div>
+
+      </div>
+    </div>
+    <div class="chart-card chart-card--center">
+      <h3 class="chart-title">{{ constants.DASHBOARD_ATTENDANCE }}</h3>
+      <div class="donut-wrapper">
+        <svg
+          class="donut-svg"
+          viewBox="0 0 120 120"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle class="donut-track" cx="60" cy="60" r="48" />
+          <circle
+            class="donut-fill"
+            cx="60" cy="60" r="48"
+            [style.stroke-dasharray]="donutDash"
+          />
+        </svg>
+        <div class="donut-label">
+          {{ summary.attendancePercentage }}{{ constants.DASHBOARD_ATTENDANCE_SUFFIX }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="workload-card">
+    <h3 class="chart-title">{{ constants.DASHBOARD_WORKLOAD_CHART_TITLE }}</h3>
+    <div class="dashboard-state" *ngIf="summary.employeeWorkloads.length === 0">
+      {{ constants.DASHBOARD_NO_WORKLOAD }}
+    </div>
+    <table class="workload-table" *ngIf="summary.employeeWorkloads.length > 0">
+      <thead>
+        <tr>
+          <th>{{ constants.DASHBOARD_EMPLOYEE_COL }}</th>
+          <th>{{ constants.DASHBOARD_TASKS_COL }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let w of summary.employeeWorkloads">
+          <td class="workload-name">{{ w.employeeName }}</td>
+          <td class="workload-count">{{ w.taskCount }}</td>
+          <td class="workload-bar-cell">
+            <div class="workload-bar-track">
+              <div
+                class="workload-bar-fill"
+                [style.width.%]="getWorkloadPercent(w.taskCount)"
+              ></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

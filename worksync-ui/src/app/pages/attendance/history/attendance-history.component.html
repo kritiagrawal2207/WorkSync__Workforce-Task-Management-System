@@ -1,0 +1,48 @@
+<div class="content">
+  <a class="back-link" (click)="goBack()" style="cursor:pointer">
+    {{ constants.ATTENDANCE_BACK }}
+  </a>
+  <h1 class="page-title">{{ constants.ATTENDANCE_HISTORY_TITLE }}</h1>
+
+  @if (loading) {
+    <div class="state-block">
+      <p class="page-subtitle">{{ constants.ATTENDANCE_LOADING }}</p>
+    </div>
+  }
+  @if (!loading && records.length === 0) {
+    <div class="table-card state-block">
+      <p class="empty-title">{{ constants.ATTENDANCE_NO_RECORDS }}</p>
+      <p class="empty-sub">{{ constants.ATTENDANCE_NO_RECORDS_SUB }}</p>
+    </div>
+  }
+  @if (!loading && records.length > 0) {
+    <div class="table-card">
+      <table class="att-history-table">
+        <thead>
+          <tr>
+            <th>{{ constants.ATTENDANCE_COL_DATE }}</th>
+            <th>{{ constants.ATTENDANCE_COL_CHECK_IN }}</th>
+            <th>{{ constants.ATTENDANCE_COL_CHECK_OUT }}</th>
+            <th>{{ constants.ATTENDANCE_COL_DURATION }}</th>
+            <th>{{ constants.ATTENDANCE_COL_STATUS }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (record of records; track record.id) {
+            <tr>
+              <td class="att-date-cell">{{ formatDate(record.checkIn) }}</td>
+              <td class="att-time-cell">{{ formatTime(record.checkIn) }}</td>
+              <td class="att-time-cell">{{ formatTime(record.checkOut) }}</td>
+              <td class="att-duration-cell">{{ getDuration(record) }}</td>
+              <td>
+                <span class="att-badge" [ngClass]="getStatusClass(record.status)">
+                  {{ record.status }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

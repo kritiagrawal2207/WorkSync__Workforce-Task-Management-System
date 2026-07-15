@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-
 export type ButtonVariant = 'primary' | 'danger' | 'link';
-
 @Component({
   selector: 'app-button',
   standalone: true,

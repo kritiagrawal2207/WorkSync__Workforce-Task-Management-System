@@ -1,5 +1,4 @@
 using WorkSyncAPI.DTOs;
-
 namespace WorkSyncAPI.Services.Interfaces
 {
     public interface IEmployeeService
