@@ -21,7 +21,7 @@
       </a>
     </nav>
     <div class="sidebar-footer">
-      <button class="logout-btn" (click)="logout()">
+      <button class="logout-btn" (click)="confirmLogout()">
          {{ constants.LOGOUT }}
       </button>
     </div>
@@ -43,6 +43,19 @@
       <router-outlet></router-outlet>
     </main>
   </div>
+
+  @if (showLogoutConfirm) {
+    <div class="logout-modal-overlay">
+      <div class="logout-modal">
+        <p class="logout-modal-msg">Are you sure you want to logout?</p>
+        <div class="logout-modal-actions">
+          <button class="btn btn-secondary" (click)="cancelLogout()">Cancel</button>
+          <button class="btn btn-primary" (click)="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  }
+
   @if (showLogoutToast) {
     <div class="toast-stack">
       <div class="toast toast-success">

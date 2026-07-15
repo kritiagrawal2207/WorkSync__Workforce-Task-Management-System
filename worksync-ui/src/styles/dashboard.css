@@ -155,7 +155,7 @@
 .donut-svg {
   width: 150px;
   height: 150px;
-  transform: rotate(-90deg);   /* start from top */
+  transform: rotate(-90deg);   
 }
  
 .donut-track {

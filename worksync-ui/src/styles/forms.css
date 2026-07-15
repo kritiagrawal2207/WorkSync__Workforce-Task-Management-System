@@ -32,10 +32,22 @@
 .field input.ng-invalid.ng-touched,
 .field select.ng-invalid.ng-touched {
   border-color: var(--color-danger);
+  background-color: #fff8f8;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
+
 .error-msg {
   font-size: var(--font-size-xs);
   color: var(--color-danger);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.error-msg::before {
+  content: '⚠';
+  font-size: 10px;
 }
 .search-box {
   display: flex;

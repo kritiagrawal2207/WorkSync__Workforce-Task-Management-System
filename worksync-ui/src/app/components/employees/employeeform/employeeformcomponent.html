@@ -1,6 +1,6 @@
 <div class="page">
   <main class="content">
-    <a routerLink="/employees" class="back-link">{{ constants.BACK_TO_EMPLOYEES }}</a>
+    <a routerLink="/employees" class="back-link">  {{ constants.BACK_TO_EMPLOYEES }}</a>
     <div class="form-card">
       <h1 class="form-title">{{ isEditMode ? constants.EDIT_EMPLOYEE_TITLE : constants.ADD_EMPLOYEE_TITLE }}</h1>
       <p class="form-subtitle">
@@ -38,6 +38,9 @@
             <input id="phone" type="text" formControlName="phone" [placeholder]="constants.PHONE_PLACEHOLDER" maxlength="10" />
             @if (hasError('phone', 'pattern')) {
               <span class="error-msg">{{ constants.PHONE_INVALID }}</span>
+            }
+            @if (hasError('phone', 'required')) {
+            <span class="error-msg">Phone number is required.</span>
             }
           </div>
           <div class="field">

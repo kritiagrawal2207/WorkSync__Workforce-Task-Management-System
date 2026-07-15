@@ -6,10 +6,11 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { DashboardSummary, Notification } from '../../shared/models/dashboard.model';
 import { AuthUser } from '../../models/auth.model';
 import { constants } from '../../constants/string';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,  RouterLink],
   templateUrl: './dashboard.html',
 })
 export class DashboardComponent implements OnInit, OnDestroy {

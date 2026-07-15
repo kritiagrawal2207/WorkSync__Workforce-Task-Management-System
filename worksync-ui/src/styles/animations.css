@@ -56,8 +56,10 @@
 }
 .toast-stack {
   position: fixed;
-  top: var(--spacing-xl);
-  right: var(--spacing-xl);
+  top: 70px;
+  left: 50%;
+  right: auto;
+  transform: translateY(-12px);
   z-index: var(--z-index-toast);
   display: flex;
   flex-direction: column;

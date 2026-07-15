@@ -5,6 +5,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { AuthUser } from '../models/auth.model';
 import { constants } from '../constants/string';
+
 @Component({
   selector: 'app-layout',
   standalone: true,
@@ -17,7 +18,9 @@ export class LayoutComponent {
   isDashboard = false;
   sidebarCollapsed = false;
   showLogoutToast = false;
+  showLogoutConfirm = false;
   protected readonly constants = constants;
+
   constructor(private authService: AuthService, private router: Router) {
     this.user = this.authService.getUser();
     this.role = this.authService.getRole();
@@ -27,19 +30,31 @@ export class LayoutComponent {
       }
     });
   }
+
   toggleSidebar(): void {
     this.sidebarCollapsed = !this.sidebarCollapsed;
   }
+
   autoCollapse(): void {
     if (window.innerWidth < 900) {
       this.sidebarCollapsed = true;
     }
   }
-   logout(): void {
-    this.showLogoutToast = true;    
+
+  confirmLogout(): void {
+    this.showLogoutConfirm = true;
+  }
+
+  cancelLogout(): void {
+    this.showLogoutConfirm = false;
+  }
+
+  logout(): void {
+    this.showLogoutConfirm = false;
+    this.showLogoutToast = true;
     setTimeout(() => {
       this.authService.logout();
       this.router.navigate(['/login']);
-    }, 1500);                       
+    }, 1500);
   }
 }

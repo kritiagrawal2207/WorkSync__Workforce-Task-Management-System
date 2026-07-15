@@ -66,7 +66,7 @@
 </div>
 <div class="dashboard-content" *ngIf="!loading && !error && summary">
   <div class="stats-grid">
-    <div class="stat-card stat-card--blue">
+    <div class="stat-card stat-card--blue" routerLink="/tasks" style="cursor:pointer">
       <div class="stat-icon">📋</div>
       <div class="stat-body">
         <div class="stat-label">{{ constants.DASHBOARD_TOTAL_TASKS }}</div>
@@ -146,7 +146,7 @@
     </div>
 
   </div>
-  <div class="workload-card" *ngIf="!isEmployee"></div>
+  <div class="workload-card" *ngIf="!isEmployee">
     <h3 class="chart-title">{{ constants.DASHBOARD_WORKLOAD_CHART_TITLE }}</h3>
     <div class="dashboard-state" *ngIf="summary.employeeWorkloads.length === 0">
       {{ constants.DASHBOARD_NO_WORKLOAD }}
@@ -174,5 +174,6 @@
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 

@@ -31,6 +31,7 @@ export class EmployeeListComponent implements OnInit {
   protected readonly constants = constants;
   currentPage = 1;
   pageSize = 5;
+  pageSizeOptions = [5, 10, 25, 50];
   get canToggleStatus(): boolean {
     const role = this.authService.getRole();
     return role === 'Admin' || role === 'Manager';
@@ -83,6 +84,12 @@ export class EmployeeListComponent implements OnInit {
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) this.currentPage = page;
   }
+  onPageSizeChange(size: number): void {
+    this.pageSize = Number(size);
+    this.currentPage = 1;
+  }
+  get paginationStart(): number { return this.filteredEmployees.length === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1; }
+  get paginationEnd(): number { return Math.min(this.currentPage * this.pageSize, this.filteredEmployees.length); }
   askDelete(employee: Employee): void {
     this.employeeToDelete = employee;
     this.showDeleteConfirm = true;
