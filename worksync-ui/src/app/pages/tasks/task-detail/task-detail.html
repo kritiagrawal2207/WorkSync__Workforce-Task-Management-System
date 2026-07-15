@@ -1,0 +1,138 @@
+@if (notFound || !task) {
+  <div class="detail-card">
+    <p class="empty-title">{{ constants.TASK_DETAIL_NOT_FOUND }}</p>
+    <a routerLink="/tasks" class="btn btn-secondary">{{ constants.TASK_DETAIL_BACK }}</a>
+  </div>
+} @else {
+  <div class="detail-wrapper">
+    <a routerLink="/tasks" class="back-link">{{ constants.TASK_DETAIL_BACK }}</a>
+
+    <div class="detail-card">
+      <div class="card-header">
+        <h2 class="task-title">{{ task.title }}</h2>
+        @if (isAdminOrManager) {
+          <button class="btn-icon-danger" (click)="deleteTask()" title="{{ constants.TASK_DELETE_BTN }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
+            </svg>
+          </button>
+        }
+      </div>
+      @if (task.description) {
+        <p class="task-desc">{{ task.description }}</p>
+      }
+
+      <div class="divider"></div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">{{ constants.TASK_STATUS_LABEL }}</label>
+          <select [(ngModel)]="selectedStatus" class="mini-select">
+            @for (s of statuses; track s) { <option [value]="s">{{ s }}</option> }
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">{{ constants.TASK_PRIORITY_LABEL }}</label>
+          <select [(ngModel)]="selectedPriority" class="mini-select">
+            @for (p of priorities; track p) { <option [value]="p">{{ p }}</option> }
+          </select>
+        </div>
+        @if (isAdminOrManager) {
+          <button class="btn btn-primary save-btn" (click)="saveChanges()" [disabled]="isSaving">
+            {{ isSaving ? constants.TASK_SAVING : constants.SAVE_BUTTON }}
+          </button>
+        }
+      </div>
+
+      <div class="divider"></div>
+      <div class="field-group">
+        <div class="section-header">
+          <label class="field-label td-no-mb">{{ constants.TASK_ASSIGNED_TO }}</label>
+          @if (isAdminOrManager && unassignedEmployees.length > 0) {
+            <button class="btn-icon-add" (click)="toggleAssignMenu()" title="{{ constants.TASK_ASSIGN_BTN }}"
+              [class.active]="showAssignMenu">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+          }
+        </div>
+
+        @if (showAssignMenu) {
+          <div class="assign-row">
+            <select #empSelect class="mini-select td-flex-1">
+              <option value="">{{ constants.TASK_SELECT_EMPLOYEE_PLACEHOLDER }}</option>
+              @for (e of unassignedEmployees; track e.id) {
+                <option [value]="e.id">{{ e.name }}</option>
+              }
+            </select>
+            <button class="btn btn-secondary td-no-wrap"
+              (click)="empSelect.value && assignEmployee(+empSelect.value); empSelect.value=''">
+              {{ constants.TASK_ASSIGN_BTN }}
+            </button>
+          </div>
+        }
+
+        @if (task.assignments.length) {
+          <div class="assignee-list">
+            @for (a of task.assignments; track a.id) {
+              <div class="assignee-row">
+                <div class="assignee-info">
+                  <div class="avatar">{{ a.employeeName.charAt(0).toUpperCase() }}</div>
+                  <span class="assignee-name">{{ a.employeeName }}</span>
+                </div>
+                @if (isAdminOrManager) {
+                  <button class="btn-icon-remove" (click)="removeAssignment(a.id, a.employeeName)" title="{{ constants.TASK_DELETE_BTN }}">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
+                    </svg>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty-sub td-mt-xs">{{ constants.TASK_NO_ASSIGNEES }}</p>
+        }
+      </div>
+
+      <div class="divider"></div>
+      <div class="field-group">
+        <label class="field-label">{{ constants.TASK_COMMENTS_TITLE }}</label>
+
+        @if (task.comments.length) {
+          <div class="comment-list">
+            @for (cm of task.comments; track cm.id) {
+              <div class="comment-item">
+                <div class="avatar comment-avatar">{{ (cm.userName || 'U').charAt(0).toUpperCase() }}</div>
+                <div class="comment-body">
+                  <div class="comment-meta">
+                    <span class="comment-author">{{ cm.userName || 'You' }}</span>
+                    <span class="comment-date">{{ cm.createdAt | date:'d MMM, h:mm a' }}</span>
+                  </div>
+                  <p class="comment-text">{{ cm.content }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty-sub td-mt-xs">{{ constants.TASK_NO_COMMENTS }}</p>
+        }
+
+        <div class="comment-input-row">
+          <input type="text" [(ngModel)]="newComment" [placeholder]="constants.TASK_COMMENT_PLACEHOLDER"
+            class="comment-input" (keyup.enter)="postComment()" [disabled]="isCommenting" />
+          <button class="btn btn-primary td-no-wrap"
+            (click)="postComment()" [disabled]="!newComment.trim() || isCommenting">
+            {{ isCommenting ? constants.TASK_COMMENT_POSTING : constants.TASK_COMMENT_POST_BTN }}
+          </button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="meta-row">
+        <span class="meta-item">{{ constants.TASK_META_CREATED_BY }} <strong>{{ task.createdByName || '—' }}</strong></span>
+        <span class="meta-item">{{ constants.TASK_META_DUE }} <strong>{{ task.dueDate | date:'d MMM y' }}</strong></span>
+      </div>
+    </div>
+  </div>
+}

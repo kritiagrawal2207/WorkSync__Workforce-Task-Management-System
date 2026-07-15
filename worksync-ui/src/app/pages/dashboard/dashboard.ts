@@ -8,7 +8,6 @@ import { constants } from '../../constants/string';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css',
 })
 export class DashboardComponent {
   protected readonly constants = constants;
