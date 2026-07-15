@@ -7,18 +7,29 @@
     <span class="plus-icon">+</span> {{ constants.ADD_EMPLOYEE }}
   </a>
 </div>
-<div class="search-box">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <circle cx="11" cy="11" r="7" />
-    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-  </svg>
-  <input
-    type="text"
-    [placeholder]="constants.SEARCH_EMPLOYEES_PLACEHOLDER"
-    [value]="searchTerm"
-    (input)="onSearchChange($any($event.target).value)"
-  />
+
+<div class="emp-controls-bar">
+  <div class="search-box">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+    <input type="text" [placeholder]="constants.SEARCH_EMPLOYEES_PLACEHOLDER"
+      [value]="searchTerm" (input)="onSearchChange($any($event.target).value)" />
+  </div>
+
+  <div class="page-size-control">
+    <label class="page-size-label" for="pageSizeSelect">Show</label>
+    <select id="pageSizeSelect" class="page-size-select"
+      [value]="pageSize"
+      (change)="onPageSizeChange(+$any($event.target).value)">
+      @for (opt of pageSizeOptions; track opt) {
+        <option [value]="opt">{{ opt }}</option>
+      }
+    </select>
+    <span class="page-size-label">per page</span>
+  </div>
 </div>
+
 <div class="table-card">
   @if (isLoading) {
     <app-loading-spinner [message]="constants.LOADING_EMPLOYEES"></app-loading-spinner>
@@ -33,12 +44,28 @@
       [subtitle]="searchTerm ? constants.NO_EMPLOYEES_SEARCH_SUBTITLE : constants.NO_EMPLOYEES_EMPTY_SUBTITLE"
     ></app-empty-state>
   } @else {
-    <app-employee-table
-      [employees]="filteredEmployees"
-      (delete)="askDelete($event)"
-    ></app-employee-table>
+    <div class="emp-table-scroll">
+      <app-employee-table
+        [employees]="pagedEmployees"
+        [canToggleStatus]="canToggleStatus"
+        (delete)="askDelete($event)"
+        (activate)="onActivate($event)"
+        (deactivate)="onDeactivate($event)"
+      ></app-employee-table>
+    </div>
+
+    <div class="pagination">
+      <div class="pagination-controls">
+        <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">‹</button>
+        @for (page of pages; track page) {
+          <button class="pagination-btn" [class.pagination-btn--active]="page === currentPage" (click)="goToPage(page)">{{ page }}</button>
+        }
+        <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">›</button>
+      </div>
+    </div>
   }
 </div>
+
 @if (showDeleteConfirm && employeeToDelete) {
   <app-confirm-dialog
     [employeeName]="employeeToDelete.name"

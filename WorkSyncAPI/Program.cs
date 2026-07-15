@@ -11,21 +11,31 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IDashboardService,DashboardService>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<INotificationService,NotificationService>();
+builder.Services.AddScoped<IActivityLogRepository, ActivityLogRepository>();
+builder.Services.AddScoped<IActivityLogService, ActivityLogService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
+            ValidateIssuer           = true,
+            ValidateAudience         = true,
+            ValidateLifetime         = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(
+            ValidIssuer              = builder.Configuration["Jwt:Issuer"],
+            ValidAudience            = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey         = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
         };
     });
@@ -50,7 +60,7 @@ builder.Services.AddSwaggerGen(c =>
                 Reference = new Microsoft.OpenApi.Models.OpenApiReference
                 {
                     Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    Id   = "Bearer"
                 }
             },
             Array.Empty<string>()
@@ -69,11 +79,16 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
-     app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "WorkSync API v1");
+        c.RoutePrefix = "swagger";
+    });
 }
 app.UseCors("AllowAngular");
-app.UseAuthentication();   
-app.UseAuthorization();    
+app.UseStaticFiles();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();

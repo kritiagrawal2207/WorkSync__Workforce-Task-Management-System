@@ -44,8 +44,8 @@ export class EmployeeFormComponent implements OnInit {
   private buildForm(): void {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
-      phone: ['', [Validators.pattern(/^[0-9]{10}$/)]],
+      email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/), Validators.maxLength(255)]],
+      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       departmentId: [null, [Validators.required]]
     });
   }

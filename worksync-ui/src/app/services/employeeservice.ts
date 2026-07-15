@@ -21,4 +21,14 @@ export class EmployeeService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(API_ENDPOINTS.employees.byId(id));
   }
+  activate(id: number): Observable<{ message: string; isActive: boolean }> {
+    return this.http.put<{ message: string; isActive: boolean }>(
+      API_ENDPOINTS.employees.activate(id), {}
+    );
+  }
+  deactivate(id: number): Observable<{ message: string; isActive: boolean }> {
+    return this.http.put<{ message: string; isActive: boolean }>(
+      API_ENDPOINTS.employees.deactivate(id), {}
+    );
+  }
 }

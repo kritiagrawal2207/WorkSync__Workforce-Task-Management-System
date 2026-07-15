@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WorkSyncAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+82be2e7408626c3529d0e989841b8663503a3456")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+05854704bc0e69c493e989834b6a55f491fa21f0")]
 [assembly: System.Reflection.AssemblyProductAttribute("WorkSyncAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WorkSyncAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

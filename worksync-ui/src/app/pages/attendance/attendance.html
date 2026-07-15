@@ -1,4 +1,114 @@
-<div>
-  <h2 class="page-title">{{ constants.ATTENDANCE_TITLE }}</h2>
-  <p class="page-subtitle">{{ constants.ATTENDANCE_SUBTITLE }}</p>
+<div class="content">
+  <h1 class="page-title">{{ constants.ATTENDANCE_TITLE }}</h1>
+  @if (state === 'loading') {
+    <div class="state-block">
+      <p class="page-subtitle">{{ constants.ATTENDANCE_LOADING }}</p>
+    </div>
+  }
+  @if (state === 'no-employee') {
+    <div class="form-card">
+      <p class="page-subtitle">{{ constants.ATTENDANCE_NO_EMPLOYEE }}</p>
+    </div>
+  }
+  @if (state !== 'loading' && state !== 'no-employee') {
+    @if (!isCheckedOut) {
+    <div class="form-card att-card">
+      @if (errorMessage) {
+        <p class="att-error">{{ errorMessage }}</p>
+      }
+      @if (true) {
+        <div class="att-card-body">
+          <div class="att-card-left">
+            <p class="att-label">{{ constants.ATTENDANCE_TODAY_STATUS }}</p>
+
+            <span class="att-status-badge"
+              [class.att-status-badge--red]="state === 'not-checked-in'"
+              [class.att-status-badge--green]="state === 'checked-in'">
+              {{ statusLabel }}
+            </span>
+
+            @if (state === 'checked-in') {
+              <p class="att-time-label">{{ constants.ATTENDANCE_CHECK_IN_TIME_LABEL }}</p>
+              <p class="att-time-big">{{ formatTime(todayRecord?.checkIn) }}</p>
+              <p class="att-date-text">{{ nowDate }}</p>
+            }
+            @if (state === 'not-checked-in') {
+              <p class="att-date-text att-mt-sm">{{ nowDate }}</p>
+            }
+          </div>
+          <div class="att-card-divider"></div>
+          <div class="att-card-right">
+            <div class="att-icon-circle">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+                <circle cx="15" cy="15" r="3"/>
+                <polyline points="14 15 15 16 17 14"/>
+              </svg>
+            </div>
+            @if (state === 'not-checked-in') {
+              <button class="btn btn-primary att-btn" (click)="checkIn()" [disabled]="actionLoading">
+                {{ actionLoading ? constants.ATTENDANCE_CHECKING_IN : constants.ATTENDANCE_CHECK_IN_BTN }}
+              </button>
+            }
+            @if (state === 'checked-in') {
+              <button class="btn btn-primary att-btn" (click)="checkOut()" [disabled]="actionLoading">
+                {{ actionLoading ? constants.ATTENDANCE_CHECKING_OUT : constants.ATTENDANCE_CHECK_OUT_BTN }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+    }
+    @if (isCheckedOut) {
+      <div class="form-card att-timeline-card">
+        <p class="att-label">{{ constants.ATTENDANCE_TODAY_TIMELINE }}</p>
+        <div class="att-timeline">
+          <div class="att-timeline-item">
+            <div class="att-timeline-icon att-timeline-icon--in">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </div>
+            <p class="att-timeline-label">{{ constants.ATTENDANCE_CHECK_IN_BTN }}</p>
+            <p class="att-timeline-time">{{ formatTime(todayRecord?.checkIn) }}</p>
+          </div>
+          <div class="att-timeline-line"></div>
+          <div class="att-timeline-item">
+            <div class="att-timeline-icon att-timeline-icon--out">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+            </div>
+            <p class="att-timeline-label">{{ constants.ATTENDANCE_CHECK_OUT_BTN }}</p>
+            <p class="att-timeline-time">{{ formatTime(todayRecord?.checkOut) }}</p>
+          </div>
+        </div>
+      </div>
+    }
+    <div class="form-card att-history-section" (click)="viewHistory()">
+      <div class="att-history-section-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <div class="att-history-section-text">
+        <p class="att-history-section-title">{{ constants.ATTENDANCE_VIEW_HISTORY_TITLE }}</p>
+        <p class="att-history-section-sub">{{ constants.ATTENDANCE_VIEW_HISTORY_SUB }}</p>
+      </div>
+      <span class="att-history-section-arrow">›</span>
+    </div>
+  }
 </div>

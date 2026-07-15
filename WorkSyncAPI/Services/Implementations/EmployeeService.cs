@@ -2,7 +2,6 @@ using WorkSyncAPI.DTOs;
 using WorkSyncAPI.Models;
 using WorkSyncAPI.Repositories.Interfaces;
 using WorkSyncAPI.Services.Interfaces;
-
 namespace WorkSyncAPI.Services.Implementations
 {
     public class EmployeeService : IEmployeeService
@@ -67,7 +66,8 @@ namespace WorkSyncAPI.Services.Implementations
                 Email = employee.Email,
                 Phone = employee.Phone,
                 DepartmentId = employee.DepartmentId,
-                DepartmentName = employee.Department?.Name ?? "Unknown"
+                DepartmentName = employee.Department?.Name ?? "Unknown",
+                UserId = employee.UserId
             };
         }
     }

@@ -1,7 +1,7 @@
 .employee-table {
   width: var(--table-width);
   border-collapse: collapse;
-  table-layout: fixed;
+  table-layout: auto;
 }
 .employee-table thead {
   background-color: var(--color-surface-alt);
@@ -12,8 +12,8 @@
   padding: var(--spacing-lg) var(--spacing-2xl);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
+  text-transform: none;
+letter-spacing: normal;
   color: var(--color-text-muted);
 }
 .actions-col {
