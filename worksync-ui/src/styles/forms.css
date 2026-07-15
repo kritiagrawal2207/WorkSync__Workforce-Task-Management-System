@@ -77,3 +77,8 @@
 .form-card .state-block {
   padding: var(--spacing-4xl) var(--spacing-xl);
 }
+
+.required-star {
+  color: var(--color-danger);
+  margin-left: 2px;
+}

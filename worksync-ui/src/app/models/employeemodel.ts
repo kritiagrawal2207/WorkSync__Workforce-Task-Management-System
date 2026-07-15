@@ -5,9 +5,10 @@ export interface Employee {
   phone?: string;
   departmentId: number;
   departmentName: string;
-  userId?: number; 
+  userId?: number;     
   isActive?: boolean;
 }
+
 export interface EmployeeCreateDto {
   name: string;
   email: string;
