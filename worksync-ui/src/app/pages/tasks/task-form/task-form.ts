@@ -17,7 +17,7 @@ import { constants } from '../../../constants/string';
   templateUrl: './task-form.html',
 })
 export class TaskFormComponent implements OnInit {
-  readonly c = constants;
+  protected readonly constants = constants;
   isEdit = false;
   taskId = 0;
   isLoading = false;
@@ -79,7 +79,7 @@ export class TaskFormComponent implements OnInit {
   }
   save(): void {
     this.errorMsg = '';
-    if (!this.title.trim()) { this.errorMsg = this.c.TASK_TITLE_REQUIRED; return; }
+    if (!this.title.trim()) { this.errorMsg = this.constants.TASK_TITLE_REQUIRED; return; }
     this.isSaving = true;
     const payload: TaskCreateRequest = {
       title: this.title.trim(),
@@ -92,12 +92,12 @@ export class TaskFormComponent implements OnInit {
     if (this.isEdit) {
       this.taskService.update(this.taskId, payload).subscribe({
         next: () => this.assignAndNavigate(this.taskId),
-        error: () => { this.errorMsg = this.c.TASK_SAVE_ERROR; this.isSaving = false; },
+        error: () => { this.errorMsg = this.constants.TASK_SAVE_ERROR; this.isSaving = false; },
       });
     } else {
       this.taskService.create(payload).subscribe({
         next: (res) => this.assignAndNavigate(res.taskId),
-        error: () => { this.errorMsg = this.c.TASK_SAVE_ERROR; this.isSaving = false; },
+        error: () => { this.errorMsg = this.constants.TASK_SAVE_ERROR; this.isSaving = false; },
       });
     }
   }

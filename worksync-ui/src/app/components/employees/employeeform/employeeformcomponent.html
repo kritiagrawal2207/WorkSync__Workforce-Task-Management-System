@@ -29,7 +29,7 @@
             @if (hasError('email', 'required')) {
               <span class="error-msg">{{ constants.EMAIL_REQUIRED }}</span>
             }
-            @if (hasError('email', 'email')) {
+            @if (hasError('email', 'pattern')) {
               <span class="error-msg">{{ constants.EMAIL_INVALID }}</span>
             }
           </div>

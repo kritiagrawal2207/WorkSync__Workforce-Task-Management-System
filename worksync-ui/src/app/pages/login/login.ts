@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { constants } from '../../constants/string';
+import { UserRole }  from '../../enums/user-role.enum';
 
 @Component({
   selector: 'app-login',
@@ -38,7 +39,7 @@ export class LoginComponent {
         this.isLoading = false;
         this.cdr.detectChanges();     
         this.authService.saveSession(res);
-        const dest = (res.role === 'Employee') ? '/tasks' : '/dashboard';
+        const dest = (res.role === UserRole.Employee) ? '/tasks' : '/dashboard';
         this.router.navigate([dest]);
       },
       error: (err) => {
@@ -46,7 +47,7 @@ export class LoginComponent {
         this.email = '';
         this.password = '';
         if (err.status === 0) {
-          this.errorMessage = 'Cannot reach server. Please check if the backend is running.';
+          this.errorMessage = constants.SERVER_UNREACHABLE;
         } else {
           this.errorMessage =
             typeof err.error === 'string'
