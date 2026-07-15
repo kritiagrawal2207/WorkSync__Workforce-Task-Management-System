@@ -229,4 +229,11 @@ export const constants = {
   FILE_DELETE_SUCCESS:        'File deleted.',
   FILE_DELETE_FAILED:         'Failed to delete file.',
   API_BASE_URL: 'http://localhost:5180',
+  EMPLOYEE_ACTIVATED_SUFFIX:   ' activated successfully.',
+  EMPLOYEE_DEACTIVATED_SUFFIX: ' deactivated successfully.',
+  EMPLOYEE_ACTIVATE_FAILED:    'Failed to activate employee.',
+  EMPLOYEE_DEACTIVATE_FAILED:  'Failed to deactivate employee.',
+  TABLE_STATUS_HEADER:         'Status',
+  DEACTIVATE_EMPLOYEE_ACTION:  'Deactivate employee',
+  ACTIVATE_EMPLOYEE_ACTION:    'Activate employee',
 };

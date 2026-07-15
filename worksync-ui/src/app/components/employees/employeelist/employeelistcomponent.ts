@@ -10,6 +10,7 @@ import { EmployeeTableComponent } from '../employeetable/employeetablecomponent'
 import { EmptyStateComponent } from '../../../shared/emptystate/emptystatecomponent';
 import { LoadingSpinnerComponent } from '../../../shared/loadingspinner/loadingspinnercomponent';
 import { constants } from '../../../constants/string';
+import { UserRole } from '../../../enums/user-role.enum';
 @Component({
   selector: 'app-employee-list',
   standalone: true,
@@ -34,7 +35,7 @@ export class EmployeeListComponent implements OnInit {
   pageSizeOptions = [5, 10, 25, 50];
   get canToggleStatus(): boolean {
     const role = this.authService.getRole();
-    return role === 'Admin' || role === 'Manager';
+    return role === UserRole.Admin || role === UserRole.Manager;
   }
   get totalPages(): number { return Math.ceil(this.filteredEmployees.length / this.pageSize); }
   get pagedEmployees(): Employee[] {
@@ -121,20 +122,20 @@ export class EmployeeListComponent implements OnInit {
     this.employeeService.activate(employee.id).subscribe({
       next: () => {
         employee.isActive = true;
-        this.toastService.show(`${employee.name} activated successfully.`, 'success');
+        this.toastService.show(employee.name + constants.EMPLOYEE_ACTIVATED_SUFFIX, 'success');
         this.cdr.detectChanges();
       },
-      error: () => this.toastService.show('Failed to activate employee.', 'error')
+      error: () => this.toastService.show(constants.EMPLOYEE_ACTIVATE_FAILED, 'error')
     });
   }
   onDeactivate(employee: Employee): void {
     this.employeeService.deactivate(employee.id).subscribe({
       next: () => {
         employee.isActive = false;
-        this.toastService.show(`${employee.name} deactivated successfully.`, 'success');
+        this.toastService.show(employee.name + constants.EMPLOYEE_DEACTIVATED_SUFFIX, 'success');
         this.cdr.detectChanges();
       },
-      error: () => this.toastService.show('Failed to deactivate employee.', 'error')
+      error: () => this.toastService.show(constants.EMPLOYEE_DEACTIVATE_FAILED, 'error')
     });
   }
 }

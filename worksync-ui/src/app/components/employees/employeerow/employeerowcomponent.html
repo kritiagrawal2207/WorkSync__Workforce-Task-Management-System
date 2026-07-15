@@ -26,11 +26,11 @@
         <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
       </svg>
     </a>
-    @if (canToggleStatus) {
+    @if (canToggleStatus && employee.userId != null) {
       @if (employee.isActive !== false) {
         <button
           class="icon-btn deactivate-btn"
-          title="Deactivate employee"
+          [title]="constants.DEACTIVATE_EMPLOYEE_ACTION"
           (click)="deactivate.emit()"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -41,7 +41,7 @@
       } @else {
         <button
           class="icon-btn activate-btn"
-          title="Activate employee"
+          [title]="constants.ACTIVATE_EMPLOYEE_ACTION"
           (click)="activate.emit()"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
