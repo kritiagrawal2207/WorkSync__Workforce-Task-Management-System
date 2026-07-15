@@ -32,6 +32,10 @@ export class TaskFormComponent implements OnInit {
   employees: Employee[] = [];
   readonly priorities = ['Low', 'Medium', 'High'];
   readonly statuses = ['Pending', 'In Progress', 'Completed'];
+  titleTouched = false;
+  descTouched = false;
+  dueTouched = false;
+  assignTouched = false;
   constructor(
     private taskService: TaskService,
     private authService: AuthService,
@@ -79,7 +83,16 @@ export class TaskFormComponent implements OnInit {
   }
   save(): void {
     this.errorMsg = '';
-    if (!this.title.trim()) { this.errorMsg = this.constants.TASK_TITLE_REQUIRED; return; }
+    this.titleTouched = true;
+    this.descTouched = true;
+    this.dueTouched = true;
+    this.assignTouched = true;
+
+    if (!this.title.trim()) { return; }
+    if (!this.description.trim()) { return; }
+    if (!this.dueDate) { return; }
+    if (!this.selectedEmployeeIds.length) { return; }
+
     this.isSaving = true;
     const payload: TaskCreateRequest = {
       title: this.title.trim(),
@@ -103,7 +116,7 @@ export class TaskFormComponent implements OnInit {
   }
   private assignAndNavigate(taskId: number): void {
   if (!this.selectedEmployeeIds.length) {
-    this.router.navigate(['/tasks', taskId]);
+    this.router.navigate(['/tasks']);
     return;
   }
   const calls = this.selectedEmployeeIds.map((empId) => {
@@ -114,7 +127,7 @@ export class TaskFormComponent implements OnInit {
       assignedUserId: emp?.userId ?? undefined
     }).pipe(catchError(() => of(null)));
   });
-  forkJoin(calls).subscribe(() => this.router.navigate(['/tasks', taskId]));
+  forkJoin(calls).subscribe(() => this.router.navigate(['/tasks']));
 }
   cancel(): void {
     this.router.navigate([this.isEdit ? '/tasks/' + this.taskId : '/tasks']);

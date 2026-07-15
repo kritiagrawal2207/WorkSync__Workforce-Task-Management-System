@@ -12,12 +12,18 @@
       @if (errorMsg) { <p class="error-msg">{{ errorMsg }}</p> }
       <div class="task-form-grid">
         <div class="field task-form-full">
-          <label for="task-title">{{ constants.TASK_TITLE_LABEL }}</label>
-          <input id="task-title" type="text" [(ngModel)]="title" [placeholder]="constants.TASK_TITLE_PLACEHOLDER" />
+          <label for="task-title">{{ constants.TASK_TITLE_LABEL }} <span class="required-star">*</span></label>
+          <input id="task-title" type="text" [(ngModel)]="title" [placeholder]="constants.TASK_TITLE_PLACEHOLDER" (blur)="titleTouched = true" />
+          @if (titleTouched && !title.trim()) {
+            <span class="error-msg">{{ constants.TASK_TITLE_REQUIRED }}</span>
+          }
         </div>
         <div class="field task-form-full">
-          <label for="task-desc">{{ constants.TASK_DESC_LABEL }}</label>
-          <textarea id="task-desc" [(ngModel)]="description" [placeholder]="constants.TASK_DESC_PLACEHOLDER" rows="3"></textarea>
+          <label for="task-desc">{{ constants.TASK_DESC_LABEL }} <span class="required-star">*</span></label>
+          <textarea id="task-desc" [(ngModel)]="description" [placeholder]="constants.TASK_DESC_PLACEHOLDER" rows="3" (blur)="descTouched = true"></textarea>
+          @if (descTouched && !description.trim()) {
+            <span class="error-msg">{{ constants.TASK_DESC_REQUIRED }}</span>
+          }
         </div>
         <div class="field">
           <label for="task-priority">{{ constants.TASK_PRIORITY_LABEL }}</label>
@@ -32,12 +38,15 @@
           </select>
         </div>
         <div class="field">
-          <label for="task-due">{{ constants.TASK_DUE_LABEL }}</label>
-          <input id="task-due" type="date" [(ngModel)]="dueDate" />
+          <label for="task-due">{{ constants.TASK_DUE_LABEL }} <span class="required-star">*</span></label>
+          <input id="task-due" type="date" [(ngModel)]="dueDate" (blur)="dueTouched = true" />
+          @if (dueTouched && !dueDate) {
+            <span class="error-msg">{{ constants.TASK_DUE_REQUIRED }}</span>
+          }
         </div>
       </div>
       <div class="field">
-        <label>{{ constants.TASK_ASSIGN_LABEL }}</label>
+        <label>{{ constants.TASK_ASSIGN_LABEL }} <span class="required-star">*</span></label>
         @if (employees.length === 0) {
           <p class="empty-sub">{{ constants.TASK_ASSIGN_NONE }}</p>
         } @else {
@@ -53,6 +62,9 @@
               </label>
             }
           </div>
+          @if (assignTouched && !selectedEmployeeIds.length) {
+            <span class="error-msg">{{ constants.TASK_ASSIGN_REQUIRED }}</span>
+          }
         }
       </div>
       <div class="task-form-actions">

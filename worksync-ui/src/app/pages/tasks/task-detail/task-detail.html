@@ -37,11 +37,6 @@
             </select>
           </div>
         </div>
-        <div class="save-row">
-          <button class="btn btn-primary" (click)="saveChanges()" [disabled]="isSaving">
-            {{ isSaving ? constants.TASK_SAVING : constants.SAVE_BUTTON }}
-          </button>
-        </div>
       </div>
       <div class="divider"></div>
       <div class="field-group">
@@ -178,6 +173,12 @@
             {{ isCommenting ? constants.TASK_COMMENT_POSTING : constants.TASK_COMMENT_POST_BTN }}
           </button>
         </div>
+      </div>
+      <div class="divider"></div>
+      <div class="save-row">
+        <button class="btn btn-primary" (click)="saveChanges()" [disabled]="isSaving">
+          {{ isSaving ? constants.TASK_SAVING : constants.SAVE_BUTTON }}
+        </button>
       </div>
       <div class="divider"></div>
       <div class="meta-row">

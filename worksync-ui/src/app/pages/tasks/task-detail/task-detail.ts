@@ -86,31 +86,32 @@ export class TaskDetailComponent implements OnInit {
   }
 
   saveChanges(): void {
-    if (!this.task) return;
-    this.isSaving = true;
-    const statusChanged   = this.selectedStatus   !== this.task.status;
-    const priorityChanged = this.selectedPriority !== this.task.priority;
-    if (!statusChanged && !priorityChanged) {
-      this.isSaving = false;
-      this.toastService.show(constants.TASK_NO_CHANGES);
-      return;
-    }
-    const calls: Observable<unknown>[] = [];
-    if (statusChanged)   calls.push(this.taskService.updateStatus(this.task.id, { status: this.selectedStatus }));
-    if (priorityChanged) calls.push(this.taskService.updatePriority(this.task.id, this.selectedPriority));
-    forkJoin(calls).subscribe({
-      next: () => {
-        this.isSaving = false;
-        this.toastService.show(constants.TASK_UPDATED_OK, 'success');
-        this.router.navigate(['/tasks']);
-      },
-      error: () => {
-        this.isSaving = false;
-        this.toastService.show(constants.TASK_UPDATE_FAILED, 'error');
-        this.cdr.detectChanges();
-      }
-    });
+  if (!this.task) return;
+  this.isSaving = true;
+  const statusChanged   = this.selectedStatus   !== this.task.status;
+  const priorityChanged = this.selectedPriority !== this.task.priority;
+  const calls: Observable<unknown>[] = [];
+  if (statusChanged)   calls.push(this.taskService.updateStatus(this.task.id, { status: this.selectedStatus }));
+  if (priorityChanged) calls.push(this.taskService.updatePriority(this.task.id, this.selectedPriority));
+  if (!calls.length) {
+    this.isSaving = false;
+    this.toastService.show(constants.TASK_UPDATED_OK, 'success');
+    this.router.navigate(['/tasks']);
+    return;
   }
+  forkJoin(calls).subscribe({
+    next: () => {
+      this.isSaving = false;
+      this.toastService.show(constants.TASK_UPDATED_OK, 'success');
+      this.router.navigate(['/tasks']);
+    },
+    error: () => {
+      this.isSaving = false;
+      this.toastService.show(constants.TASK_UPDATE_FAILED, 'error');
+      this.cdr.detectChanges();
+    }
+  });
+}
 
   toggleAssignMenu(): void { this.showAssignMenu = !this.showAssignMenu; }
 
